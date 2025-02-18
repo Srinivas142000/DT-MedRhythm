@@ -2,9 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
 import 'package:medrhythms/myuipages/home_page.dart';
+import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 
 //Widget for the login page
 class LoginPage extends StatefulWidget{
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -60,24 +63,11 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
-  //Method for the app bar
-  AppBar _medRhythmsLogo() {
-    return AppBar(
-      backgroundColor: Colors.green,
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/images/logo.jpg'), 
-            fit: BoxFit.cover, 
-          ),
-        ),
-      ),
-    );
-  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: _medRhythmsLogo(),
+      appBar: MedRhythmsAppBar(),
       body: Container(
         height: double.infinity,
         width: double.infinity,

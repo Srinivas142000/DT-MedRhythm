@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 
 class HomePage extends StatelessWidget{
   final Map<String, dynamic> userData;
   HomePage({required this.userData});
 
-//Method for the app bar
-AppBar _medRhythmLogo() {
-    return AppBar(
-      backgroundColor: Colors.green,
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/images/logo.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
+
 @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _medRhythmLogo(),
+      appBar: MedRhythmsAppBar(),
       body: Container(
         height: double.infinity,
         width: double.infinity,
