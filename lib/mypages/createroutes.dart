@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
-import 'package:medrhy/mypages/modifyroutes.dart';
+import 'modifyroutes.dart';
 
 /// CreateDataService
 ///
@@ -27,13 +27,15 @@ class CreateDataService {
   /// - `FirebaseFirestore.instance.collection('users') retrieves a reference
   ///   to the 'users' collection in Firestore.
   /// - This reference allows us to add, update, and query user records.
-  final CollectionReference usersColl =
-      FirebaseFirestore.instance.collection('users');
+  CollectionReference usersColl = FirebaseFirestore.instance.collection(
+    'users',
+  );
 
-  final CollectionReference sessionColl =
-      FirebaseFirestore.instance.collection('sesssions');
+  CollectionReference sessionColl = FirebaseFirestore.instance.collection(
+    'sesssions',
+  );
 
-  final FirebaseModifyStore mu = FirebaseModifyStore();
+  FirebaseModifyStore mu = FirebaseModifyStore();
 
   /// Creates a User Reference in Firestore
   ///
@@ -64,14 +66,15 @@ class CreateDataService {
   }
 
   Future<void> createSessionData(
-      String userId,
-      DateTime startTime,
-      DateTime endTime,
-      double steps,
-      double distance,
-      double calories,
-      double speed,
-      String source) async {
+    String userId,
+    DateTime startTime,
+    DateTime endTime,
+    double steps,
+    double distance,
+    double calories,
+    double speed,
+    String source,
+  ) async {
     var sessionId = Uuid().v4();
     final sessionData = {
       'sessionId': sessionId,
@@ -82,7 +85,7 @@ class CreateDataService {
       'distance': distance,
       'calories': calories,
       'source': source,
-      'speed': speed
+      'speed': speed,
     };
     await sessionColl.add(sessionData);
     await mu.amendSessionsToUser(sessionId.toString(), userId);
