@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
-//Widget for AppBar that is reusable
-class MedRhythmsAppBar extends StatelessWidget implements PreferredSizeWidget{
+
+class MedRhythmsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.green,
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/images/logo.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+      title: Center(
+        child: _buildLogo(),
       ),
     );
   }
+
+  Widget _buildLogo() {
+    try {
+      return Image.asset(
+        'assets/images/logo.jpg',
+        height: kToolbarHeight - 8, // Adjust as needed
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return const Text(
+            'Logo Not Found',
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          );
+        },
+      );
+    } catch (e) {
+      return const Text(
+        'Error Loading Image',
+        style: TextStyle(color: Colors.white, fontSize: 18),
+      );
+    }
+  }
+
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
