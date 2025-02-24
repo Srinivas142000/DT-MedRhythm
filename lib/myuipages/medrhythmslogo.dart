@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class MedRhythmsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
