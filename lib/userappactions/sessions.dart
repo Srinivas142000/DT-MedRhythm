@@ -2,12 +2,12 @@ import 'package:health/health.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
 
-class Workout {
+class Sessions {
   final CreateDataService csd = CreateDataService();
   bool _isTracking = false;
   List<HealthDataPoint> _liveData = [];
 
-  Future<void> startLiveWorkout(Health h, Uuid userId) async {
+  Future<void> startLiveWorkout(Health h, String userId) async {
     final types = [
       HealthDataType.STEPS,
       HealthDataType.DISTANCE_WALKING_RUNNING,
@@ -37,7 +37,7 @@ class Workout {
     }
   }
 
-  Future<void> stopLiveWorkout(Uuid userId) async {
+  Future<void> stopLiveWorkout(String userId, Duration selectedDuration) async {
     _isTracking = false;
     print("Live workout tracking stopped.");
 
@@ -61,7 +61,7 @@ class Workout {
 
     await csd.createSessionData(
       userId.toString(),
-      DateTime.now().subtract(Duration(minutes: 10)), // Example start time
+      DateTime.now().subtract(selectedDuration), // Example start time
       DateTime.now(), // End time
       totalSteps,
       totalDistance,

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:health/health.dart';
 import 'dart:async';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/userappactions/sessions.dart';
 
 class SessionsPage extends StatefulWidget {
   final String uuid;
@@ -18,6 +20,8 @@ class SessionsPage extends StatefulWidget {
 class _SessionsPageState extends State<SessionsPage> {
   Duration selectedDuration = Duration.zero;
   Bottombar bb = Bottombar();
+  Health h = new Health();
+  Sessions s = new Sessions();
 
   Future<void> _selectTime(BuildContext context) async {
     showModalBottomSheet(
@@ -55,7 +59,14 @@ class _SessionsPageState extends State<SessionsPage> {
     );
   }
 
-  void _startSession() {
+  void _startSession() async {
+    final userId = UserSession().userId;
+    if (userId != null) {
+      await s.startLiveWorkout(h, UserSession().userId!);
+    } else {
+      // Handle the case where userId is null
+      print("User ID is null");
+    }
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -133,15 +144,16 @@ class _NextPageState extends State<NextPage> {
   Timer? timer;
   bool isPaused = false;
   Bottombar bb = Bottombar();
+  Sessions s = new Sessions();
 
   @override
   void initState() {
     super.initState();
     remainingTime = widget.duration;
-    _startTimer();
+    _startTimer(s, remainingTime);
   }
 
-  void _startTimer() {
+  void _startTimer(Sessions s, Duration selectedDuration) async {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!isPaused && remainingTime.inSeconds > 0) {
         setState(() {
@@ -149,19 +161,20 @@ class _NextPageState extends State<NextPage> {
         });
       } else if (remainingTime.inSeconds == 0) {
         timer.cancel();
-        _endSession();
+        _endSession(s, selectedDuration);
       }
     });
   }
 
-  void _endSession() {
+  void _endSession(Sessions s, Duration selectedDuration) async {
+    await s.stopLiveWorkout(UserSession().userId!, selectedDuration);
     if (mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => SessionsPage(
             uuid: widget.uuid,
-            userData: UserSession().userData!,
+            userData: UserSession().userData ?? {}, // Null check added here
           ),
         ),
       );
@@ -182,19 +195,20 @@ class _NextPageState extends State<NextPage> {
     if (isPaused) {
       timer?.cancel();
     } else {
-      _startTimer();
+      _startTimer(s, 0 as Duration);
     }
   }
 
-  void _cancelSession() {
+  void _cancelSession(Duration selectedDuration) {
     timer?.cancel();
-    _endSession();
+    _endSession(s, selectedDuration);
   }
 
   @override
   Widget build(BuildContext context) {
     double progress = widget.duration.inSeconds > 0
-        ? remainingTime.inSeconds / widget.duration.inSeconds
+        ? (widget.duration.inSeconds - remainingTime.inSeconds) /
+            widget.duration.inSeconds
         : 0;
 
     return Scaffold(
@@ -235,23 +249,23 @@ class _NextPageState extends State<NextPage> {
                       const SizedBox(height: 10),
 
                       // GIF Below Walking Text
-                      Image.asset(
-                        'assets/walking.gif', // Ensure you have this file in assets
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
+                      Image(
+                          image: AssetImage('images/walking.gif'),
+                          width: MediaQuery.of(context)
+                              .size
+                              .width, // Full width of the screen
+                          height: 100),
 
                       const SizedBox(height: 10),
-
-                      // Black and White Progress Bar
-                      LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: Colors.white,
-                        color: Colors.black,
-                        minHeight: 8,
-                      ),
                     ],
+                  ),
+                ),
+                Container(
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: Colors.white,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                    minHeight: 8,
                   ),
                 ),
                 Container(
@@ -269,7 +283,7 @@ class _NextPageState extends State<NextPage> {
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
-                        onPressed: _cancelSession,
+                        onPressed: () => _cancelSession(remainingTime),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                         ),

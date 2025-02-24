@@ -6,7 +6,7 @@ class Workout {
   CreateDataService csd = CreateDataService();
 
   Future<void> recordWorkoutSession(
-      Health h, DateTime startTime, int sessionTiming, Uuid userId) async {
+      Health h, DateTime startTime, int sessionTiming, String userId) async {
     // Calculate the end time based on the session timing
     DateTime endTime = startTime.add(Duration(minutes: sessionTiming));
 

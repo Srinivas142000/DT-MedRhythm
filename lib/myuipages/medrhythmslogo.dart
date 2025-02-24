@@ -14,7 +14,7 @@ class MedRhythmsAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget _buildLogo() {
     try {
       return Image.asset(
-        'assets/images/logo.jpg',
+        'images/logo.jpg',
         height: kToolbarHeight - 8, // Adjust as needed
         fit: BoxFit.contain,
         errorBuilder: (context, error, stackTrace) {

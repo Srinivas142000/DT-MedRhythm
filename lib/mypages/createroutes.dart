@@ -31,7 +31,7 @@ class CreateDataService {
       FirebaseFirestore.instance.collection('users');
 
   final CollectionReference sessionColl =
-      FirebaseFirestore.instance.collection('sesssions');
+      FirebaseFirestore.instance.collection('sessions');
 
   final FirebaseModifyStore mu = FirebaseModifyStore();
 
