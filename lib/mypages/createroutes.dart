@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
-import 'modifyroutes.dart';
+import 'package:medrhythms/mypages/modifyroutes.dart';
 
 /// CreateDataService
 ///
@@ -31,9 +31,8 @@ class CreateDataService {
     'users',
   );
 
-  CollectionReference sessionColl = FirebaseFirestore.instance.collection(
-    'sesssions',
-  );
+  final CollectionReference sessionColl =
+      FirebaseFirestore.instance.collection('sessions');
 
   FirebaseModifyStore mu = FirebaseModifyStore();
 
