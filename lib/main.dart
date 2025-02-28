@@ -1,9 +1,11 @@
 //Imports for all the necessary packages
-import 'package:flutter/material.dart';//For UI
+import 'package:flutter/material.dart'; //For UI
 import 'package:medrhythms/myuipages/loginpage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:medrhythms/myuipages/sessions_page.dart';
+
 //Main function and entry
-void main()async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -20,6 +22,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
