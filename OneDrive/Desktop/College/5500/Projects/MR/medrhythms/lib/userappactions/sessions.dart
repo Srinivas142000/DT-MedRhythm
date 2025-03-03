@@ -3,7 +3,8 @@ import 'package:medrhythms/helpers/usersession.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
 import 'dart:async';
-// import 'package:flutter_health_connect/flutter_health_connect.dart';
+import 'package:flutter_health_connect/flutter_health_connect.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Sessions {
   final CreateDataService csd = CreateDataService();
@@ -23,9 +24,22 @@ class Sessions {
 
     // Request permissions
     bool permissionsGranted = us.hasPermissions;
+    bool isHealthConnectAvailable = false;
+    try {
+      print(await HealthConnectFactory.isApiSupported());
+      await HealthConnectFactory.installHealthConnect();
+      isHealthConnectAvailable = await HealthConnectFactory.isAvailable();
+    } catch (err) {
+      launchUrl(
+        Uri.parse("market://details?id=com.google.android.apps.healthdata"),
+        mode: LaunchMode.externalApplication,
+      );
+    }
+    if (isHealthConnectAvailable) {
+      print("Yes");
+    } else {}
     if (permissionsGranted) {
       // Check if Google Health Connect is available
-      // bool isHealthConnectAvailable = await HealthConnectFactory.isAvailable();
       if (true) {
         print("Google Health Connect is not available on this device.");
         // bool k = await HealthConnectFactory.installHealthConnect();
