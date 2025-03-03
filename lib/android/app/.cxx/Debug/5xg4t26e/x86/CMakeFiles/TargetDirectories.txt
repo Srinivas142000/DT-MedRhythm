@@ -1,0 +1,2 @@
+/Users/jiangchaoyi/Desktop/Feb24test/medrhythms/lib/android/app/.cxx/Debug/5xg4t26e/x86/CMakeFiles/edit_cache.dir
+/Users/jiangchaoyi/Desktop/Feb24test/medrhythms/lib/android/app/.cxx/Debug/5xg4t26e/x86/CMakeFiles/rebuild_cache.dir
