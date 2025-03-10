@@ -1,6 +1,0 @@
-<resources>
-    <string-array name="health_permissions">
-        <item>android.permission.BODY_SENSORS</item>
-        <item>android.permission.ACTIVITY_RECOGNITION</item>
-    </string-array>
-</resources>
