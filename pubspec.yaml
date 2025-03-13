@@ -34,9 +34,10 @@ dependencies:
   cloud_firestore: ^5.6.4
   health: ^12.0.1
   uuid: ^4.2.2
-  fl_chart: ^0.62.0  # Add this line for chart functionality
+  fl_chart: ^0.50.0  # Add this line for chart functionality
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  
   cupertino_icons: ^1.0.8
   geekyants_flutter_gauges: ^1.0.4
 

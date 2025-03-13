@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:geekyants_flutter_gauges/geekyants_flutter_gauges.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/services/record_service.dart'; // Import the RecordService
+import 'dart:math' as math;// Add math mixin to provide sin function
 
-// Main widget for the Records page that tracks user activities
 class RecordsPage extends StatefulWidget {
   final String uuid;
   final Map<String, dynamic> userData;
@@ -15,285 +16,306 @@ class RecordsPage extends StatefulWidget {
   _RecordsPageState createState() => _RecordsPageState();
 }
 
-class _RecordsPageState extends State<RecordsPage> with SingleTickerProviderStateMixin {
-  // Bottom navigation bar instance - keeping original implementation
+class _RecordsPageState extends State<RecordsPage> {
+  // Bottom navigation bar instance
   Bottombar bb = Bottombar();
   
-  // Tab controller to handle tab switching
-  late TabController _tabController;
+  // Currently selected date
+  DateTime selectedDate = DateTime.now();
   
-  // Currently selected time period index
-  int _selectedTimeIndex = 0;
-  final List<String> _timePeriods = ["Current Week", "Last Week", "Last Month"];
+  // Currently selected day of the week
+  int selectedDay = DateTime.now().weekday - 1; // 0 = Monday, 6 = Sunday
   
-  // Progress values for all time periods
-  final List<double> _progressValues = [0.64, 0.40, 0.90];
+  // Day of week labels
+  final List<String> weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   
-  // Sample data - in a real app, this would come from an API or database
-  final List<List<double>> _currentWeekData = [
-    [20, 45, 30, 60, 40, 75, 50],  // Activity 1
-    [15, 35, 25, 55, 30, 70, 40],  // Activity 2
-  ];
+  // Initialize RecordService
+  final RecordService _recordService = RecordService();
   
-  final List<List<double>> _lastWeekData = [
-    [25, 40, 35, 50, 45, 65, 55],  // Activity 1
-    [20, 30, 25, 45, 35, 60, 50],  // Activity 2
-  ];
+  // Store weekly workout data
+  List<Map<String, dynamic>?> weekData = List.filled(7, null);
   
-  final List<List<double>> _lastMonthData = [
-    [30, 50, 40, 70, 60, 80, 65],  // Activity 1
-    [25, 45, 35, 65, 55, 75, 60],  // Activity 2
-  ];
+  // Loading state
+  bool isLoading = true;
   
-  // Data currently being displayed
-  late List<List<double>> _currentDisplayData;
+  // Chart colors
+  final Color stepsColor = Colors.green;
+  final Color caloriesColor = Colors.purple;
+  final Color distanceColor = Colors.amber;
+  final Color speedColor = Colors.orange;
+  
+  // Four chart types for display
+  List<String> chartTypes = ["Steps", "Calories", "Distance", "AvgSpeed"];
+  
+  // Currently active chart combination (default shows all four)
+  List<bool> activeCharts = [true, true, true, true];
 
   @override
   void initState() {
     super.initState();
-    // Initialize the tab controller with 3 tabs
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(_handleTabSelection);
-    _currentDisplayData = _currentWeekData; // Start with current week data
+    // Get this week's data
+    _fetchWeekData();
   }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  // Handle tab changes
-  void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
+  
+  // Fetch this week's data
+  Future<void> _fetchWeekData() async {
+    setState(() {
+      isLoading = true;
+    });
+    
+    try {
+      // Get the start date of this week (Monday)
+      final now = DateTime.now();
+      final int currentWeekday = now.weekday; // 1 = Monday, 7 = Sunday
+      
+      // Calculate this Monday's date
+      final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
+      
+      // Get data for the week
+      for (int i = 0; i < 7; i++) {
+        final date = mondayDate.add(Duration(days: i));
+        weekData[i] = await _recordService.getWorkoutRecord(widget.uuid, date);
+      }
+      
+      // Select today
+      selectedDay = currentWeekday - 1;
+    } catch (e) {
+      print('Error retrieving workout records: $e');
+    } finally {
       setState(() {
-        _selectedTimeIndex = _tabController.index;
-        // Update displayed data based on selected tab
-        switch (_selectedTimeIndex) {
-          case 0:
-            _currentDisplayData = _currentWeekData;
-            break;
-          case 1:
-            _currentDisplayData = _lastWeekData;
-            break;
-          case 2:
-            _currentDisplayData = _lastMonthData;
-            break;
-        }
+        isLoading = false;
       });
     }
+  }
+  
+  // Select a different date
+  void _selectDay(int index) {
+    setState(() {
+      selectedDay = index;
+      
+      // Calculate the selected date
+      final now = DateTime.now();
+      final int currentWeekday = now.weekday;
+      final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
+      selectedDate = mondayDate.add(Duration(days: index));
+    });
+  }
+  
+  // Toggle chart combination
+  void _toggleChartCombination(int option) {
+    // Two combinations: Steps and Distance / Calories and AvgSpeed
+    setState(() {
+      if (option == 0) { // Steps and Distance
+        activeCharts = [true, false, true, false];
+      } else { // Calories and AvgSpeed
+        activeCharts = [false, true, false, true];
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Choose colors based on currently selected time period
-    final List<Color> progressColors = [
-      Colors.green.shade400,
-      Colors.red.shade400,
-      Colors.purple.shade400,
-    ];
-
     return Scaffold(
-      // Restored original app bar
       appBar: MedRhythmsAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Page title
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-            child: Text(
-              "Records",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-          ),
-
-          // Tab bar for time period selection
-          TabBar(
-            controller: _tabController,
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey,
-            indicatorColor: progressColors[_selectedTimeIndex],
-            tabs: _timePeriods.map((period) => Tab(text: period)).toList(),
-          ),
-
-          const SizedBox(height: 20),
-
-          // Circular progress indicators section
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildRadialGauge(
-                _progressValues[0],
-                "${(_progressValues[0] * 100).toInt()}%",
-                progressColors[0],
-                title: "Activity 1",
-              ),
-              _buildRadialGauge(
-                _progressValues[1],
-                "${(_progressValues[1] * 100).toInt()}%",
-                progressColors[1],
-                title: "Activity 2",
-              ),
-              _buildRadialGauge(
-                _progressValues[2],
-                "${(_progressValues[2] * 100).toInt()}%",
-                progressColors[2],
-                title: "Overall",
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 20),
-
-          // Chart area - using TabBarView to show different time period data
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildBarChartView(_currentWeekData),
-                _buildBarChartView(_lastWeekData),
-                _buildBarChartView(_lastMonthData),
+                // Page title
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Records",
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.more_vert),
+                        onPressed: () {
+                          // Can add more options here
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Date selection bar
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: List.generate(7, (index) {
+                      return _buildDaySelector(index);
+                    }),
+                  ),
+                ),
+                
+                // Metric charts
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Steps chart (if activated)
+                        if (activeCharts[0])
+                          _buildMetricChart(
+                            "Steps",
+                            (weekData[selectedDay]?['totalSteps'] ?? 0).toString(),
+                            "steps",
+                            stepsColor,
+                          ),
+                        
+                        // Calories chart (if activated)
+                        if (activeCharts[1])
+                          _buildMetricChart(
+                            "Calories",
+                            (weekData[selectedDay]?['totalCalories'] ?? 0).toStringAsFixed(2),
+                            "kcal",
+                            caloriesColor,
+                          ),
+                        
+                        // Distance chart (if activated)
+                        if (activeCharts[2])
+                          _buildMetricChart(
+                            "Distance",
+                            (weekData[selectedDay]?['totalDistance'] ?? 0).toStringAsFixed(2),
+                            "mi",
+                            distanceColor,
+                          ),
+                        
+                        // AvgSpeed chart (if activated)
+                        if (activeCharts[3])
+                          _buildMetricChart(
+                            "AvgSpeed",
+                            (weekData[selectedDay]?['averageSpeed'] ?? 0).toStringAsFixed(2),
+                            "mph",
+                            speedColor,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                
+                // Bottom chart combination toggle buttons
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // "Steps and Distance" button
+                      OutlinedButton(
+                        onPressed: () => _toggleChartCombination(0),
+                        child: Text("Steps and\nDistance", textAlign: TextAlign.center),
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          side: BorderSide(color: Colors.green),
+                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        ),
+                      ),
+                      
+                      // "Calories and AvgSpeed" button
+                      OutlinedButton(
+                        onPressed: () => _toggleChartCombination(1),
+                        child: Text("Calories and\nAvgSpeed", textAlign: TextAlign.center),
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          side: BorderSide(color: Colors.green),
+                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Bottom navigation bar
+                bb,
               ],
             ),
+    );
+  }
+  
+  // Build day selector button
+  Widget _buildDaySelector(int index) {
+    bool isSelected = selectedDay == index;
+    
+    return GestureDetector(
+      onTap: () => _selectDay(index),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.green : Colors.transparent,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          weekDays[index],
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
-
-          // Restored original bottom navigation bar
-          bb,
-        ],
+        ),
       ),
     );
   }
-
-  // Create an enhanced radial gauge (circular progress) widget
-  Widget _buildRadialGauge(double value, String label, Color color, {String? title}) {
-    return Column(
-      children: [
-        // Optional title above the gauge
-        if (title != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey.shade700,
-              ),
-            ),
-          ),
-        Container(
-          width: 100,
-          height: 100,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Circular gauge from the geekyants package
-              RadialGauge(
-                track: RadialTrack(
-                  start: 0,
-                  end: 100,
-                  thickness: 10,
-                  color: Colors.grey.shade200,
-                  hideTrack: false,
-                  startAngle: 0,
-                  endAngle: 360,
-                  trackStyle: TrackStyle(
-                    showPrimaryRulers: false,
-                    showSecondaryRulers: false,
-                    showLabel: false,
-                  ),
-                ),
-                valueBar: [
-                  // Main progress bar
-                  RadialValueBar(
-                    value: value * 100,
-                    color: color,
-                    valueBarThickness: 10,
-                    radialOffset: 0,
-                  ),
-                ],
-              ),
-              // Center text and icon
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: color,
-                    ),
-                  ),
-                  // Optional: Add small icon
-                  Icon(
-                    _getIconForProgress(value),
-                    size: 16,
-                    color: color.withOpacity(0.8),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  // Build bar chart view for a specific time period
-  Widget _buildBarChartView(List<List<double>> data) {
+  
+  // Build metric chart
+  Widget _buildMetricChart(String title, String value, String unit, Color color) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
-        padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(12.0),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
               blurRadius: 5,
-              offset: const Offset(0, 2),
+              offset: Offset(0, 2),
             ),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Chart legend
+            // Metric title and value
             Padding(
-              padding: const EdgeInsets.only(left: 8.0, bottom: 16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  _buildLegendItem(Colors.grey.shade400, "Activity 1"),
-                  const SizedBox(width: 20),
-                  _buildLegendItem(Colors.red.shade200, "Activity 2"),
+                  Text(
+                    "$title ",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),
+                  ),
+                  Text(
+                    " $unit",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
                 ],
               ),
             ),
-            // Bar chart
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: List.generate(7, (index) => _buildBarGroup(index, data)),
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Day labels (Monday to Sunday)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: List.generate(
-                7,
-                (index) => SizedBox(
-                  width: 30,
-                  child: Text(
-                    _getDayLabel(index),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                  ),
-                ),
+            
+            // Line chart
+            Container(
+              height: 200,
+              padding: EdgeInsets.only(right: 16, left: 0, top: 16, bottom: 12),
+              child: LineChart(
+                _createLineChartData(title, color),
               ),
             ),
           ],
@@ -301,84 +323,127 @@ class _RecordsPageState extends State<RecordsPage> with SingleTickerProviderStat
       ),
     );
   }
-
-  // Create a legend item with color box and label
-  Widget _buildLegendItem(Color color, String label) {
-    return Row(
-      children: [
-        Container(
-          width: 12,
-          height: 12,
-          color: color,
+  
+  // Create line chart data
+  LineChartData _createLineChartData(String metricType, Color color) {
+    // Generate chart data points (24 hours, one point per hour)
+    List<FlSpot> spots = [];
+    
+    // Simulate data for different times of the day (in a real app, this should be fetched from the backend)
+    for (int hour = 0; hour < 24; hour++) {
+      // Create a random pattern based on sine wave to make the chart look more natural
+      double baseValue = 50;
+      double amplitude = 30;
+      double phase = hour / 24.0 * 2 * 3.14159; // Convert to radians
+      
+      double value = baseValue + amplitude * (0.5 + 0.5 * math.sin(phase));
+      
+      // Add point
+      spots.add(FlSpot(hour.toDouble(), value));
+    }
+    
+    // Set different maximum values for different metrics
+    double maxY = 125;
+    
+    return LineChartData(
+      gridData: FlGridData(
+        show: true,
+        drawVerticalLine: false,
+        horizontalInterval: 25,
+        getDrawingHorizontalLine: (value) {
+          return FlLine(
+            color: Colors.grey.withOpacity(0.1),
+            strokeWidth: 1,
+          );
+        },
+      ),
+      titlesData: FlTitlesData(
+        show: true,
+        rightTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
         ),
-        const SizedBox(width: 8),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey.shade700,
+        topTitles: AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 6, // Display every 6 hours
+            getTitlesWidget: (value, meta) {
+              if (value % 6 == 0) {
+                String time = "${value.toInt()}:00";
+                return Text(
+                  time,
+                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            interval: 25,
+            getTitlesWidget: (value, meta) {
+              if (value % 25 == 0) {
+                return Text(
+                  value.toInt().toString(),
+                  style: TextStyle(fontSize: 10, color: Colors.grey),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+        ),
+      ),
+      borderData: FlBorderData(show: false),
+      minX: 0,
+      maxX: 24,
+      minY: 0,
+      maxY: maxY,
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: Colors.white.withOpacity(0.8),
+        ),
+        touchCallback: (FlTouchEvent event, LineTouchResponse? touchResponse) {},
+        handleBuiltInTouches: true,
+      ),
+      lineBarsData: [
+        LineChartBarData(
+          spots: spots,
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: [
+              color.withOpacity(0.5),
+              color,
+            ],
+          ),
+          barWidth: 2,
+          isStrokeCapRound: true,
+          dotData: FlDotData(
+            show: false,
+            // Only show dot markers at specific points
+            checkToShowDot: (spot, barData) {
+              return spot.x == 12; // Show marker at 12 noon
+            },
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: [
+                color.withOpacity(0.3),
+                color.withOpacity(0.0),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
         ),
       ],
     );
   }
-
-  // Build a group of two bars for the chart
-  Widget _buildBarGroup(int index, List<List<double>> data) {
-    // Check if data index is valid
-    if (data.isEmpty || data[0].length <= index || data[1].length <= index) {
-      return const SizedBox.shrink();
-    }
-
-    // Calculate bar heights
-    final double maxHeight = 180;
-    final double firstBarHeight = maxHeight * (data[0][index] / 100);
-    final double secondBarHeight = maxHeight * (data[1][index] / 100);
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 2),
-      child: Row(
-        children: [
-          // First activity bar
-          Container(
-            width: 12,
-            height: firstBarHeight,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade400,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(3),
-                topRight: Radius.circular(3),
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          // Second activity bar
-          Container(
-            width: 12,
-            height: secondBarHeight,
-            decoration: BoxDecoration(
-              color: Colors.red.shade200,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(3),
-                topRight: Radius.circular(3),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Get day label for the week
-  String _getDayLabel(int index) {
-    final List<String> days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-    return days[index];
-  }
-
-  // Choose icon based on progress value
-  IconData _getIconForProgress(double value) {
-    if (value >= 0.7) return Icons.trending_up;      // Good progress
-    if (value >= 0.4) return Icons.trending_flat;    // Average progress
-    return Icons.trending_down;                      // Low progress
-  }
 }
+
