@@ -74,7 +74,9 @@ class _RecordsPageState extends State<RecordsPage> {
       // Get data for the week
       for (int i = 0; i < 7; i++) {
         final date = mondayDate.add(Duration(days: i));
+        print('Fetching data for: $date, UserID: ${widget.uuid}');
         weekData[i] = await _recordService.getWorkoutRecord(widget.uuid, date);
+        print('Data for $date: ${weekData[i]}');
       }
       
       // Select today

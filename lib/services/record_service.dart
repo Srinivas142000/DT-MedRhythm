@@ -1,52 +1,125 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RecordService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final CollectionReference sessionColl = FirebaseFirestore.instance.collection('sessions');
 
-  Future<Map<String, dynamic>?> getWorkoutRecord(
-      String userId, DateTime date) async {
-    DateTime startOfDay = DateTime(date.year, date.month, date.day, 0, 0, 0);
-    DateTime endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
+  Future<Map<String, dynamic>> getWorkoutRecord(
+    String userId,
+    DateTime startDate,
+  ) async {
+    try {
+      // Set startDate to the start time of the day
+      DateTime startDateTime = DateTime(
+        startDate.year,
+        startDate.month,
+        startDate.day,
+        0, 0, 0
+      );
+      
+      // Set endDate to the end of the day
+      DateTime endDateTime = DateTime(
+        startDate.year,
+        startDate.month,
+        startDate.day,
+        23, 59, 59
+      );
 
-    // query the database for all sessions on the given date
-    var querySnapshot = await _db
-        .collection('sessions')
+      QuerySnapshot snapshot = await sessionColl
         .where('userId', isEqualTo: userId)
-        .where('startTime', isGreaterThanOrEqualTo: startOfDay)
-        .where('startTime', isLessThanOrEqualTo: endOfDay)
+        .where('startTime', isGreaterThanOrEqualTo: startDateTime)
+        .where('startTime', isLessThanOrEqualTo: endDateTime)
         .get();
 
-    if (querySnapshot.docs.isEmpty) {
-      return null; // no data found
+      if (snapshot.docs.isEmpty) {
+        return {
+          "userId": userId,
+          "date": startDate.toString(),
+          "totalSteps": 0.0,
+          "totalCalories": 0.0,
+          "totalDistance": 0.0,
+          "averageSpeed": 0.0,
+          "hourlyData": List.generate(24, (_) => 0.0)
+        };
+      }
+
+      // Calculate population statistics
+      double totalSteps = 0;
+      double totalCalories = 0;
+      double totalDistance = 0;
+      double totalSpeed = 0;
+      int sessionCount = 0;
+
+      // Initialize hourly data array
+      List<double> hourlyData = List.generate(24, (_) => 0.0);
+
+      for (var doc in snapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        
+        totalSteps += (data['totalSteps'] ?? 0) as double;
+        totalCalories += (data['calories'] ?? 0) as double;
+        totalDistance += (data['distance'] ?? 0) as double;
+        totalSpeed += (data['speed'] ?? 0) as double;
+        sessionCount++;
+
+        DateTime startTime = (data['startTime'] as Timestamp).toDate();
+        
+        // Accumulate hourly data for steps
+        hourlyData[startTime.hour] += (data['totalSteps'] ?? 0) as double;
+      }
+
+      // Calculate average speed
+      double avgSpeed = sessionCount > 0 ? totalSpeed / sessionCount : 0;
+
+      return {
+        "userId": userId,
+        "date": startDate.toString(),
+        "totalSteps": totalSteps,
+        "totalCalories": totalCalories,
+        "totalDistance": totalDistance,
+        "averageSpeed": avgSpeed,
+        "hourlyData": hourlyData
+      };
+    } catch (e) {
+      print("Error getting workout record: $e");
+      return {
+        "userId": userId,
+        "date": startDate.toString(),
+        "error": e.toString(),
+        "totalSteps": 0.0,
+        "totalCalories": 0.0,
+        "totalDistance": 0.0,
+        "averageSpeed": 0.0,
+        "hourlyData": List.generate(24, (_) => 0.0)
+      };
     }
+  }
 
-    // calculate total steps, calories, distance, speed, and session count
-    double totalSteps = 0;
-    double totalCalories = 0;
-    double totalDistance = 0;
-    double totalSpeed = 0;
-    int sessionCount = 0;
+  Future<List<Map<String, dynamic>>> getWorkoutSessions(
+    String userId,
+    DateTime startDate,
+    DateTime endDate,
+  ) async {
+    try {
+      QuerySnapshot snapshot = await sessionColl
+        .where('userId', isEqualTo: userId)
+        .where('startTime', isGreaterThanOrEqualTo: startDate)
+        .where('startTime', isLessThanOrEqualTo: endDate)
+        .orderBy('startTime', descending: true)
+        .get();
 
-    for (var doc in querySnapshot.docs) {
-      var data = doc.data();
-      totalSteps += (data['steps'] ?? 0) as double;
-      totalCalories += (data['calories'] ?? 0) as double;
-      totalDistance += (data['distance'] ?? 0) as double;
-      totalSpeed += (data['speed'] ?? 0) as double;
-      sessionCount++;
+      return snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        if (data['startTime'] is Timestamp) {
+          data['startTime'] = (data['startTime'] as Timestamp).toDate();
+        }
+        if (data['endTime'] is Timestamp) {
+          data['endTime'] = (data['endTime'] as Timestamp).toDate();
+        }
+        return data;
+      }).toList();
+    } catch (e) {
+      print("Error getting workout sessions: $e");
+      return [];
     }
-
-    // calculate average speed
-    double avgSpeed = sessionCount > 0 ? totalSpeed / sessionCount : 0;
-
-    // return the calculated data
-    return {
-      "userId": userId,
-      "date": date.toIso8601String(),
-      "totalSteps": totalSteps,
-      "totalCalories": totalCalories,
-      "totalDistance": totalDistance,
-      "averageSpeed": avgSpeed,
-    };
   }
 }
