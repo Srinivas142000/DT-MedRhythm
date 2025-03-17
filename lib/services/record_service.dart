@@ -24,10 +24,14 @@ class RecordService {
         23, 59, 59
       );
 
+      userId = "ae76c641-1c07-421e-9934-9f38f72a94e7";
+
+      print("####################################Getting Data for $userId on $startDate ############################" );
+      
       QuerySnapshot snapshot = await sessionColl
         .where('userId', isEqualTo: userId)
         .where('startTime', isGreaterThanOrEqualTo: startDateTime)
-        .where('startTime', isLessThanOrEqualTo: endDateTime)
+        .where('endTime', isLessThanOrEqualTo: endDateTime)
         .get();
 
       if (snapshot.docs.isEmpty) {
