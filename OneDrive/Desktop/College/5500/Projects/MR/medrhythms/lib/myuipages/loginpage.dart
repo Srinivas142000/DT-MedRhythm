@@ -28,6 +28,20 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
+    if (imei.isEmpty) {
+      setState(() {
+        errorMessage = "IMEI cannot be empty";
+      });
+      return;
+    }
+     if (imei.length != 15){
+      setState(() {
+        errorMessage = "IMEI must be 15 digits";
+      });
+      return;
+    }
+
+
     setState(() {
       isLoading = true;
       errorMessage = '';
