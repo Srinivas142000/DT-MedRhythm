@@ -4,8 +4,8 @@ class Constants {
   // Health data types
   static const List<HealthDataType> healthDataTypes = [
     HealthDataType.STEPS,
-    HealthDataType.TOTAL_CALORIES_BURNED,
+    // HealthDataType.TOTAL_CALORIES_BURNED,
     HealthDataType.HEART_RATE,
-    HealthDataType.DISTANCE_DELTA
+    HealthDataType.DISTANCE_DELTA,
   ];
 }

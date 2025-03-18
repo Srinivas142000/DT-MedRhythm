@@ -13,18 +13,25 @@ class Sessions {
       StreamController<Map<String, double>>.broadcast();
   UserSession us = UserSession();
   Stream<Map<String, double>> get liveDataStream => _liveDataController.stream;
-  Future<void> startLiveWorkout(Health h, String userId) async {
+
+  Future<void> startLiveWorkout(
+    Health h,
+    String userId,
+    Duration selectedDuration,
+  ) async {
     // Request permissions
     bool permissionsGranted = us.hasPermissions;
-    bool isHealthConnectAvailable = false;
     if (permissionsGranted) {
       // Check if Google Health Connect is available
-      // bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
-      if (permissionsGranted) {
+      // Some reason heart requires permissions from user to be granted every single time
+      bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
+      if (authorized && permissionsGranted) {
         _isTracking = true;
         _liveData.clear();
         print("Live workout tracking started.");
-        while (_isTracking) {
+        DateTime startTime = DateTime.now();
+        while (_isTracking &&
+            DateTime.now().difference(startTime) < selectedDuration) {
           DateTime now = DateTime.now();
           List<HealthDataPoint> data = await h.getHealthDataFromTypes(
             startTime: now.subtract(Duration(seconds: 10)),
@@ -35,25 +42,30 @@ class Sessions {
           double totalSteps = 0;
           double totalCalories = 0;
           double totalDistance = 0;
+          double totalHeartRate = 0;
+          // Calculate totals for each health data type
           for (var dataPoint in _liveData) {
             if (dataPoint.type == HealthDataType.STEPS) {
               totalSteps += dataPoint.value as double;
             } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
               totalCalories += dataPoint.value as double;
-            } else if (dataPoint.type ==
-                HealthDataType.DISTANCE_WALKING_RUNNING) {
+            } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
               totalDistance += dataPoint.value as double;
+            } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+              totalHeartRate += dataPoint.value as double;
             }
           }
           _liveDataController.add({
             'steps': totalSteps,
             'calories': totalCalories,
             'distance': totalDistance,
+            'heartRate': totalHeartRate,
           });
           await Future.delayed(
             Duration(seconds: 10),
           ); // Collect data every 10 seconds
         }
+        await stopLiveWorkout(h, userId, selectedDuration);
       } else {
         print("Authorization not granted for live tracking.");
       }
@@ -62,24 +74,42 @@ class Sessions {
     }
   }
 
-  Future<void> stopLiveWorkout(String userId, Duration selectedDuration) async {
+  Future<void> stopLiveWorkout(
+    Health h,
+    String userId,
+    Duration selectedDuration,
+  ) async {
     _isTracking = false;
     print("Live workout tracking stopped.");
     double totalSteps = 0;
     double totalCalories = 0;
     double totalDistance = 0;
+    double totalHeartRate = 0;
+    DateTime now = DateTime.now();
+    // await Future.delayed(Duration(minutes: 2));
+    List<HealthDataPoint> data = await h.getHealthDataFromTypes(
+      startTime: now.subtract(
+        selectedDuration + Duration(seconds: 10) + Duration(minutes: 8),
+      ),
+      endTime: now,
+      types: Constants.healthDataTypes,
+    );
+    _liveData.addAll(data);
     for (var dataPoint in _liveData) {
       if (dataPoint.type == HealthDataType.STEPS) {
         totalSteps += dataPoint.value as double;
       } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
         totalCalories += dataPoint.value as double;
-      } else if (dataPoint.type == HealthDataType.DISTANCE_WALKING_RUNNING) {
+      } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
         totalDistance += dataPoint.value as double;
+      } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+        totalHeartRate += dataPoint.value as double;
       }
     }
     print('Total Steps: $totalSteps');
     print('Total Calories Burned: $totalCalories');
     print('Total Distance: $totalDistance');
+    print('Total Heart Rate: $totalHeartRate');
     await csd.createSessionData(
       userId.toString(),
       DateTime.now().subtract(selectedDuration), // Example start time
@@ -107,13 +137,16 @@ class Sessions {
       double totalSteps = 0;
       double totalCalories = 0;
       double totalDistance = 0;
-      for (var dataPoint in healthData) {
+      double totalHeartRate = 0;
+      for (var dataPoint in _liveData) {
         if (dataPoint.type == HealthDataType.STEPS) {
           totalSteps += dataPoint.value as double;
         } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
           totalCalories += dataPoint.value as double;
-        } else if (dataPoint.type == HealthDataType.DISTANCE_WALKING_RUNNING) {
+        } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
           totalDistance += dataPoint.value as double;
+        } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+          totalHeartRate += dataPoint.value as double;
         }
       }
       print("📊 Daily Summary:");
@@ -147,13 +180,16 @@ class Sessions {
     double totalSteps = 0;
     double totalCalories = 0;
     double totalDistance = 0;
-    for (var dataPoint in healthData) {
+    double totalHeartRate = 0;
+    for (var dataPoint in _liveData) {
       if (dataPoint.type == HealthDataType.STEPS) {
         totalSteps += dataPoint.value as double;
       } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
         totalCalories += dataPoint.value as double;
-      } else if (dataPoint.type == HealthDataType.DISTANCE_WALKING_RUNNING) {
+      } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
         totalDistance += dataPoint.value as double;
+      } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+        totalHeartRate += dataPoint.value as double;
       }
     }
     print("📊 Daily Summary:");
