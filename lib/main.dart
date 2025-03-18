@@ -25,22 +25,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'MedRhythms',
-        home: LoginPage());
+      debugShowCheckedModeBanner: false,
+      title: 'MedRhythms',
+      home: LoginPage(),
+    );
   }
 }
 
 /// Requests necessary permissions for Health & System Sensors
 Future<bool> _requestHealthPermissions() async {
   // System Permissions
-  Map<Permission, PermissionStatus> statuses = await [
-    Permission.activityRecognition,
-    Permission.sensors,
-    Permission.location,
-  ].request();
-  bool systemPermissionsGranted =
-      statuses.values.every((status) => status.isGranted);
+  Map<Permission, PermissionStatus> statuses =
+      await [
+        Permission.activityRecognition,
+        Permission.sensors,
+        Permission.location,
+      ].request();
+  bool systemPermissionsGranted = statuses.values.every(
+    (status) => status.isGranted,
+  );
   try {
     bool healthConnectExists = await health.isHealthConnectAvailable();
     if (!healthConnectExists) {
@@ -51,11 +54,13 @@ Future<bool> _requestHealthPermissions() async {
     // Handle any exceptions that may occur
     print("Error checking Health Connect availability: $e");
   }
-  final permissions = Constants.healthDataTypes
-      .map((e) => HealthDataAccess.READ_WRITE)
-      .toList();
+  final permissions =
+      Constants.healthDataTypes
+          .map((e) => HealthDataAccess.READ_WRITE)
+          .toList();
   bool healthPermissionsGranted = await health.requestAuthorization(
-      Constants.healthDataTypes,
-      permissions: permissions);
+    Constants.healthDataTypes,
+    permissions: permissions,
+  );
   return systemPermissionsGranted && healthPermissionsGranted;
 }

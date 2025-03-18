@@ -3,7 +3,6 @@ import 'package:medrhythms/helpers/usersession.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
 import 'dart:async';
-import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'package:medrhythms/constants/constants.dart';
 
 class Sessions {
@@ -28,9 +27,10 @@ class Sessions {
         while (_isTracking) {
           DateTime now = DateTime.now();
           List<HealthDataPoint> data = await h.getHealthDataFromTypes(
-              startTime: now.subtract(Duration(seconds: 10)),
-              endTime: now,
-              types: Constants.healthDataTypes);
+            startTime: now.subtract(Duration(seconds: 10)),
+            endTime: now,
+            types: Constants.healthDataTypes,
+          );
           _liveData.addAll(data);
           double totalSteps = 0;
           double totalCalories = 0;
@@ -51,7 +51,8 @@ class Sessions {
             'distance': totalDistance,
           });
           await Future.delayed(
-              Duration(seconds: 10)); // Collect data every 10 seconds
+            Duration(seconds: 10),
+          ); // Collect data every 10 seconds
         }
       } else {
         print("Authorization not granted for live tracking.");
@@ -99,9 +100,10 @@ class Sessions {
       DateTime startOfDay = DateTime(now.year, now.month, now.day, 0, 0, 0);
       DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
       List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
-          startTime: startOfDay,
-          endTime: endOfDay,
-          types: Constants.healthDataTypes);
+        startTime: startOfDay,
+        endTime: endOfDay,
+        types: Constants.healthDataTypes,
+      );
       double totalSteps = 0;
       double totalCalories = 0;
       double totalDistance = 0;
@@ -138,9 +140,10 @@ class Sessions {
     Health h = new Health();
     DateTime now = DateTime.now();
     List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
-        startTime: now.subtract(Duration(minutes: 5)),
-        endTime: now,
-        types: Constants.healthDataTypes);
+      startTime: now.subtract(Duration(minutes: 5)),
+      endTime: now,
+      types: Constants.healthDataTypes,
+    );
     double totalSteps = 0;
     double totalCalories = 0;
     double totalDistance = 0;
