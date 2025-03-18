@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/records_page.dart';
-import 'package:medrhythms/helpers/usersession.dart'; // Import UserSession
+import 'package:medrhythms/helpers/usersession.dart';
 
 class Bottombar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: Colors.grey, // Background color
+      color: Colors.grey,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -20,11 +20,10 @@ class Bottombar extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder:
-                        (context) => SessionsPage(
-                          uuid: uuid,
-                          userData: UserSession().userData!,
-                        ),
+                    builder: (context) => SessionsPage(
+                      uuid: uuid,
+                      userData: UserSession().userData!,
+                    ),
                   ),
                 );
               }
@@ -33,17 +32,14 @@ class Bottombar extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.calendar_month_rounded),
             onPressed: () {
-              print("Calendar icon pressed"); // Debug print
-
-              // Use a simpler navigation approach first
+              print("Calendar icon pressed");
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder:
-                      (context) => RecordsPage(
-                        uuid: "test-uuid", // Hardcoded for testing
-                        userData: {}, // Empty map for testing
-                      ),
+                  builder: (context) => RecordsPage(
+                    uuid: "test-uuid", // Hardcoded for testing
+                    userData: {}, // Empty map for testing
+                  ),
                 ),
               );
             },

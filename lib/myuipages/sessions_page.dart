@@ -251,9 +251,7 @@ class _NextPageState extends State<NextPage> {
                       // GIF Below Walking Text
                       Image(
                           image: AssetImage('images/walking.gif'),
-                          width: MediaQuery.of(context)
-                              .size
-                              .width, // Full width of the screen
+                          width: MediaQuery.of(context).size.width,
                           height: 100),
 
                       const SizedBox(height: 10),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
 import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
-import 'package:medrhythms/helpers/usersession.dart'; // Import Singleton
+import 'package:medrhythms/helpers/usersession.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

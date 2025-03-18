@@ -3,8 +3,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
-import 'package:medrhythms/services/record_service.dart'; // Import the RecordService
-import 'dart:math' as math;// Add math mixin to provide sin function
+import 'package:medrhythms/services/record_service.dart';
+import 'package:medrhythms/constants/constants.dart';
+import 'dart:math' as math;
 
 class RecordsPage extends StatefulWidget {
   final String uuid;
@@ -17,61 +18,38 @@ class RecordsPage extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RecordsPage> {
-  // Bottom navigation bar instance
   Bottombar bb = Bottombar();
   
-  // Currently selected date
   DateTime selectedDate = DateTime.now();
   
-  // Currently selected day of the week
-  int selectedDay = DateTime.now().weekday - 1; // 0 = Monday, 6 = Sunday
+  // 0 = Monday, 6 = Sunday
+  int selectedDay = DateTime.now().weekday - 1;
   
-  // Day of week labels
-  final List<String> weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
-  
-  // Initialize RecordService
   final RecordService _recordService = RecordService();
   
-  // Store weekly workout data
   List<Map<String, dynamic>?> weekData = List.filled(7, null);
   
-  // Loading state
   bool isLoading = true;
   
-  // Chart colors
-  final Color stepsColor = Colors.green;
-  final Color caloriesColor = Colors.purple;
-  final Color distanceColor = Colors.amber;
-  final Color speedColor = Colors.orange;
-  
-  // Four chart types for display
-  List<String> chartTypes = ["Steps", "Calories", "Distance", "AvgSpeed"];
-  
-  // Currently active chart combination (default shows all four)
-  List<bool> activeCharts = [true, true, true, true];
+  List<bool> activeCharts = ChartTypes.showAll;
 
   @override
   void initState() {
     super.initState();
-    // Get this week's data
     _fetchWeekData();
   }
   
-  // Fetch this week's data
   Future<void> _fetchWeekData() async {
     setState(() {
       isLoading = true;
     });
     
     try {
-      // Get the start date of this week (Monday)
       final now = DateTime.now();
-      final int currentWeekday = now.weekday; // 1 = Monday, 7 = Sunday
+      final int currentWeekday = now.weekday;
       
-      // Calculate this Monday's date
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
       
-      // Get data for the week
       for (int i = 0; i < 7; i++) {
         final date = mondayDate.add(Duration(days: i));
         print('Fetching data for: $date, UserID: ${widget.uuid}');
@@ -79,7 +57,6 @@ class _RecordsPageState extends State<RecordsPage> {
         print('Data for $date: ${weekData[i]}');
       }
       
-      // Select today
       selectedDay = currentWeekday - 1;
     } catch (e) {
       print('Error retrieving workout records: $e');
@@ -90,12 +67,10 @@ class _RecordsPageState extends State<RecordsPage> {
     }
   }
   
-  // Select a different date
   void _selectDay(int index) {
     setState(() {
       selectedDay = index;
       
-      // Calculate the selected date
       final now = DateTime.now();
       final int currentWeekday = now.weekday;
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
@@ -103,14 +78,12 @@ class _RecordsPageState extends State<RecordsPage> {
     });
   }
   
-  // Toggle chart combination
   void _toggleChartCombination(int option) {
-    // Two combinations: Steps and Distance / Calories and AvgSpeed
     setState(() {
-      if (option == 0) { // Steps and Distance
-        activeCharts = [true, false, true, false];
-      } else { // Calories and AvgSpeed
-        activeCharts = [false, true, false, true];
+      if (option == 0) {
+        activeCharts = ChartTypes.stepsAndDistance;
+      } else {
+        activeCharts = ChartTypes.caloriesAndSpeed;
       }
     });
   }
@@ -124,7 +97,6 @@ class _RecordsPageState extends State<RecordsPage> {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Page title
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Row(
@@ -136,15 +108,12 @@ class _RecordsPageState extends State<RecordsPage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.more_vert),
-                        onPressed: () {
-                          // Can add more options here
-                        },
+                        onPressed: () {},
                       ),
                     ],
                   ),
                 ),
                 
-                // Date selection bar
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Row(
@@ -155,58 +124,51 @@ class _RecordsPageState extends State<RecordsPage> {
                   ),
                 ),
                 
-                // Metric charts
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        // Steps chart (if activated)
                         if (activeCharts[0])
                           _buildMetricChart(
-                            "Steps",
+                            ChartTypes.all[0],
                             (weekData[selectedDay]?['totalSteps'] ?? 0).toString(),
                             "steps",
-                            stepsColor,
+                            ChartColors.steps,
                           ),
                         
-                        // Calories chart (if activated)
                         if (activeCharts[1])
                           _buildMetricChart(
-                            "Calories",
+                            ChartTypes.all[1],
                             (weekData[selectedDay]?['totalCalories'] ?? 0).toStringAsFixed(2),
                             "kcal",
-                            caloriesColor,
+                            ChartColors.calories,
                           ),
                         
-                        // Distance chart (if activated)
                         if (activeCharts[2])
                           _buildMetricChart(
-                            "Distance",
+                            ChartTypes.all[2],
                             (weekData[selectedDay]?['totalDistance'] ?? 0).toStringAsFixed(2),
                             "mi",
-                            distanceColor,
+                            ChartColors.distance,
                           ),
                         
-                        // AvgSpeed chart (if activated)
                         if (activeCharts[3])
                           _buildMetricChart(
-                            "AvgSpeed",
+                            ChartTypes.all[3],
                             (weekData[selectedDay]?['averageSpeed'] ?? 0).toStringAsFixed(2),
                             "mph",
-                            speedColor,
+                            ChartColors.speed,
                           ),
                       ],
                     ),
                   ),
                 ),
                 
-                // Bottom chart combination toggle buttons
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // "Steps and Distance" button
                       OutlinedButton(
                         onPressed: () => _toggleChartCombination(0),
                         child: Text("Steps and\nDistance", textAlign: TextAlign.center),
@@ -219,7 +181,6 @@ class _RecordsPageState extends State<RecordsPage> {
                         ),
                       ),
                       
-                      // "Calories and AvgSpeed" button
                       OutlinedButton(
                         onPressed: () => _toggleChartCombination(1),
                         child: Text("Calories and\nAvgSpeed", textAlign: TextAlign.center),
@@ -235,14 +196,12 @@ class _RecordsPageState extends State<RecordsPage> {
                   ),
                 ),
                 
-                // Bottom navigation bar
                 bb,
               ],
             ),
     );
   }
   
-  // Build day selector button
   Widget _buildDaySelector(int index) {
     bool isSelected = selectedDay == index;
     
@@ -251,11 +210,11 @@ class _RecordsPageState extends State<RecordsPage> {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.green : Colors.transparent,
+          color: isSelected ? ChartColors.steps : Colors.transparent,
           borderRadius: BorderRadius.circular(5),
         ),
         child: Text(
-          weekDays[index],
+          WeekDays.labels[index],
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.black,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -265,7 +224,6 @@ class _RecordsPageState extends State<RecordsPage> {
     );
   }
   
-  // Build metric chart
   Widget _buildMetricChart(String title, String value, String unit, Color color) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -284,7 +242,6 @@ class _RecordsPageState extends State<RecordsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Metric title and value
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -312,7 +269,6 @@ class _RecordsPageState extends State<RecordsPage> {
               ),
             ),
             
-            // Line chart
             Container(
               height: 200,
               padding: EdgeInsets.only(right: 16, left: 0, top: 16, bottom: 12),
@@ -326,25 +282,19 @@ class _RecordsPageState extends State<RecordsPage> {
     );
   }
   
-  // Create line chart data
   LineChartData _createLineChartData(String metricType, Color color) {
-    // Generate chart data points (24 hours, one point per hour)
     List<FlSpot> spots = [];
     
-    // Simulate data for different times of the day (in a real app, this should be fetched from the backend)
     for (int hour = 0; hour < 24; hour++) {
-      // Create a random pattern based on sine wave to make the chart look more natural
       double baseValue = 50;
       double amplitude = 30;
       double phase = hour / 24.0 * 2 * 3.14159; // Convert to radians
       
       double value = baseValue + amplitude * (0.5 + 0.5 * math.sin(phase));
       
-      // Add point
       spots.add(FlSpot(hour.toDouble(), value));
     }
     
-    // Set different maximum values for different metrics
     double maxY = 125;
     
     return LineChartData(
@@ -427,7 +377,6 @@ class _RecordsPageState extends State<RecordsPage> {
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
-            // Only show dot markers at specific points
             checkToShowDot: (spot, barData) {
               return spot.x == 12; // Show marker at 12 noon
             },
