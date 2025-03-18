@@ -27,14 +27,13 @@ class CreateDataService {
   /// - `FirebaseFirestore.instance.collection('users') retrieves a reference
   ///   to the 'users' collection in Firestore.
   /// - This reference allows us to add, update, and query user records.
-  CollectionReference usersColl = FirebaseFirestore.instance.collection(
-    'users',
-  );
+  final CollectionReference usersColl =
+      FirebaseFirestore.instance.collection('users');
 
   final CollectionReference sessionColl =
       FirebaseFirestore.instance.collection('sessions');
 
-  FirebaseModifyStore mu = FirebaseModifyStore();
+  final FirebaseModifyStore mu = FirebaseModifyStore();
 
   /// Creates a User Reference in Firestore
   ///
@@ -65,15 +64,14 @@ class CreateDataService {
   }
 
   Future<void> createSessionData(
-    String userId,
-    DateTime startTime,
-    DateTime endTime,
-    double steps,
-    double distance,
-    double calories,
-    double speed,
-    String source,
-  ) async {
+      String userId,
+      DateTime startTime,
+      DateTime endTime,
+      double steps,
+      double distance,
+      double calories,
+      double speed,
+      String source) async {
     var sessionId = Uuid().v4();
     final sessionData = {
       'sessionId': sessionId,
@@ -84,7 +82,7 @@ class CreateDataService {
       'distance': distance,
       'calories': calories,
       'source': source,
-      'speed': speed,
+      'speed': speed
     };
     await sessionColl.add(sessionData);
     await mu.amendSessionsToUser(sessionId.toString(), userId);

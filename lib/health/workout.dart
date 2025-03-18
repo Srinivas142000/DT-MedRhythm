@@ -17,6 +17,18 @@ class Workout {
       HealthDataType.TOTAL_CALORIES_BURNED
     ];
 
+    // Check if the data types are supported
+    bool stepsSupported = await h.isDataTypeAvailable(HealthDataType.STEPS);
+    bool distanceSupported =
+        await h.isDataTypeAvailable(HealthDataType.DISTANCE_WALKING_RUNNING);
+    bool caloriesSupported =
+        await h.isDataTypeAvailable(HealthDataType.TOTAL_CALORIES_BURNED);
+
+    if (!stepsSupported || !distanceSupported || !caloriesSupported) {
+      print('One or more data types are not supported on this device.');
+      return;
+    }
+
     // Request authorization to access health data
     bool requestedHealthData = await h.requestAuthorization(types);
 

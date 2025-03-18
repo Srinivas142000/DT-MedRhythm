@@ -195,7 +195,7 @@ class _NextPageState extends State<NextPage> {
     if (isPaused) {
       timer?.cancel();
     } else {
-      _startTimer(s, 0 as Duration);
+      _startTimer(s, remainingTime);
     }
   }
 
