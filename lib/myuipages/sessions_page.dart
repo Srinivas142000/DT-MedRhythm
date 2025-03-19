@@ -7,6 +7,8 @@ import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
 
+Health h = new Health();
+
 class SessionsPage extends StatefulWidget {
   final String uuid;
   final Map<String, dynamic> userData;
@@ -20,7 +22,6 @@ class SessionsPage extends StatefulWidget {
 class _SessionsPageState extends State<SessionsPage> {
   Duration selectedDuration = Duration.zero;
   Bottombar bb = Bottombar();
-  Health h = new Health();
   Sessions s = new Sessions();
 
   Future<void> _selectTime(BuildContext context) async {
@@ -62,18 +63,22 @@ class _SessionsPageState extends State<SessionsPage> {
   void _startSession() async {
     final userId = UserSession().userId;
     if (userId != null) {
-      await s.startLiveWorkout(h, UserSession().userId!);
+      // Start the live workout asynchronously
+      s.startLiveWorkout(h, userId, selectedDuration);
+
+      // Navigate to the NextPage immediately
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder:
+              (context) =>
+                  NextPage(duration: selectedDuration, uuid: widget.uuid),
+        ),
+      );
     } else {
       // Handle the case where userId is null
       print("User ID is null");
     }
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            NextPage(duration: selectedDuration, uuid: widget.uuid),
-      ),
-    );
   }
 
   @override
@@ -99,8 +104,10 @@ class _SessionsPageState extends State<SessionsPage> {
             child: Column(
               children: [
                 const SizedBox(height: 20),
-                const Text("Start walking session?",
-                    style: TextStyle(fontSize: 25)),
+                const Text(
+                  "Start walking session?",
+                  style: TextStyle(fontSize: 25),
+                ),
                 const SizedBox(height: 200),
                 Container(
                   width: 300,
@@ -108,9 +115,10 @@ class _SessionsPageState extends State<SessionsPage> {
                   color: Colors.white,
                   alignment: Alignment.topCenter,
                   child: TextButton(
-                      onPressed: () => _selectTime(context),
-                      child: const Text("Yes")),
-                )
+                    onPressed: () => _selectTime(context),
+                    child: const Text("Yes"),
+                  ),
+                ),
               ],
             ),
           ),
@@ -133,7 +141,7 @@ class NextPage extends StatefulWidget {
   final String uuid;
 
   const NextPage({Key? key, required this.duration, required this.uuid})
-      : super(key: key);
+    : super(key: key);
 
   @override
   _NextPageState createState() => _NextPageState();
@@ -167,15 +175,16 @@ class _NextPageState extends State<NextPage> {
   }
 
   void _endSession(Sessions s, Duration selectedDuration) async {
-    await s.stopLiveWorkout(UserSession().userId!, selectedDuration);
+    await s.stopLiveWorkout(h, UserSession().userId!, selectedDuration);
     if (mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => SessionsPage(
-            uuid: widget.uuid,
-            userData: UserSession().userData ?? {}, // Null check added here
-          ),
+          builder:
+              (context) => SessionsPage(
+                uuid: widget.uuid,
+                userData: UserSession().userData ?? {}, // Null check added here
+              ),
         ),
       );
     }
@@ -195,7 +204,7 @@ class _NextPageState extends State<NextPage> {
     if (isPaused) {
       timer?.cancel();
     } else {
-      _startTimer(s, 0 as Duration);
+      _startTimer(s, remainingTime);
     }
   }
 
@@ -206,10 +215,11 @@ class _NextPageState extends State<NextPage> {
 
   @override
   Widget build(BuildContext context) {
-    double progress = widget.duration.inSeconds > 0
-        ? (widget.duration.inSeconds - remainingTime.inSeconds) /
-            widget.duration.inSeconds
-        : 0;
+    double progress =
+        widget.duration.inSeconds > 0
+            ? (widget.duration.inSeconds - remainingTime.inSeconds) /
+                widget.duration.inSeconds
+            : 0;
 
     return Scaffold(
       appBar: MedRhythmsAppBar(),
@@ -219,9 +229,7 @@ class _NextPageState extends State<NextPage> {
           Container(
             padding: const EdgeInsets.all(80),
             margin: const EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-            ),
+            decoration: BoxDecoration(border: Border.all(color: Colors.black)),
             child: Column(
               children: [
                 Container(
@@ -250,10 +258,13 @@ class _NextPageState extends State<NextPage> {
 
                       // GIF Below Walking Text
                       Image(
-                          image: AssetImage('images/walking.gif'),
-                          width: MediaQuery.of(context).size.width,
-                          height: 100),
-
+                        image: AssetImage('images/walking.gif'),
+                        width:
+                            MediaQuery.of(
+                              context,
+                            ).size.width, // Full width of the screen
+                        height: 100,
+                      ),
                       const SizedBox(height: 10),
                     ],
                   ),

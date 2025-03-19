@@ -3,14 +3,12 @@ import 'package:medrhythms/mypages/createroutes.dart'; // Import necessary files
 
 class FirestoreServiceRead {
   // Reference to the 'users' collection in Firestore
-  final CollectionReference usersColl = FirebaseFirestore.instance.collection(
-    'users',
-  );
+  final CollectionReference usersColl =
+      FirebaseFirestore.instance.collection('users');
 
   // Reference to the 'sessions' collection in Firestore
-  final CollectionReference sessionColl = FirebaseFirestore.instance.collection(
-    'sessions',
-  );
+  final CollectionReference sessionColl =
+      FirebaseFirestore.instance.collection('sessions');
 
   // Instance of CreateDataService to create user references
   final CreateDataService csd = CreateDataService();
@@ -36,7 +34,7 @@ class FirestoreServiceRead {
     } catch (e) {
       print("Error occurred: $e");
       return {
-        "error": e.toString(),
+        "error": e.toString()
       }; // Return a JSON object with an error message
     }
   }
@@ -67,7 +65,7 @@ class FirestoreServiceRead {
           "totalCalories": totalCalories,
           "totalDistance": totalDistance,
           "totalSteps": totalSteps,
-          "averageSpeed": averageSpeed,
+          "averageSpeed": averageSpeed
         };
       } else {
         return {"error": "No session data found for this user."};
@@ -79,15 +77,12 @@ class FirestoreServiceRead {
   }
 
   Future<Map<String, dynamic>> fetchSessionDetails(
-    DateTime fromDate,
-    DateTime toDate,
-  ) async {
+      DateTime fromDate, DateTime toDate) async {
     try {
-      var queryForSessions =
-          await sessionColl
-              .where('startTime', isGreaterThanOrEqualTo: fromDate)
-              .where('endTime', isLessThanOrEqualTo: toDate)
-              .get();
+      var queryForSessions = await sessionColl
+          .where('startTime', isGreaterThanOrEqualTo: fromDate)
+          .where('endTime', isLessThanOrEqualTo: toDate)
+          .get();
 
       if (queryForSessions.docs.isNotEmpty) {
         List<Map<String, dynamic>> sessionDetails = [];
