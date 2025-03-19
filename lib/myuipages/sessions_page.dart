@@ -265,7 +265,6 @@ class _NextPageState extends State<NextPage> {
                             ).size.width, // Full width of the screen
                         height: 100,
                       ),
-
                       const SizedBox(height: 10),
                     ],
                   ),
