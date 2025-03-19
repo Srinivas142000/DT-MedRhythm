@@ -169,11 +169,11 @@ class Sessions {
     }
   }
 
-  Future<void> syncSession() async {
+  Future<void> syncSession(Duration selectedDuration) async {
     Health h = new Health();
     DateTime now = DateTime.now();
     List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
-      startTime: now.subtract(Duration(minutes: 5)),
+      startTime: now.subtract(Duration(minutes: selectedDuration.inMinutes)),
       endTime: now,
       types: Constants.healthDataTypes,
     );
@@ -181,7 +181,7 @@ class Sessions {
     double totalCalories = 0;
     double totalDistance = 0;
     double totalHeartRate = 0;
-    for (var dataPoint in _liveData) {
+    for (var dataPoint in healthData) {
       if (dataPoint.type == HealthDataType.STEPS) {
         totalSteps += dataPoint.value as double;
       } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
