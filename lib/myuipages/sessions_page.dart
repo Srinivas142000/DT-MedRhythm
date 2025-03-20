@@ -6,6 +6,7 @@ import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
+import 'package:medrhythms/myuipages/sync_button.dart';
 
 Health h = new Health();
 
@@ -119,6 +120,8 @@ class _SessionsPageState extends State<SessionsPage> {
                     child: const Text("Yes"),
                   ),
                 ),
+                const SizedBox(height: 20),
+                SyncButton(),
               ],
             ),
           ),

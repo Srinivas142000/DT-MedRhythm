@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
-import 'package:medrhythms/services/record_service.dart';
+// import 'package:medrhythms/services/record_service.dart';
 import 'package:medrhythms/constants/constants.dart';
 import 'dart:math' as math;
 
@@ -19,18 +19,18 @@ class RecordsPage extends StatefulWidget {
 
 class _RecordsPageState extends State<RecordsPage> {
   Bottombar bb = Bottombar();
-  
+
   DateTime selectedDate = DateTime.now();
-  
+
   // 0 = Monday, 6 = Sunday
   int selectedDay = DateTime.now().weekday - 1;
-  
-  final RecordService _recordService = RecordService();
-  
+
+  // final RecordService _recordService = RecordService();
+
   List<Map<String, dynamic>?> weekData = List.filled(7, null);
-  
+
   bool isLoading = true;
-  
+
   List<bool> activeCharts = ChartTypes.showAll;
 
   @override
@@ -38,25 +38,25 @@ class _RecordsPageState extends State<RecordsPage> {
     super.initState();
     _fetchWeekData();
   }
-  
+
   Future<void> _fetchWeekData() async {
     setState(() {
       isLoading = true;
     });
-    
+
     try {
       final now = DateTime.now();
       final int currentWeekday = now.weekday;
-      
+
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
-      
+
       for (int i = 0; i < 7; i++) {
         final date = mondayDate.add(Duration(days: i));
         print('Fetching data for: $date, UserID: ${widget.uuid}');
-        weekData[i] = await _recordService.getWorkoutRecord(widget.uuid, date);
+        // weekData[i] = await _recordService.getWorkoutRecord(widget.uuid, date);
         print('Data for $date: ${weekData[i]}');
       }
-      
+
       selectedDay = currentWeekday - 1;
     } catch (e) {
       print('Error retrieving workout records: $e');
@@ -66,18 +66,18 @@ class _RecordsPageState extends State<RecordsPage> {
       });
     }
   }
-  
+
   void _selectDay(int index) {
     setState(() {
       selectedDay = index;
-      
+
       final now = DateTime.now();
       final int currentWeekday = now.weekday;
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
       selectedDate = mondayDate.add(Duration(days: index));
     });
   }
-  
+
   void _toggleChartCombination(int option) {
     setState(() {
       if (option == 0) {
@@ -92,119 +92,145 @@ class _RecordsPageState extends State<RecordsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MedRhythmsAppBar(),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Records",
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.more_vert),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-                
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: List.generate(7, (index) {
-                      return _buildDaySelector(index);
-                    }),
-                  ),
-                ),
-                
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
+      body:
+          isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if (activeCharts[0])
-                          _buildMetricChart(
-                            ChartTypes.all[0],
-                            (weekData[selectedDay]?['totalSteps'] ?? 0).toString(),
-                            "steps",
-                            ChartColors.steps,
+                        Text(
+                          "Records",
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
                           ),
-                        
-                        if (activeCharts[1])
-                          _buildMetricChart(
-                            ChartTypes.all[1],
-                            (weekData[selectedDay]?['totalCalories'] ?? 0).toStringAsFixed(2),
-                            "kcal",
-                            ChartColors.calories,
-                          ),
-                        
-                        if (activeCharts[2])
-                          _buildMetricChart(
-                            ChartTypes.all[2],
-                            (weekData[selectedDay]?['totalDistance'] ?? 0).toStringAsFixed(2),
-                            "mi",
-                            ChartColors.distance,
-                          ),
-                        
-                        if (activeCharts[3])
-                          _buildMetricChart(
-                            ChartTypes.all[3],
-                            (weekData[selectedDay]?['averageSpeed'] ?? 0).toStringAsFixed(2),
-                            "mph",
-                            ChartColors.speed,
-                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.more_vert),
+                          onPressed: () {},
+                        ),
                       ],
                     ),
                   ),
-                ),
-                
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () => _toggleChartCombination(0),
-                        child: Text("Steps and\nDistance", textAlign: TextAlign.center),
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          side: BorderSide(color: Colors.green),
-                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        ),
-                      ),
-                      
-                      OutlinedButton(
-                        onPressed: () => _toggleChartCombination(1),
-                        child: Text("Calories and\nAvgSpeed", textAlign: TextAlign.center),
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          side: BorderSide(color: Colors.green),
-                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        ),
-                      ),
-                    ],
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(7, (index) {
+                        return _buildDaySelector(index);
+                      }),
+                    ),
                   ),
-                ),
-                
-                bb,
-              ],
-            ),
+
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          if (activeCharts[0])
+                            _buildMetricChart(
+                              ChartTypes.all[0],
+                              (weekData[selectedDay]?['totalSteps'] ?? 0)
+                                  .toString(),
+                              "steps",
+                              ChartColors.steps,
+                            ),
+
+                          if (activeCharts[1])
+                            _buildMetricChart(
+                              ChartTypes.all[1],
+                              (weekData[selectedDay]?['totalCalories'] ?? 0)
+                                  .toStringAsFixed(2),
+                              "kcal",
+                              ChartColors.calories,
+                            ),
+
+                          if (activeCharts[2])
+                            _buildMetricChart(
+                              ChartTypes.all[2],
+                              (weekData[selectedDay]?['totalDistance'] ?? 0)
+                                  .toStringAsFixed(2),
+                              "mi",
+                              ChartColors.distance,
+                            ),
+
+                          if (activeCharts[3])
+                            _buildMetricChart(
+                              ChartTypes.all[3],
+                              (weekData[selectedDay]?['averageSpeed'] ?? 0)
+                                  .toStringAsFixed(2),
+                              "mph",
+                              ChartColors.speed,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 16.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () => _toggleChartCombination(0),
+                          child: Text(
+                            "Steps and\nDistance",
+                            textAlign: TextAlign.center,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            side: BorderSide(color: Colors.green),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+
+                        OutlinedButton(
+                          onPressed: () => _toggleChartCombination(1),
+                          child: Text(
+                            "Calories and\nAvgSpeed",
+                            textAlign: TextAlign.center,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            side: BorderSide(color: Colors.green),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  bb,
+                ],
+              ),
     );
   }
-  
+
   Widget _buildDaySelector(int index) {
     bool isSelected = selectedDay == index;
-    
+
     return GestureDetector(
       onTap: () => _selectDay(index),
       child: Container(
@@ -223,8 +249,13 @@ class _RecordsPageState extends State<RecordsPage> {
       ),
     );
   }
-  
-  Widget _buildMetricChart(String title, String value, String unit, Color color) {
+
+  Widget _buildMetricChart(
+    String title,
+    String value,
+    String unit,
+    Color color,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
@@ -260,63 +291,51 @@ class _RecordsPageState extends State<RecordsPage> {
                   ),
                   Text(
                     " $unit",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
               ),
             ),
-            
+
             Container(
               height: 200,
               padding: EdgeInsets.only(right: 16, left: 0, top: 16, bottom: 12),
-              child: LineChart(
-                _createLineChartData(title, color),
-              ),
+              child: LineChart(_createLineChartData(title, color)),
             ),
           ],
         ),
       ),
     );
   }
-  
+
   LineChartData _createLineChartData(String metricType, Color color) {
     List<FlSpot> spots = [];
-    
+
     for (int hour = 0; hour < 24; hour++) {
       double baseValue = 50;
       double amplitude = 30;
       double phase = hour / 24.0 * 2 * 3.14159; // Convert to radians
-      
+
       double value = baseValue + amplitude * (0.5 + 0.5 * math.sin(phase));
-      
+
       spots.add(FlSpot(hour.toDouble(), value));
     }
-    
+
     double maxY = 125;
-    
+
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
         horizontalInterval: 25,
         getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: Colors.grey.withOpacity(0.1),
-            strokeWidth: 1,
-          );
+          return FlLine(color: Colors.grey.withOpacity(0.1), strokeWidth: 1);
         },
       ),
       titlesData: FlTitlesData(
         show: true,
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
+        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
@@ -360,19 +379,15 @@ class _RecordsPageState extends State<RecordsPage> {
         touchTooltipData: LineTouchTooltipData(
           tooltipBgColor: Colors.white.withOpacity(0.8),
         ),
-        touchCallback: (FlTouchEvent event, LineTouchResponse? touchResponse) {},
+        touchCallback:
+            (FlTouchEvent event, LineTouchResponse? touchResponse) {},
         handleBuiltInTouches: true,
       ),
       lineBarsData: [
         LineChartBarData(
           spots: spots,
           isCurved: true,
-          gradient: LinearGradient(
-            colors: [
-              color.withOpacity(0.5),
-              color,
-            ],
-          ),
+          gradient: LinearGradient(colors: [color.withOpacity(0.5), color]),
           barWidth: 2,
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -384,10 +399,7 @@ class _RecordsPageState extends State<RecordsPage> {
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(
-              colors: [
-                color.withOpacity(0.3),
-                color.withOpacity(0.0),
-              ],
+              colors: [color.withOpacity(0.3), color.withOpacity(0.0)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
