@@ -27,7 +27,20 @@ class _LoginPageState extends State<LoginPage> {
       });
       return;
     }
-
+    //IMEI number must be 15 digits
+    if (imei.length != 15){
+      setState(() {
+        errorMessage = "IMEI must be 15 digits";
+      });
+      return;
+    }
+    //IMEI can only be digits
+    if (!RegExp(r'^[0-9]{15}$').hasMatch(imei)){
+    setState(() {
+      errorMessage = "IMEI must contain only digits!";
+    });
+    return;
+    }
     setState(() {
       isLoading = true;
       errorMessage = '';

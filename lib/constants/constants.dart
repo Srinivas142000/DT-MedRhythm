@@ -5,7 +5,7 @@ class Constants {
   // Health data types
   static const List<HealthDataType> healthDataTypes = [
     HealthDataType.STEPS,
-    // HealthDataType.TOTAL_CALORIES_BURNED,
+    HealthDataType.TOTAL_CALORIES_BURNED,
     HealthDataType.HEART_RATE,
     HealthDataType.DISTANCE_DELTA,
   ];
@@ -20,12 +20,20 @@ class ChartColors {
 
 class ChartTypes {
   static const List<String> all = ["Steps", "Calories", "Distance", "AvgSpeed"];
-  
+
   static const List<bool> showAll = [true, true, true, true];
   static const List<bool> stepsAndDistance = [true, false, true, false];
   static const List<bool> caloriesAndSpeed = [false, true, false, true];
 }
 
 class WeekDays {
-  static const List<String> labels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  static const List<String> labels = [
+    'MON',
+    'TUE',
+    'WED',
+    'THU',
+    'FRI',
+    'SAT',
+    'SUN',
+  ];
 }
