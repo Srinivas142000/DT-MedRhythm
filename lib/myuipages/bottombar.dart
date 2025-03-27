@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/records_page.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/mypages/readroutes.dart';
+
+FirestoreServiceRead fsr = FirestoreServiceRead();
 
 class Bottombar extends StatelessWidget {
   @override
@@ -20,10 +23,11 @@ class Bottombar extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SessionsPage(
-                      uuid: uuid,
-                      userData: UserSession().userData!,
-                    ),
+                    builder:
+                        (context) => SessionsPage(
+                          uuid: uuid,
+                          userData: UserSession().userData!,
+                        ),
                   ),
                 );
               }
@@ -32,16 +36,20 @@ class Bottombar extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.calendar_month_rounded),
             onPressed: () {
+              String? uuid = UserSession().userId;
               print("Calendar icon pressed");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RecordsPage(
-                    uuid: "test-uuid", // Hardcoded for testing
-                    userData: {}, // Empty map for testing
+              fetchData(uuid).then((userData) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => RecordsPage(
+                          uuid: uuid!,
+                          userData: userData, // Pass fetched data
+                        ),
                   ),
-                ),
-              );
+                );
+              });
             },
           ),
           IconButton(
@@ -60,4 +68,46 @@ class Bottombar extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<Map<String, dynamic>> fetchData(
+  String? uuid, {
+  String dataType = "week",
+}) async {
+  try {
+    if (uuid != null) {
+      DateTime currentTime = DateTime.now();
+      List<Map<String, dynamic>> weeklyData = [];
+      int dayCount = 0;
+      if (dataType == "week") {
+        dayCount = 7;
+      } else {
+        dayCount = 1;
+      }
+      for (int i = 0; i < dayCount; i++) {
+        if (dayCount == 1) {
+          // If only one day is requested, use the current date
+          i = 0;
+        }
+        DateTime day = currentTime.subtract(Duration(days: i));
+        DateTime startOfDay = DateTime(day.year, day.month, day.day, 0, 0);
+        DateTime endOfDay = DateTime(day.year, day.month, day.day, 23, 59);
+
+        Map<String, dynamic> dailyData = await fsr.fetchSessionDetails(
+          startOfDay,
+          endOfDay,
+        );
+        print("User Data for ${day.toLocal()}: $dailyData");
+        weeklyData.add(dailyData);
+      }
+      print("User Data for past $dayCount days: $weeklyData");
+      return {"weeklyData": weeklyData};
+    } else {
+      print("UUID is null, cannot fetch data.");
+      return {};
+    }
+  } catch (e) {
+    print("Error fetching data: $e");
+  }
+  return {}; // Return an empty map as a fallback
 }

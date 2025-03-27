@@ -8,7 +8,7 @@ class SyncButton extends StatefulWidget {
 
 class _SyncButtonState extends State<SyncButton> {
   bool isSyncing = false;
-  int? selectedMinutes;
+  int selectedMinutes = 1;
 
   Future<void> _syncSession(Duration duration) async {
     // Simulate the sync session process
@@ -17,14 +17,13 @@ class _SyncButtonState extends State<SyncButton> {
   }
 
   Future<void> _handleSync() async {
-    if (selectedMinutes == null) return;
     setState(() {
       isSyncing = true;
     });
 
     try {
       final sessions = Sessions();
-      await sessions.syncSession(Duration(minutes: selectedMinutes!));
+      await sessions.syncSession(Duration(minutes: selectedMinutes));
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Sync successful!")));
@@ -47,15 +46,15 @@ class _SyncButtonState extends State<SyncButton> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Select Sync Duration: ${selectedMinutes ?? 'None'} min",
+              "Select Sync Duration: ${selectedMinutes ?? 1} min",
               style: TextStyle(fontSize: 15),
             ),
             Slider(
-              value: (selectedMinutes ?? 1).toDouble(),
+              value: selectedMinutes.toDouble(),
               min: 1,
               max: 30,
               divisions: 29,
-              label: "${selectedMinutes ?? 1} min",
+              label: "${selectedMinutes} min",
               onChanged: (value) {
                 setState(() {
                   selectedMinutes = value.toInt();

@@ -3,12 +3,14 @@ import 'package:medrhythms/mypages/createroutes.dart'; // Import necessary files
 
 class FirestoreServiceRead {
   // Reference to the 'users' collection in Firestore
-  final CollectionReference usersColl =
-      FirebaseFirestore.instance.collection('users');
+  final CollectionReference usersColl = FirebaseFirestore.instance.collection(
+    'users',
+  );
 
   // Reference to the 'sessions' collection in Firestore
-  final CollectionReference sessionColl =
-      FirebaseFirestore.instance.collection('sessions');
+  final CollectionReference sessionColl = FirebaseFirestore.instance.collection(
+    'sessions',
+  );
 
   // Instance of CreateDataService to create user references
   final CreateDataService csd = CreateDataService();
@@ -34,7 +36,7 @@ class FirestoreServiceRead {
     } catch (e) {
       print("Error occurred: $e");
       return {
-        "error": e.toString()
+        "error": e.toString(),
       }; // Return a JSON object with an error message
     }
   }
@@ -65,7 +67,7 @@ class FirestoreServiceRead {
           "totalCalories": totalCalories,
           "totalDistance": totalDistance,
           "totalSteps": totalSteps,
-          "averageSpeed": averageSpeed
+          "averageSpeed": averageSpeed,
         };
       } else {
         return {"error": "No session data found for this user."};
@@ -77,28 +79,161 @@ class FirestoreServiceRead {
   }
 
   Future<Map<String, dynamic>> fetchSessionDetails(
-      DateTime fromDate, DateTime toDate) async {
+    DateTime fromDate,
+    DateTime toDate,
+  ) async {
     try {
-      var queryForSessions = await sessionColl
-          .where('startTime', isGreaterThanOrEqualTo: fromDate)
-          .where('endTime', isLessThanOrEqualTo: toDate)
-          .get();
+      // Fetch sessions from Firestore
+      var queryForSessions =
+          await sessionColl
+              .where('startTime', isGreaterThanOrEqualTo: fromDate)
+              .where('endTime', isLessThanOrEqualTo: toDate)
+              .get();
 
-      if (queryForSessions.docs.isNotEmpty) {
-        List<Map<String, dynamic>> sessionDetails = [];
-
-        for (var doc in queryForSessions.docs) {
-          var sessionData = doc.data() as Map<String, dynamic>;
-          sessionDetails.add(sessionData);
-        }
-
-        return {"sessionDetails": sessionDetails};
-      } else {
-        return {"error": "No session data found for the specified date range."};
+      // Return empty map if no sessions found
+      if (queryForSessions.docs.isEmpty) {
+        return {"sessionDetails": {}};
       }
-    } catch (err) {
-      print("Error occurred: $err");
-      return {"error": err.toString()};
+
+      // Create hourly data map with default values
+      Map<String, Map<String, dynamic>> hourlyData = _initializeHourlyData();
+
+      // Process each session and distribute data into hourly buckets
+      for (var doc in queryForSessions.docs) {
+        var sessionData = doc.data() as Map<String, dynamic>;
+
+        DateTime startTime = (sessionData['startTime'] as Timestamp).toDate();
+        DateTime endTime = (sessionData['endTime'] as Timestamp).toDate();
+
+        _distributeSessionData(sessionData, startTime, endTime, hourlyData);
+      }
+
+      // Remove empty entries before returning
+      // _removeEmptyBuckets(hourlyData);
+
+      // Return processed session details with the desired map format
+      DateTime currentDate = DateTime(
+        fromDate.year,
+        fromDate.month,
+        fromDate.day,
+      );
+
+      return {currentDate.toIso8601String(): hourlyData};
+    } catch (e, stackTrace) {
+      print("Error fetching sessions: $e\nStackTrace: $stackTrace");
+      return {"error": e.toString()};
+    }
+  }
+
+  // --- Helper Method: Initialize Hourly Buckets ---
+  Map<String, Map<String, dynamic>> _initializeHourlyData() {
+    Map<String, Map<String, dynamic>> hourlyData = {};
+
+    for (int i = 0; i < 24; i++) {
+      String startTime = "${i.toString().padLeft(2, '0')}:00";
+      String endTime = "${(i + 1).toString().padLeft(2, '0')}:00";
+      String key = "$startTime - $endTime";
+
+      hourlyData[key] = {
+        "calories": 0.0,
+        "speed": 0.0,
+        "heartRate": 0.0,
+        "distance": 0.0,
+      };
+    }
+
+    return hourlyData;
+  }
+
+  // --- Helper Method: Distribute Session Data into Buckets ---
+  void _distributeSessionData(
+    Map<String, dynamic> sessionData,
+    DateTime startTime,
+    DateTime endTime,
+    Map<String, Map<String, dynamic>> hourlyData,
+  ) {
+    for (int i = 0; i < 24; i++) {
+      DateTime bucketStart = DateTime(
+        startTime.year,
+        startTime.month,
+        startTime.day,
+        i,
+      );
+      DateTime bucketEnd = bucketStart.add(Duration(hours: 1));
+
+      if (startTime.isBefore(bucketEnd) && endTime.isAfter(bucketStart)) {
+        double overlapDuration = _calculateOverlapDuration(
+          startTime,
+          endTime,
+          bucketStart,
+          bucketEnd,
+        );
+        double sessionDuration =
+            (endTime.millisecondsSinceEpoch - startTime.millisecondsSinceEpoch)
+                .toDouble();
+
+        if (sessionDuration > 0 && overlapDuration > 0) {
+          double weight = overlapDuration / sessionDuration;
+
+          String key =
+              "${i.toString().padLeft(2, '0')}:00 - ${(i + 1).toString().padLeft(2, '0')}:00";
+
+          _updateHourlyData(hourlyData[key]!, sessionData, weight);
+        }
+      }
+    }
+  }
+
+  // --- Helper Method: Calculate Overlap Duration ---
+  double _calculateOverlapDuration(
+    DateTime startTime,
+    DateTime endTime,
+    DateTime bucketStart,
+    DateTime bucketEnd,
+  ) {
+    double overlapStart =
+        startTime.isAfter(bucketStart)
+            ? startTime.millisecondsSinceEpoch.toDouble()
+            : bucketStart.millisecondsSinceEpoch.toDouble();
+
+    double overlapEnd =
+        endTime.isBefore(bucketEnd)
+            ? endTime.millisecondsSinceEpoch.toDouble()
+            : bucketEnd.millisecondsSinceEpoch.toDouble();
+
+    return (overlapEnd - overlapStart).clamp(0, double.infinity);
+  }
+
+  // --- Helper Method: Update Hourly Data ---
+  void _updateHourlyData(
+    Map<String, dynamic> bucket,
+    Map<String, dynamic> sessionData,
+    double weight,
+  ) {
+    bucket["calories"] += (sessionData['calories'] ?? 0) * weight;
+    bucket["speed"] += (sessionData['speed'] ?? 0) * weight;
+    bucket["heartRate"] += (sessionData['heartRate'] ?? 0) * weight;
+    bucket["distance"] += (sessionData['distance'] ?? 0) * weight;
+  }
+
+  // --- Helper Method: Remove Empty Buckets ---
+  void _removeEmptyBuckets(Map<String, Map<String, dynamic>> hourlyData) {
+    // Collect keys to be removed in a separate list
+    List<String> emptyKeys = [];
+
+    // Identify keys where all values are zero
+    hourlyData.forEach((key, value) {
+      if (value["calories"] == 0.0 &&
+          value["speed"] == 0.0 &&
+          value["heartRate"] == 0.0 &&
+          value["distance"] == 0.0) {
+        emptyKeys.add(key);
+      }
+    });
+
+    // Remove keys AFTER iteration to avoid concurrent modification
+    for (var key in emptyKeys) {
+      hourlyData.remove(key);
     }
   }
 }

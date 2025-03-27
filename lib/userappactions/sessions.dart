@@ -112,13 +112,13 @@ class Sessions {
     _liveData.addAll(data);
     for (var dataPoint in _liveData) {
       if (dataPoint.type == HealthDataType.STEPS) {
-        totalSteps += dataPoint.value as double;
+        totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
       } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-        totalCalories += dataPoint.value as double;
+        totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
       } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
-        totalDistance += dataPoint.value as double;
+        totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
       } else if (dataPoint.type == HealthDataType.HEART_RATE) {
-        totalHeartRate += dataPoint.value as double;
+        totalHeartRate += (dataPoint.value as NumericHealthValue).numericValue;
       }
     }
     print('Total Steps: $totalSteps');
@@ -155,13 +155,14 @@ class Sessions {
       double totalHeartRate = 0;
       for (var dataPoint in _liveData) {
         if (dataPoint.type == HealthDataType.STEPS) {
-          totalSteps += dataPoint.value as double;
+          totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
         } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-          totalCalories += dataPoint.value as double;
+          totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
         } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
-          totalDistance += dataPoint.value as double;
+          totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
         } else if (dataPoint.type == HealthDataType.HEART_RATE) {
-          totalHeartRate += dataPoint.value as double;
+          totalHeartRate +=
+              (dataPoint.value as NumericHealthValue).numericValue;
         }
       }
       print("📊 Daily Summary:");
@@ -187,8 +188,26 @@ class Sessions {
   Future<void> syncSession(Duration selectedDuration) async {
     UserSession user = UserSession();
     final CreateDataService csd = CreateDataService();
-    Health h = new Health();
+    Health h = Health();
     DateTime now = DateTime.now();
+
+    if (_totalSelectedDuration != null) {
+      _totalSelectedDuration = _totalSelectedDuration! + selectedDuration;
+    } else {
+      _totalSelectedDuration = Duration(minutes: 1);
+    }
+
+    // Check if _totalSelectedDuration and userId are not null
+    if (_totalSelectedDuration == null) {
+      print("Error: _totalSelectedDuration is null.");
+      return;
+    }
+
+    if (user.userId == null) {
+      print("Error: userId is null.");
+      return;
+    }
+
     List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
       startTime: now.subtract(
         Duration(minutes: selectedDuration.inMinutes + 10),
@@ -200,35 +219,39 @@ class Sessions {
     double totalCalories = 0;
     double totalDistance = 0;
     double totalHeartRate = 0;
-    for (var dataPoint in healthData) {
-      if (dataPoint.type == HealthDataType.STEPS) {
-        totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
-      } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-        totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
-      } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
-        totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
-      } else if (dataPoint.type == HealthDataType.HEART_RATE) {
-        totalHeartRate += (dataPoint.value as NumericHealthValue).numericValue;
-      }
-    }
-    double totalSpeed = (totalDistance) / (60000);
-    await csd.createSessionData(
-      user.userId.toString(), // Ensure userId is set
-      now.subtract(
-        _totalSelectedDuration! + selectedDuration,
-      ), // Example start time
-      now.subtract(selectedDuration), // End time
-      totalSteps,
-      totalDistance,
-      totalCalories,
-      totalSpeed, // Speed estimate
-      "Phone",
-    );
 
-    print("📊 Daily Summary:");
-    print("✅ Steps: $totalSteps");
-    print("🔥 Calories: $totalCalories Kcal");
-    print("📏 Distance: $totalDistance meters");
-    print("🚶‍♂️ Speed: $totalSpeed Kmph");
+    if (healthData.isNotEmpty) {
+      for (var dataPoint in healthData) {
+        if (dataPoint.type == HealthDataType.STEPS) {
+          totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
+        } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
+          totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
+        } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
+          totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
+        } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+          totalHeartRate +=
+              (dataPoint.value as NumericHealthValue).numericValue;
+        }
+      }
+
+      double totalSpeed = (totalDistance) / (60000); // Estimate speed
+
+      await csd.createSessionData(
+        user.userId.toString(),
+        now.subtract(_totalSelectedDuration! + selectedDuration),
+        now.subtract(selectedDuration),
+        totalSteps,
+        totalDistance,
+        totalCalories,
+        totalSpeed,
+        "Phone",
+      );
+
+      print("📊 Daily Summary:");
+      print("✅ Steps: $totalSteps");
+      print("🔥 Calories: $totalCalories Kcal");
+      print("📏 Distance: $totalDistance meters");
+      print("🚶‍♂️ Speed: $totalSpeed Kmph");
+    }
   }
 }

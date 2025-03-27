@@ -49,7 +49,7 @@ class _RecordsPageState extends State<RecordsPage> {
       final int currentWeekday = now.weekday;
 
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
-
+      // Date - Workouts that happened that day?
       for (int i = 0; i < 7; i++) {
         final date = mondayDate.add(Duration(days: i));
         print('Fetching data for: $date, UserID: ${widget.uuid}');
