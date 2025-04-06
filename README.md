@@ -58,4 +58,4 @@ Documentation : main
 
 Class Diagram:
 
-![image]([https://github.com/user-attachments/assets/9ad93a97-15ab-4cb4-adb2-c0a47cbd90c3](https://github.com/Srinivas142000/DT-MedRhythm/blob/classdiagram/medrhythms_dcdg.svg))
+![image](https://github.com/user-attachments/assets/9ad93a97-15ab-4cb4-adb2-c0a47cbd90c3](https://github.com/Srinivas142000/DT-MedRhythm/blob/classdiagram/medrhythms_dcdg.svg)
