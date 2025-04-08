@@ -1,0 +1,1 @@
+de.minimalme.spotify_sdk

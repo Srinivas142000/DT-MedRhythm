@@ -1,0 +1,11 @@
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/SpotifySdkPlugin.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/SpotifyPlayerApi.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/subscriptions/PlayerStateChannel.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/subscriptions/ConnectionStatusChannel.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/SpotifyUserApi.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/subscriptions/PlayerContextChannel.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/subscriptions/CapabilitiesChannel.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/SpotifyImagesApi.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/SpotifyConnectApi.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/BaseSpotifyApi.kt
+/Users/ifeanyiineh/.pub-cache/hosted/pub.dev/spotify_sdk-3.0.2/android/src/main/kotlin/de/minimalme/spotify_sdk/subscriptions/UserStatusChannel.kt

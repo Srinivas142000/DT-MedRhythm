@@ -7,11 +7,13 @@ plugins {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation(files("libs/spotify-app-remote-release-0.8.0.aar"))
+    implementation(("com.spotify.android:auth:2.1.0" ))
 }
 
 android {
     namespace = "com.example.medrhythms"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -24,22 +26,25 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.medrhythms"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        manifestPlaceholders["appAuthRedirectScheme"] = "medrhythms"
+        manifestPlaceholders["redirectHostName"] = "callback"
+        manifestPlaceholders["redirectSchemeName"] = "medrhythms"
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so flutter run --release works.
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+
+    lintOptions {
+        isCheckReleaseBuilds = false
     }
 }
 

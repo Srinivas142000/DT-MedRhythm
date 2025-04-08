@@ -1,0 +1,481 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.medrhythms"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="35" />
+10    <!-- Required Permissions -->
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:4:5-67
+11-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:4:22-64
+12    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+12-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:5:5-79
+12-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:5:22-76
+13    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+13-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:6:5-79
+13-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:6:22-76
+14    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+14-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:7:5-81
+14-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:7:22-78
+15    <uses-permission android:name="android.permission.BODY_SENSORS" />
+15-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:8:5-71
+15-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:8:22-68
+16
+17    <!-- Health Connect Permissions -->
+18    <uses-permission android:name="android.permission.health.READ_STEPS" />
+18-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:11:5-76
+18-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:11:22-73
+19    <uses-permission android:name="android.permission.health.WRITE_STEPS" />
+19-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:12:5-77
+19-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:12:22-74
+20    <uses-permission android:name="android.permission.health.READ_DISTANCE" />
+20-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:13:5-79
+20-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:13:22-76
+21    <uses-permission android:name="android.permission.health.WRITE_DISTANCE" />
+21-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:14:5-80
+21-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:14:22-77
+22    <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED" />
+22-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:15:5-92
+22-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:15:22-89
+23    <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED" />
+23-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:16:5-93
+23-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:16:22-90
+24
+25    <!-- Legacy Google Fit permissions (as fallback) -->
+26    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+26-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:19:5-94
+26-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:19:22-91
+27
+28    <!-- Queries for Health Connect -->
+29    <queries>
+29-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:22:5-27:15
+30        <package android:name="com.google.android.apps.healthdata" />
+30-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:23:9-70
+30-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:23:18-67
+31
+32        <intent>
+32-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:24:9-26:18
+33            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+33-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:25:13-88
+33-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:25:21-85
+34        </intent>
+35
+36        <package android:name="com.spotify.music" />
+36-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:28:9-53
+36-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:28:18-50
+37        <package android:name="com.spotify.music.debug" />
+37-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:29:9-59
+37-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:29:18-56
+38        <package android:name="com.spotify.music.canary" />
+38-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:30:9-60
+38-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:30:18-57
+39        <package android:name="com.spotify.music.partners" />
+39-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:31:9-62
+39-->[spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:31:18-59
+40
+41        <intent>
+41-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:37:9-41:18
+42            <action android:name="com.spotify.sso.action.START_AUTH_FLOW" />
+42-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:38:13-77
+42-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:38:21-74
+43
+44            <data android:mimeType="text/plain" />
+44-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:63:17-65:47
+45        </intent>
+46        <intent>
+46-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:42:9-44:18
+47            <action android:name="android.support.customtabs.action.CustomTabsService" />
+47-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:43:13-90
+47-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:43:21-87
+48        </intent>
+49        <intent>
+49-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:25:9-31:18
+50            <action android:name="android.intent.action.VIEW" />
+50-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:17-69
+50-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:25-66
+51
+52            <category android:name="android.intent.category.BROWSABLE" />
+52-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:17-77
+52-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:27-75
+53
+54            <data android:scheme="https" />
+54-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:63:17-65:47
+54-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:64:21-48
+55        </intent>
+56    </queries>
+57    <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
+58    <!-- <uses-sdk android:minSdkVersion="21" /> -->
+59    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+59-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:10:5-79
+59-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:10:22-76
+60
+61    <permission
+61-->[androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+62        android:name="com.example.medrhythms.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+62-->[androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+63        android:protectionLevel="signature" />
+63-->[androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+64
+65    <uses-permission android:name="com.example.medrhythms.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+65-->[androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+65-->[androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+66
+67    <application
+68        android:name="android.app.Application"
+68-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:31:9-42
+69        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+69-->[androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+70        android:debuggable="true"
+71        android:extractNativeLibs="false"
+72        android:icon="@mipmap/ic_launcher"
+72-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:32:9-43
+73        android:label="medrhythms" >
+73-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:30:9-35
+74
+75        <!-- Main Activity -->
+76        <activity
+76-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:35:9-67:20
+77            android:name="com.example.medrhythms.MainActivity"
+77-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:36:13-41
+78            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+78-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:40:13-163
+79            android:exported="true"
+79-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:37:13-36
+80            android:hardwareAccelerated="true"
+80-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:41:13-47
+81            android:launchMode="singleTop"
+81-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:38:13-43
+82            android:theme="@style/LaunchTheme"
+82-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:39:13-47
+83            android:windowSoftInputMode="adjustResize" >
+83-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:42:13-55
+84            <meta-data
+84-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:44:13-47:15
+85                android:name="io.flutter.embedding.android.NormalTheme"
+85-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:45:17-72
+86                android:resource="@style/NormalTheme" />
+86-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:46:17-54
+87
+88            <!-- Main app intent filter -->
+89            <intent-filter>
+89-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:50:13-53:29
+90                <action android:name="android.intent.action.MAIN" />
+90-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:51:17-68
+90-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:51:25-66
+91
+92                <category android:name="android.intent.category.LAUNCHER" />
+92-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:52:17-76
+92-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:52:27-74
+93            </intent-filter>
+94
+95            <!-- Health Connect intent filter -->
+96            <intent-filter>
+96-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:56:13-58:29
+97                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+97-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:25:13-88
+97-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:25:21-85
+98            </intent-filter>
+99            <intent-filter>
+99-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:59:13-66:33
+100                <action android:name="android.intent.action.VIEW" />
+100-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:17-69
+100-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:25-66
+101
+102                <category android:name="android.intent.category.DEFAULT" />
+102-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:17-75
+102-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:27-73
+103                <category android:name="android.intent.category.BROWSABLE" />
+103-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:17-77
+103-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:27-75
+104
+105                <data
+105-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:63:17-65:47
+106                    android:host="callback"
+106-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:65:21-44
+107                    android:scheme="medrhythms" />
+107-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:64:21-48
+108            </intent-filter>
+109        </activity> <!-- Health Connect Permission Usage Activity -->
+110        <activity-alias
+110-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:70:9-79:26
+111            android:name="com.example.medrhythms.ViewPermissionUsageActivity"
+111-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:71:13-56
+112            android:exported="true"
+112-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:72:13-36
+113            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+113-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:74:13-80
+114            android:targetActivity="com.example.medrhythms.MainActivity" >
+114-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:73:13-51
+115            <intent-filter>
+115-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:75:13-78:29
+116                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+116-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:76:17-86
+116-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:76:25-83
+117
+118                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+118-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:77:17-87
+118-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:77:27-84
+119            </intent-filter>
+120        </activity-alias>
+121
+122        <!-- Flutter embedding -->
+123        <meta-data
+123-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:82:9-84:33
+124            android:name="flutterEmbedding"
+124-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:83:13-44
+125            android:value="2" />
+125-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:84:13-30
+126
+127        <!-- Health Connect metadata -->
+128        <meta-data
+128-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:87:9-89:60
+129            android:name="health_permissions"
+129-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:88:13-46
+130            android:resource="@array/health_permissions" />
+130-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:89:13-57
+131
+132        <activity
+132-->[:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:9-14:75
+133            android:name="com.spotify.sdk.android.authentication.LoginActivity"
+133-->[:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-80
+134            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+134-->[:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:13-72
+135
+136        <service
+136-->[:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:19
+137            android:name="com.google.firebase.components.ComponentDiscoveryService"
+137-->[:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:18-89
+138            android:directBootAware="true"
+138-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:32:13-43
+139            android:exported="false" >
+139-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:16:13-37
+140            <meta-data
+140-->[:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-11:85
+141                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
+141-->[:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:17-134
+142                android:value="com.google.firebase.components.ComponentRegistrar" />
+142-->[:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:17-82
+143            <meta-data
+143-->[:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-11:85
+144                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+144-->[:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:17-124
+145                android:value="com.google.firebase.components.ComponentRegistrar" />
+145-->[:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:17-82
+146            <meta-data
+146-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:17:13-19:85
+147                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+147-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:18:17-122
+148                android:value="com.google.firebase.components.ComponentRegistrar" />
+148-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:19:17-82
+149            <meta-data
+149-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:20:13-22:85
+150                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+150-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:21:17-111
+151                android:value="com.google.firebase.components.ComponentRegistrar" />
+151-->[com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:22:17-82
+152            <meta-data
+152-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
+153                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+153-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
+154                android:value="com.google.firebase.components.ComponentRegistrar" />
+154-->[com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
+155            <meta-data
+155-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
+156                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+156-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:36:17-109
+157                android:value="com.google.firebase.components.ComponentRegistrar" />
+157-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:37:17-82
+158        </service>
+159        <service
+159-->[androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:24:9-32:19
+160            android:name="androidx.health.platform.client.impl.sdkservice.HealthDataSdkService"
+160-->[androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:25:13-96
+161            android:enabled="true"
+161-->[androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:26:13-35
+162            android:exported="true" >
+162-->[androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:27:13-36
+163            <intent-filter>
+163-->[androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:29:13-31:29
+164                <action android:name="androidx.health.platform.client.ACTION_BIND_SDK_SERVICE" />
+164-->[androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:30:17-98
+164-->[androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:30:25-95
+165            </intent-filter>
+166        </service>
+167
+168        <activity
+168-->[:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:9-12:45
+169            android:name="net.openid.appauth.RedirectUriReceiverActivity"
+169-->[:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-74
+170            android:exported="true"
+170-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:43:13-36
+171            android:theme="@style/Theme.AppCompat.Translucent.NoTitleBar" >
+171-->[:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-74
+172            <intent-filter>
+172-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:44:13-51:29
+173                <action android:name="android.intent.action.VIEW" />
+173-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:17-69
+173-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:25-66
+174
+175                <category android:name="android.intent.category.DEFAULT" />
+175-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:17-75
+175-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:27-73
+176                <category android:name="android.intent.category.BROWSABLE" />
+176-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:17-77
+176-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:27-75
+177
+178                <data android:scheme="medrhythms" />
+178-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:63:17-65:47
+178-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:64:21-48
+179            </intent-filter>
+180        </activity>
+181        <activity
+181-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:48:9-63:20
+182            android:name="com.spotify.sdk.android.auth.LoginActivity"
+182-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:49:13-70
+183            android:exported="true"
+183-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:50:13-36
+184            android:launchMode="singleTask"
+184-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:51:13-44
+185            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+185-->[com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:52:13-72
+186            <intent-filter android:autoVerify="true" >
+186-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:59:13-66:33
+187                <action android:name="android.intent.action.VIEW" />
+187-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:17-69
+187-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:25-66
+188
+189                <category android:name="android.intent.category.DEFAULT" />
+189-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:17-75
+189-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:27-73
+190                <category android:name="android.intent.category.BROWSABLE" />
+190-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:17-77
+190-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:27-75
+191
+192                <data
+192-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:63:17-65:47
+193                    android:host="callback"
+193-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:65:21-44
+194                    android:scheme="medrhythms" />
+194-->/Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:64:21-48
+195            </intent-filter>
+196        </activity>
+197        <activity
+197-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:35:9-40:77
+198            android:name="net.openid.appauth.AuthorizationManagementActivity"
+198-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:36:13-78
+199            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden"
+199-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:37:13-115
+200            android:exported="false"
+200-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:38:13-37
+201            android:launchMode="singleTask"
+201-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:39:13-44
+202            android:theme="@style/Theme.AppCompat.Translucent.NoTitleBar" />
+202-->[net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:40:13-74
+203
+204        <uses-library
+204-->[androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
+205            android:name="androidx.window.extensions"
+205-->[androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:24:13-54
+206            android:required="false" />
+206-->[androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:25:13-37
+207        <uses-library
+207-->[androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:26:9-28:40
+208            android:name="androidx.window.sidecar"
+208-->[androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:27:13-51
+209            android:required="false" />
+209-->[androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:28:13-37
+210
+211        <activity
+211-->[com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
+212            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+212-->[com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:19-85
+213            android:exported="false"
+213-->[com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:22:19-43
+214            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+214-->[com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:21:19-78
+215
+216        <provider
+216-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
+217            android:name="com.google.firebase.provider.FirebaseInitProvider"
+217-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:24:13-77
+218            android:authorities="com.example.medrhythms.firebaseinitprovider"
+218-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:25:13-72
+219            android:directBootAware="true"
+219-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:26:13-43
+220            android:exported="false"
+220-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:27:13-37
+221            android:initOrder="100" />
+221-->[com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:28:13-36
+222
+223        <meta-data
+223-->[com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:21:9-23:69
+224            android:name="com.google.android.gms.version"
+224-->[com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:22:13-58
+225            android:value="@integer/google_play_services_version" />
+225-->[com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:23:13-66
+226
+227        <provider
+227-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:24:9-32:20
+228            android:name="androidx.startup.InitializationProvider"
+228-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:25:13-67
+229            android:authorities="com.example.medrhythms.androidx-startup"
+229-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:26:13-68
+230            android:exported="false" >
+230-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:27:13-37
+231            <meta-data
+231-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+232                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+232-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+233                android:value="androidx.startup" />
+233-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+234            <meta-data
+234-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+235                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+235-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+236                android:value="androidx.startup" />
+236-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+237        </provider>
+238
+239        <receiver
+239-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+240            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+240-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+241            android:directBootAware="false"
+241-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+242            android:enabled="true"
+242-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+243            android:exported="true"
+243-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+244            android:permission="android.permission.DUMP" >
+244-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+245            <intent-filter>
+245-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+246                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+246-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+246-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+247            </intent-filter>
+248            <intent-filter>
+248-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+249                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+249-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+249-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+250            </intent-filter>
+251            <intent-filter>
+251-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+252                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+252-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+252-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+253            </intent-filter>
+254            <intent-filter>
+254-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+255                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+255-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+255-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+256            </intent-filter>
+257        </receiver>
+258    </application>
+259
+260</manifest>

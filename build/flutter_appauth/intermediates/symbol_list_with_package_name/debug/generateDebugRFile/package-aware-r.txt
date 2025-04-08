@@ -1,0 +1,1 @@
+io.crossingthestreams.flutterappauth

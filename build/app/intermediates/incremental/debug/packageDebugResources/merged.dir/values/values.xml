@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="health_permissions">
+        <item>android.permission.health.READ_STEPS</item>
+        <item>android.permission.health.WRITE_STEPS</item>
+        <item>android.permission.health.READ_HEART_RATE</item>
+        <item>android.permission.health.WRITE_HEART_RATE</item>
+        <item>android.permission.health.READ_DISTANCE</item>
+        <item>android.permission.health.WRITE_DISTANCE</item>
+        <item>android.permission.health.READ_TOTAL_CALORIES_BURNED</item>
+        <item>android.permission.health.WRITE_TOTAL_CALORIES_BURNED</item>
+    </string-array>
+    <string name="gcm_defaultSenderId" translatable="false">228098079124</string>
+    <string name="google_api_key" translatable="false">AIzaSyDib7rFmI0ydzPXp2T9mYkD74xUnUczSEY</string>
+    <string name="google_app_id" translatable="false">1:228098079124:android:88932037d26c5100abb781</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDib7rFmI0ydzPXp2T9mYkD74xUnUczSEY</string>
+    <string name="google_storage_bucket" translatable="false">medrhythms.firebasestorage.app</string>
+    <string name="project_id" translatable="false">medrhythms</string>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>

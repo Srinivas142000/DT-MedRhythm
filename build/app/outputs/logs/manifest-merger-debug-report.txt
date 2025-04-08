@@ -1,0 +1,766 @@
+-- Merging decision tree log ---
+application
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:29:5-90:19
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:29:5-90:19
+MERGED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:34:5-20
+MERGED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:34:5-20
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:5-15:19
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:5-15:19
+MERGED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-13:19
+MERGED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-13:19
+MERGED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-13:19
+MERGED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-13:19
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:13:5-24:19
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:13:5-24:19
+MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:8:5-16:19
+MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:8:5-16:19
+MERGED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:23:5-33:19
+MERGED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:5-13:19
+MERGED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:5-13:19
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:47:5-64:19
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:47:5-64:19
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:34:5-53:19
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:34:5-53:19
+MERGED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:22:5-29:19
+MERGED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:22:5-29:19
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/307fe76c389d2ca3cbef886f6f4be542/transformed/jetified-firebase-appcheck-interop-17.0.0/AndroidManifest.xml:23:5-20
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/307fe76c389d2ca3cbef886f6f4be542/transformed/jetified-firebase-appcheck-interop-17.0.0/AndroidManifest.xml:23:5-20
+MERGED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:19:5-23:19
+MERGED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:19:5-23:19
+MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:22:5-39:19
+MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:22:5-39:19
+MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5f42983a215664b4a6cfbe9ae3b00935/transformed/jetified-firebase-auth-interop-19.0.2/AndroidManifest.xml:7:5-8:19
+MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5f42983a215664b4a6cfbe9ae3b00935/transformed/jetified-firebase-auth-interop-19.0.2/AndroidManifest.xml:7:5-8:19
+MERGED from [com.google.android.gms:play-services-tasks:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c29cdf5a78a64a046cab4d4c5114b823/transformed/jetified-play-services-tasks-18.1.0/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c29cdf5a78a64a046cab4d4c5114b823/transformed/jetified-play-services-tasks-18.1.0/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:20:5-24:19
+MERGED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:20:5-24:19
+MERGED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8d04cfbc1a73401ae4f49721a9ea6a49/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8d04cfbc1a73401ae4f49721a9ea6a49/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2cf0753c20e0acc897c42430ce579623/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2cf0753c20e0acc897c42430ce579623/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+	android:extractNativeLibs
+		INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+	android:label
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:30:9-35
+	android:icon
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:32:9-43
+	android:name
+		INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:31:9-42
+manifest
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:2:1-91:12
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:2:1-91:12
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:2:1-91:12
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:2:1-91:12
+MERGED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:22:1-36:12
+MERGED from [:shared_preferences_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/shared_preferences_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-17:12
+MERGED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-15:12
+MERGED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-15:12
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:2:1-26:12
+MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:2:1-18:12
+MERGED from [:health] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/health/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:17:1-35:12
+MERGED from [:device_info_plus] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/device_info_plus/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-15:12
+MERGED from [:flutter_secure_storage] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_secure_storage/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-10:12
+MERGED from [:path_provider_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/path_provider_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [:permission_handler_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/permission_handler_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.preference:preference:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1cc27ae1df219c66b4bdec4941b1d0df/transformed/preference-1.2.1/AndroidManifest.xml:17:1-24:12
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:22:1-66:12
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:15:1-55:12
+MERGED from [androidx.browser:browser:1.4.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c68ddcb12b1ff166acc082ef5a8585ad/transformed/browser-1.4.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b679052e6fe99c55b37ff93d83ee9829/transformed/recyclerview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/92b944e5b0e703718c47703010c5f20a/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/44bca8b5a996b663684d377522783c19/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:17:1-31:12
+MERGED from [androidx.window:window-java:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8efd995487d8185d1fcf96746ec595c7/transformed/jetified-window-java-1.2.0/AndroidManifest.xml:17:1-21:12
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/307fe76c389d2ca3cbef886f6f4be542/transformed/jetified-firebase-appcheck-interop-17.0.0/AndroidManifest.xml:15:1-25:12
+MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/7b67df385680edb18c1b6cffe6d2d514/transformed/jetified-firebase-database-collection-18.0.1/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:16:1-24:12
+MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:15:1-41:12
+MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5f42983a215664b4a6cfbe9ae3b00935/transformed/jetified-firebase-auth-interop-19.0.2/AndroidManifest.xml:2:1-10:12
+MERGED from [androidx.datastore:datastore-core-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/cec82f154568470cedf01c03fcf4144b/transformed/jetified-datastore-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ec507801903b15528172ad138c1c175a/transformed/jetified-datastore-preferences-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.datastore:datastore-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d59c73c6fd672e0d3bc8d300ed144549/transformed/jetified-datastore-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment-ktx:1.8.6] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/55eca839c4ce783a05514158829f6104/transformed/jetified-fragment-ktx-1.8.6/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat:1.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2a0616465780845bc0877769ae19d0e5/transformed/appcompat-1.3.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment:1.8.6] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b85e350b66188cbbad28868cd917d747/transformed/fragment-1.8.6/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/63706a239f288f3524e2158903d7e1e9/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/22ab114c27fdcf83e2f99fb3e3f96228/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.8.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1a02171f47364c97c254ed836ee40fcc/transformed/jetified-activity-1.8.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.8.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a275c6f1e4787ed1962f61c0cf09d821/transformed/jetified-activity-ktx-1.8.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/9a5c750f78dae628cc05bf42cd1bc7d2/transformed/jetified-lifecycle-viewmodel-savedstate-2.7.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/df73d66bac16dff5798f421d7b7fc63e/transformed/jetified-lifecycle-runtime-ktx-2.7.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/cc2b0cd4839cfc2e0064c5381e13c306/transformed/lifecycle-livedata-core-2.7.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/89ee579a34590587b293ee2d27fa27b0/transformed/lifecycle-viewmodel-2.7.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ebfb66cd55134c0b94aafb5f17072728/transformed/jetified-lifecycle-livedata-core-ktx-2.7.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1c26f78acf4e61c0e8104fec19844677/transformed/jetified-lifecycle-viewmodel-ktx-2.7.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/f4de9f8d70e071c382c05e8c51c09d14/transformed/lifecycle-livedata-2.7.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-tasks:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c29cdf5a78a64a046cab4d4c5114b823/transformed/jetified-play-services-tasks-18.1.0/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:16:1-26:12
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/33142089c1f4f557237d7c9681a726b1/transformed/jetified-core-ktx-1.13.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.appcompat:appcompat-resources:1.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e38b7ba37129dd7aa89fed04a1228ac8/transformed/jetified-appcompat-resources-1.3.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/03ae5fcaff8c827b91285869d4f7787c/transformed/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/14447b976131add535691c24fc0bfaf3/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ba88e20ba17548a7078278365b6d5935/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5ff29f0c6d214008b9fc2736be2280e4/transformed/customview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.transition:transition:1.4.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/faf6a02ab66ae628a6b7e8a3c315f695/transformed/transition-1.4.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e09208ff0cc95bb5595ed10607e1825f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4dcddf3e8e16f737734cb4350810e76f/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/3e0a1dba3e9605b5ada36d30d31b9f0a/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/18f3c6389a62461fe3da1224eb4e1c0f/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4cc73b243ab90722ad5bf39f469f6bff/transformed/lifecycle-runtime-2.7.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d7fa17881410a9858d11ad24a0f327c9/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/11f642963b50304fff816f85680149d5/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.security:security-crypto:1.1.0-alpha06] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b40c9338a4478cc971f89e6dbd345ad5/transformed/jetified-security-crypto-1.1.0-alpha06/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8d04cfbc1a73401ae4f49721a9ea6a49/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/175e2ad4d111da8bdb4c42d2e6ffeffb/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.firebase:firebase-components:18.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4e80e404027550e24b9ee75120b77cf2/transformed/jetified-firebase-components-18.0.0/AndroidManifest.xml:15:1-20:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2cf0753c20e0acc897c42430ce579623/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/6b9868f6ee04be0a8c23f5053fffb1ac/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/0b226752ec117942924ef1d879e6b0f9/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4fdc82e12b887f0093d29a365709a8d0/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.window.extensions.core:core:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/6f5e980fb6f361580aa57c1f3daf91cd/transformed/jetified-core-1.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/7fc79f0e3474f6e65ad75bb863df93b3/transformed/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b49cf93fb3a099822ddee77cd3ceec7f/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1d2413ed2c29b9df1f2104074f71831b/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4a14a50e6bb8effca7fb883680b77aec/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d29ccf135fb52194a8c83cd841c7d21d/transformed/jetified-grpc-android-1.62.2/AndroidManifest.xml:2:1-9:12
+MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b6640ae1be00f93c2a8ce24ec79c018d/transformed/jetified-relinker-1.4.5/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/87a4af62e6802c6981efd0e9c8413753/transformed/jetified-protolite-well-known-types-18.0.1/AndroidManifest.xml:2:1-7:12
+	package
+		INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:4:5-67
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:11:5-67
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:11:5-67
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:29:5-67
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:29:5-67
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:22:5-67
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:22:5-67
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:4:22-64
+uses-permission#android.permission.ACTIVITY_RECOGNITION
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:5:5-79
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:5:22-76
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:6:5-79
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:6:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:7:5-81
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:7:22-78
+uses-permission#android.permission.BODY_SENSORS
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:8:5-71
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:8:22-68
+uses-permission#android.permission.health.READ_STEPS
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:11:5-76
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:11:22-73
+uses-permission#android.permission.health.WRITE_STEPS
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:12:5-77
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:12:22-74
+uses-permission#android.permission.health.READ_DISTANCE
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:13:5-79
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:13:22-76
+uses-permission#android.permission.health.WRITE_DISTANCE
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:14:5-80
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:14:22-77
+uses-permission#android.permission.health.READ_TOTAL_CALORIES_BURNED
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:15:5-92
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:15:22-89
+uses-permission#android.permission.health.WRITE_TOTAL_CALORIES_BURNED
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:16:5-93
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:16:22-90
+uses-permission#com.google.android.gms.permission.ACTIVITY_RECOGNITION
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:19:5-94
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:19:22-91
+queries
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:22:5-27:15
+MERGED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:27:5-32:15
+MERGED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:27:5-32:15
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-9:15
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-9:15
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:31:5-45:15
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:31:5-45:15
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:24:5-32:15
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:24:5-32:15
+package#com.google.android.apps.healthdata
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:23:9-70
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:23:18-67
+intent#action:name:androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:24:9-26:18
+action#androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:25:13-88
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:25:21-85
+activity#com.example.medrhythms.MainActivity
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:35:9-67:20
+	android:launchMode
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:38:13-43
+	android:hardwareAccelerated
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:41:13-47
+	android:windowSoftInputMode
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:42:13-55
+	android:exported
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:37:13-36
+	android:configChanges
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:40:13-163
+	android:theme
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:39:13-47
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:36:13-41
+meta-data#io.flutter.embedding.android.NormalTheme
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:44:13-47:15
+	android:resource
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:46:17-54
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:45:17-72
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:50:13-53:29
+action#android.intent.action.MAIN
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:51:17-68
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:51:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:52:17-76
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:52:27-74
+intent-filter#action:name:androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:56:13-58:29
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:callback+data:scheme:medrhythms
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:59:13-66:33
+action#android.intent.action.VIEW
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:17-69
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:60:25-66
+category#android.intent.category.DEFAULT
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:17-75
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:61:27-73
+category#android.intent.category.BROWSABLE
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:17-77
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:62:27-75
+data
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:63:17-65:47
+	android:host
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:65:21-44
+	android:scheme
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:64:21-48
+activity-alias#com.example.medrhythms.ViewPermissionUsageActivity
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:70:9-79:26
+	android:exported
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:72:13-36
+	android:targetActivity
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:73:13-51
+	android:permission
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:74:13-80
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:71:13-56
+intent-filter#action:name:android.intent.action.VIEW_PERMISSION_USAGE+category:name:android.intent.category.HEALTH_PERMISSIONS
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:75:13-78:29
+action#android.intent.action.VIEW_PERMISSION_USAGE
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:76:17-86
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:76:25-83
+category#android.intent.category.HEALTH_PERMISSIONS
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:77:17-87
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:77:27-84
+meta-data#flutterEmbedding
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:82:9-84:33
+	android:value
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:84:13-30
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:83:13-44
+meta-data#health_permissions
+ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:87:9-89:60
+	android:resource
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:89:13-57
+	android:name
+		ADDED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml:88:13-46
+uses-sdk
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+MERGED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:25:5-44
+MERGED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:25:5-44
+MERGED from [:shared_preferences_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/shared_preferences_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/shared_preferences_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:6:5-44
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:6:5-44
+MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:5:5-44
+MERGED from [:health] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/health/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:health] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/health/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:21:5-44
+MERGED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:21:5-44
+MERGED from [:device_info_plus] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/device_info_plus/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:device_info_plus] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/device_info_plus/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:6:5-44
+MERGED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:6:5-44
+MERGED from [:flutter_secure_storage] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_secure_storage/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:6:5-8:53
+MERGED from [:flutter_secure_storage] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_secure_storage/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:6:5-8:53
+MERGED from [:path_provider_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/path_provider_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:path_provider_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/path_provider_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/permission_handler_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler_android] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/permission_handler_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [androidx.preference:preference:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1cc27ae1df219c66b4bdec4941b1d0df/transformed/preference-1.2.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.preference:preference:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1cc27ae1df219c66b4bdec4941b1d0df/transformed/preference-1.2.1/AndroidManifest.xml:20:5-22:41
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:25:5-27:41
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:25:5-27:41
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:18:5-20:41
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:18:5-20:41
+MERGED from [androidx.browser:browser:1.4.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c68ddcb12b1ff166acc082ef5a8585ad/transformed/browser-1.4.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.browser:browser:1.4.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c68ddcb12b1ff166acc082ef5a8585ad/transformed/browser-1.4.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b679052e6fe99c55b37ff93d83ee9829/transformed/recyclerview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b679052e6fe99c55b37ff93d83ee9829/transformed/recyclerview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/92b944e5b0e703718c47703010c5f20a/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/92b944e5b0e703718c47703010c5f20a/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/44bca8b5a996b663684d377522783c19/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/44bca8b5a996b663684d377522783c19/transformed/slidingpanelayout-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.window:window-java:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8efd995487d8185d1fcf96746ec595c7/transformed/jetified-window-java-1.2.0/AndroidManifest.xml:19:5-44
+MERGED from [androidx.window:window-java:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8efd995487d8185d1fcf96746ec595c7/transformed/jetified-window-java-1.2.0/AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/307fe76c389d2ca3cbef886f6f4be542/transformed/jetified-firebase-appcheck-interop-17.0.0/AndroidManifest.xml:18:5-20:41
+MERGED from [com.google.firebase:firebase-appcheck-interop:17.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/307fe76c389d2ca3cbef886f6f4be542/transformed/jetified-firebase-appcheck-interop-17.0.0/AndroidManifest.xml:18:5-20:41
+MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/7b67df385680edb18c1b6cffe6d2d514/transformed/jetified-firebase-database-collection-18.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.firebase:firebase-database-collection:18.0.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/7b67df385680edb18c1b6cffe6d2d514/transformed/jetified-firebase-database-collection-18.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:18:5-43
+MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:19:5-44
+MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5f42983a215664b4a6cfbe9ae3b00935/transformed/jetified-firebase-auth-interop-19.0.2/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-auth-interop:19.0.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5f42983a215664b4a6cfbe9ae3b00935/transformed/jetified-firebase-auth-interop-19.0.2/AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/cec82f154568470cedf01c03fcf4144b/transformed/jetified-datastore-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-core-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/cec82f154568470cedf01c03fcf4144b/transformed/jetified-datastore-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ec507801903b15528172ad138c1c175a/transformed/jetified-datastore-preferences-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-preferences-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ec507801903b15528172ad138c1c175a/transformed/jetified-datastore-preferences-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d59c73c6fd672e0d3bc8d300ed144549/transformed/jetified-datastore-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.datastore:datastore-android:1.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d59c73c6fd672e0d3bc8d300ed144549/transformed/jetified-datastore-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment-ktx:1.8.6] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/55eca839c4ce783a05514158829f6104/transformed/jetified-fragment-ktx-1.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment-ktx:1.8.6] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/55eca839c4ce783a05514158829f6104/transformed/jetified-fragment-ktx-1.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat:1.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2a0616465780845bc0877769ae19d0e5/transformed/appcompat-1.3.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2a0616465780845bc0877769ae19d0e5/transformed/appcompat-1.3.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.8.6] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b85e350b66188cbbad28868cd917d747/transformed/fragment-1.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.8.6] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b85e350b66188cbbad28868cd917d747/transformed/fragment-1.8.6/AndroidManifest.xml:5:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/63706a239f288f3524e2158903d7e1e9/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/63706a239f288f3524e2158903d7e1e9/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/22ab114c27fdcf83e2f99fb3e3f96228/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/22ab114c27fdcf83e2f99fb3e3f96228/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.8.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1a02171f47364c97c254ed836ee40fcc/transformed/jetified-activity-1.8.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.8.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1a02171f47364c97c254ed836ee40fcc/transformed/jetified-activity-1.8.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.8.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a275c6f1e4787ed1962f61c0cf09d821/transformed/jetified-activity-ktx-1.8.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.8.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a275c6f1e4787ed1962f61c0cf09d821/transformed/jetified-activity-ktx-1.8.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/9a5c750f78dae628cc05bf42cd1bc7d2/transformed/jetified-lifecycle-viewmodel-savedstate-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/9a5c750f78dae628cc05bf42cd1bc7d2/transformed/jetified-lifecycle-viewmodel-savedstate-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/df73d66bac16dff5798f421d7b7fc63e/transformed/jetified-lifecycle-runtime-ktx-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/df73d66bac16dff5798f421d7b7fc63e/transformed/jetified-lifecycle-runtime-ktx-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/cc2b0cd4839cfc2e0064c5381e13c306/transformed/lifecycle-livedata-core-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/cc2b0cd4839cfc2e0064c5381e13c306/transformed/lifecycle-livedata-core-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/89ee579a34590587b293ee2d27fa27b0/transformed/lifecycle-viewmodel-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/89ee579a34590587b293ee2d27fa27b0/transformed/lifecycle-viewmodel-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ebfb66cd55134c0b94aafb5f17072728/transformed/jetified-lifecycle-livedata-core-ktx-2.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ebfb66cd55134c0b94aafb5f17072728/transformed/jetified-lifecycle-livedata-core-ktx-2.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1c26f78acf4e61c0e8104fec19844677/transformed/jetified-lifecycle-viewmodel-ktx-2.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1c26f78acf4e61c0e8104fec19844677/transformed/jetified-lifecycle-viewmodel-ktx-2.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/f4de9f8d70e071c382c05e8c51c09d14/transformed/lifecycle-livedata-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/f4de9f8d70e071c382c05e8c51c09d14/transformed/lifecycle-livedata-2.7.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c29cdf5a78a64a046cab4d4c5114b823/transformed/jetified-play-services-tasks-18.1.0/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-tasks:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/c29cdf5a78a64a046cab4d4c5114b823/transformed/jetified-play-services-tasks-18.1.0/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:18:5-43
+MERGED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:18:5-43
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/33142089c1f4f557237d7c9681a726b1/transformed/jetified-core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/33142089c1f4f557237d7c9681a726b1/transformed/jetified-core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e38b7ba37129dd7aa89fed04a1228ac8/transformed/jetified-appcompat-resources-1.3.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e38b7ba37129dd7aa89fed04a1228ac8/transformed/jetified-appcompat-resources-1.3.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/03ae5fcaff8c827b91285869d4f7787c/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/03ae5fcaff8c827b91285869d4f7787c/transformed/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/14447b976131add535691c24fc0bfaf3/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/14447b976131add535691c24fc0bfaf3/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ba88e20ba17548a7078278365b6d5935/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/ba88e20ba17548a7078278365b6d5935/transformed/coordinatorlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5ff29f0c6d214008b9fc2736be2280e4/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/5ff29f0c6d214008b9fc2736be2280e4/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.4.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/faf6a02ab66ae628a6b7e8a3c315f695/transformed/transition-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.4.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/faf6a02ab66ae628a6b7e8a3c315f695/transformed/transition-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e09208ff0cc95bb5595ed10607e1825f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e09208ff0cc95bb5595ed10607e1825f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4dcddf3e8e16f737734cb4350810e76f/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4dcddf3e8e16f737734cb4350810e76f/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/3e0a1dba3e9605b5ada36d30d31b9f0a/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/3e0a1dba3e9605b5ada36d30d31b9f0a/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/18f3c6389a62461fe3da1224eb4e1c0f/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/18f3c6389a62461fe3da1224eb4e1c0f/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4cc73b243ab90722ad5bf39f469f6bff/transformed/lifecycle-runtime-2.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4cc73b243ab90722ad5bf39f469f6bff/transformed/lifecycle-runtime-2.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d7fa17881410a9858d11ad24a0f327c9/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d7fa17881410a9858d11ad24a0f327c9/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/11f642963b50304fff816f85680149d5/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/11f642963b50304fff816f85680149d5/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.security:security-crypto:1.1.0-alpha06] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b40c9338a4478cc971f89e6dbd345ad5/transformed/jetified-security-crypto-1.1.0-alpha06/AndroidManifest.xml:20:5-44
+MERGED from [androidx.security:security-crypto:1.1.0-alpha06] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b40c9338a4478cc971f89e6dbd345ad5/transformed/jetified-security-crypto-1.1.0-alpha06/AndroidManifest.xml:20:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8d04cfbc1a73401ae4f49721a9ea6a49/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8d04cfbc1a73401ae4f49721a9ea6a49/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/175e2ad4d111da8bdb4c42d2e6ffeffb/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.tracing:tracing:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/175e2ad4d111da8bdb4c42d2e6ffeffb/transformed/jetified-tracing-1.2.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-components:18.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4e80e404027550e24b9ee75120b77cf2/transformed/jetified-firebase-components-18.0.0/AndroidManifest.xml:18:5-44
+MERGED from [com.google.firebase:firebase-components:18.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4e80e404027550e24b9ee75120b77cf2/transformed/jetified-firebase-components-18.0.0/AndroidManifest.xml:18:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2cf0753c20e0acc897c42430ce579623/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/2cf0753c20e0acc897c42430ce579623/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/6b9868f6ee04be0a8c23f5053fffb1ac/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/6b9868f6ee04be0a8c23f5053fffb1ac/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/0b226752ec117942924ef1d879e6b0f9/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/0b226752ec117942924ef1d879e6b0f9/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4fdc82e12b887f0093d29a365709a8d0/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4fdc82e12b887f0093d29a365709a8d0/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.window.extensions.core:core:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/6f5e980fb6f361580aa57c1f3daf91cd/transformed/jetified-core-1.0.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.window.extensions.core:core:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/6f5e980fb6f361580aa57c1f3daf91cd/transformed/jetified-core-1.0.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/7fc79f0e3474f6e65ad75bb863df93b3/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/7fc79f0e3474f6e65ad75bb863df93b3/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b49cf93fb3a099822ddee77cd3ceec7f/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b49cf93fb3a099822ddee77cd3ceec7f/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1d2413ed2c29b9df1f2104074f71831b/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/1d2413ed2c29b9df1f2104074f71831b/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4a14a50e6bb8effca7fb883680b77aec/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/4a14a50e6bb8effca7fb883680b77aec/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d29ccf135fb52194a8c83cd841c7d21d/transformed/jetified-grpc-android-1.62.2/AndroidManifest.xml:5:5-44
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d29ccf135fb52194a8c83cd841c7d21d/transformed/jetified-grpc-android-1.62.2/AndroidManifest.xml:5:5-44
+MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b6640ae1be00f93c2a8ce24ec79c018d/transformed/jetified-relinker-1.4.5/AndroidManifest.xml:5:5-43
+MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b6640ae1be00f93c2a8ce24ec79c018d/transformed/jetified-relinker-1.4.5/AndroidManifest.xml:5:5-43
+MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/87a4af62e6802c6981efd0e9c8413753/transformed/jetified-protolite-well-known-types-18.0.1/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:protolite-well-known-types:18.0.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/87a4af62e6802c6981efd0e9c8413753/transformed/jetified-protolite-well-known-types-18.0.1/AndroidManifest.xml:5:5-44
+	tools:overrideLibrary
+		ADDED from [:flutter_secure_storage] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_secure_storage/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-50
+	android:targetSdkVersion
+		INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/android/app/src/main/AndroidManifest.xml
+package#com.spotify.music
+ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:28:9-53
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-53
+MERGED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-53
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:32:9-53
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:32:9-53
+	android:name
+		ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:28:18-50
+package#com.spotify.music.debug
+ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:29:9-59
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:33:9-59
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:33:9-59
+	android:name
+		ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:29:18-56
+package#com.spotify.music.canary
+ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:30:9-60
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:34:9-60
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:34:9-60
+	android:name
+		ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:30:18-57
+package#com.spotify.music.partners
+ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:31:9-62
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:35:9-62
+MERGED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:35:9-62
+	android:name
+		ADDED from [spotify-app-remote-release-0.8.0.aar] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/65c71a62a13a1dac3b95cd8f111d19c0/transformed/jetified-spotify-app-remote-release-0.8.0/AndroidManifest.xml:31:18-59
+activity#com.spotify.sdk.android.authentication.LoginActivity
+ADDED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:9-14:75
+	android:theme
+		ADDED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:14:13-72
+	android:name
+		ADDED from [:spotify_sdk] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/spotify_sdk/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:13:13-80
+service#com.google.firebase.components.ComponentDiscoveryService
+ADDED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:19
+MERGED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:19
+MERGED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:9-12:19
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:14:9-23:19
+MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:14:9-23:19
+MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:9:9-15:19
+MERGED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:9:9-15:19
+MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:30:9-38:19
+MERGED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:30:9-38:19
+	android:exported
+		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:16:13-37
+	tools:targetApi
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:34:13-32
+	android:directBootAware
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:32:13-43
+	android:name
+		ADDED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:8:18-89
+meta-data#com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar
+ADDED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-11:85
+	android:value
+		ADDED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:17-82
+	android:name
+		ADDED from [:cloud_firestore] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/cloud_firestore/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:17-134
+meta-data#com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar
+ADDED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:13-11:85
+	android:value
+		ADDED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:17-82
+	android:name
+		ADDED from [:firebase_core] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/firebase_core/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:17-124
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:10:5-79
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d29ccf135fb52194a8c83cd841c7d21d/transformed/jetified-grpc-android-1.62.2/AndroidManifest.xml:7:5-79
+MERGED from [io.grpc:grpc-android:1.62.2] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/d29ccf135fb52194a8c83cd841c7d21d/transformed/jetified-grpc-android-1.62.2/AndroidManifest.xml:7:5-79
+	android:name
+		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:10:22-76
+meta-data#com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar
+ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:17:13-19:85
+	android:value
+		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:19:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:18:17-122
+meta-data#com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar
+ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:20:13-22:85
+	android:value
+		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:22:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-firestore:25.1.3] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/020f7604c7d2a682962864ccdf2c77e6/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:21:17-111
+meta-data#com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar
+ADDED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:12:13-14:85
+	android:value
+		ADDED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:14:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-common-ktx:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/a7d9eb1d659705c2e476e27899c47820/transformed/jetified-firebase-common-ktx-21.0.0/AndroidManifest.xml:13:17-116
+service#androidx.health.platform.client.impl.sdkservice.HealthDataSdkService
+ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:24:9-32:19
+	android:enabled
+		ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:26:13-35
+	android:exported
+		ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:27:13-36
+	tools:ignore
+		ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:28:13-43
+	android:name
+		ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:25:13-96
+intent-filter#action:name:androidx.health.platform.client.ACTION_BIND_SDK_SERVICE
+ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:29:13-31:29
+action#androidx.health.platform.client.ACTION_BIND_SDK_SERVICE
+ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:30:17-98
+	android:name
+		ADDED from [androidx.health.connect:connect-client:1.1.0-alpha11] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/e66834fb91fff72ca6c2db2c19271c3b/transformed/jetified-connect-client-1.1.0-alpha11/AndroidManifest.xml:30:25-95
+activity#net.openid.appauth.RedirectUriReceiverActivity
+ADDED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:9:9-12:45
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:41:9-52:20
+MERGED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:41:9-52:20
+	android:exported
+		ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:43:13-36
+	android:theme
+		ADDED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:11:13-74
+	tools:replace
+		ADDED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:12:13-42
+	android:name
+		ADDED from [:flutter_appauth] /Users/ifeanyiineh/Desktop/spotiffyyyy int/DT-MedRhythm/build/flutter_appauth/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:10:13-74
+intent#action:name:com.spotify.sso.action.START_AUTH_FLOW+data:mimeType:text/plain
+ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:37:9-41:18
+action#com.spotify.sso.action.START_AUTH_FLOW
+ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:38:13-77
+	android:name
+		ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:38:21-74
+intent#action:name:android.support.customtabs.action.CustomTabsService
+ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:42:9-44:18
+action#android.support.customtabs.action.CustomTabsService
+ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:43:13-90
+	android:name
+		ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:43:21-87
+activity#com.spotify.sdk.android.auth.LoginActivity
+ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:48:9-63:20
+	android:launchMode
+		ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:51:13-44
+	android:exported
+		ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:50:13-36
+	android:theme
+		ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:52:13-72
+	android:name
+		ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:49:13-70
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:host:${redirectHostName}+data:scheme:${redirectSchemeName}
+ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:53:13-62:29
+	android:autoVerify
+		ADDED from [com.spotify.android:auth:2.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/372bbde2da22faeb4be0ad7a2177d9fb/transformed/jetified-auth-2.1.0/AndroidManifest.xml:53:28-53
+intent#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+data:scheme:https
+ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:25:9-31:18
+activity#net.openid.appauth.AuthorizationManagementActivity
+ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:35:9-40:77
+	android:launchMode
+		ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:39:13-44
+	android:exported
+		ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:38:13-37
+	android:configChanges
+		ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:37:13-115
+	android:theme
+		ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:40:13-74
+	android:name
+		ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:36:13-78
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:scheme:${appAuthRedirectScheme}
+ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:44:13-51:29
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:scheme:medrhythms
+ADDED from [net.openid:appauth:0.11.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/01910db6a66d3b23bac9377d89cca4f0/transformed/jetified-appauth-0.11.1/AndroidManifest.xml:44:13-51:29
+uses-library#androidx.window.extensions
+ADDED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:23:9-25:40
+	android:required
+		ADDED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:25:13-37
+	android:name
+		ADDED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:24:13-54
+uses-library#androidx.window.sidecar
+ADDED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:26:9-28:40
+	android:required
+		ADDED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:28:13-37
+	android:name
+		ADDED from [androidx.window:window:1.2.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8f33d70012eaf145cf6f6a7451dc262d/transformed/jetified-window-1.2.0/AndroidManifest.xml:27:13-51
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:9-22:45
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:22:19-43
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:21:19-78
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:18.1.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/80dc62fe3ad4467165ad10c5164f4972/transformed/jetified-play-services-base-18.1.0/AndroidManifest.xml:20:19-85
+provider#com.google.firebase.provider.FirebaseInitProvider
+ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:23:9-28:39
+	android:authorities
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:25:13-72
+	android:exported
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:27:13-37
+	android:directBootAware
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:26:13-43
+	android:initOrder
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:28:13-36
+	android:name
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:24:13-77
+meta-data#com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar
+ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:35:13-37:85
+	android:value
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:37:17-82
+	android:name
+		ADDED from [com.google.firebase:firebase-common:21.0.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/75744b430d8bcb373b00d6d2a5e50386/transformed/jetified-firebase-common-21.0.0/AndroidManifest.xml:36:17-109
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:21:9-23:69
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:23:13-66
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:18.3.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/b5a2c92e9356a06f054d68e482183fc4/transformed/jetified-play-services-basement-18.3.0/AndroidManifest.xml:22:13-58
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+permission#com.example.medrhythms.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+uses-permission#com.example.medrhythms.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/dee2e3f5301f03c652d3d0f8728a17d1/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8d04cfbc1a73401ae4f49721a9ea6a49/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/8d04cfbc1a73401ae4f49721a9ea6a49/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:25:13-67
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.7.0] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/852835e5f67c4dfe5fe432cb06ada3aa/transformed/jetified-lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ifeanyiineh/.gradle/caches/8.10/transforms/438cc14f036fb66c2cb33166faf8838b/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92

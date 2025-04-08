@@ -1,0 +1,29 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:1:1-9:12
+INJECTED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:1:1-9:12
+	package
+		ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:2:3-49
+		INJECTED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml
+	xmlns:tools
+		ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:3:3-49
+	xmlns:android
+		ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:1:11-69
+application
+ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:4:3-8:17
+activity#net.openid.appauth.RedirectUriReceiverActivity
+ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:5:5-7:39
+	android:theme
+		ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:6:7-68
+	tools:replace
+		ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:7:7-36
+	android:name
+		ADDED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml:5:15-76
+uses-sdk
+INJECTED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml
+INJECTED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/ifeanyiineh/.pub-cache/hosted/pub.dev/flutter_appauth-9.0.0/android/src/main/AndroidManifest.xml
