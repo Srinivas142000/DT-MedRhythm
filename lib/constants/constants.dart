@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:health/health.dart';
+
+class Constants {
+  static const List<HealthDataType> healthDataTypes = [
+    HealthDataType.STEPS,
+    HealthDataType.DISTANCE_DELTA,
+    HealthDataType.TOTAL_CALORIES_BURNED,
+    HealthDataType.HEART_RATE,
+  ];
+}
 
 class ChartColors {
   static const Color steps = Colors.green;

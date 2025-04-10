@@ -2,7 +2,8 @@ class UserSession {
   static final UserSession _instance = UserSession._internal();
 
   String? userId;
-  Map<String, dynamic>? userData; // Store user data
+  Map<String, dynamic>? userData;
+  bool hasPermissions = false;
 
   factory UserSession() {
     return _instance;

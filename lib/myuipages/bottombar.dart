@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:medrhythms/myuipages/sessions_page.dart';
-import 'package:medrhythms/myuipages/records_page.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/myuipages/records_page.dart';
 
 class Bottombar extends StatelessWidget {
+  final int currentIndex;
+  
+  Bottombar({this.currentIndex = 0});
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -12,48 +15,65 @@ class Bottombar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            icon: Icon(Icons.nordic_walking),
+            icon: Icon(Icons.nordic_walking, 
+              color: currentIndex == 0 ? Colors.green : Colors.black),
             onPressed: () {
-              String? uuid = UserSession().userId;
-              if (uuid != null && UserSession().userData != null) {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SessionsPage(
-                      uuid: uuid,
-                      userData: UserSession().userData!,
+              if (currentIndex != 0) {
+                String? uuid = UserSession().userId;
+                if (uuid != null && UserSession().userData != null) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/sessions', 
+                    (Route<dynamic> route) => false,
+                    arguments: {
+                      'uuid': uuid,
+                      'userData': UserSession().userData!,
+                    }
+                  );
+                }
+              }
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.calendar_month_rounded,
+              color: currentIndex == 1 ? Colors.green : Colors.black),
+            onPressed: () {
+              if (currentIndex != 1) {
+                String? uuid = UserSession().userId;
+                if (uuid != null && UserSession().userData != null) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => RecordsPage(
+                        uuid: uuid,
+                        userData: UserSession().userData!,
+                      ),
                     ),
-                  ),
+                  );
+                }
+              }
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.music_note_rounded,
+              color: currentIndex == 2 ? Colors.green : Colors.black),
+            onPressed: () {
+              if (currentIndex != 2) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/music',
+                  (Route<dynamic> route) => false,
                 );
               }
             },
           ),
           IconButton(
-            icon: Icon(Icons.calendar_month_rounded),
+            icon: Icon(Icons.settings,
+              color: currentIndex == 3 ? Colors.green : Colors.black),
             onPressed: () {
-              print("Calendar icon pressed");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RecordsPage(
-                    uuid: "test-uuid", // Hardcoded for testing
-                    userData: {}, // Empty map for testing
-                  ),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.music_note_rounded),
-            onPressed: () {
-              // Handle music button press
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              // Handle settings button press
+              if (currentIndex != 3) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/settings',
+                  (Route<dynamic> route) => false,
+                );
+              }
             },
           ),
         ],

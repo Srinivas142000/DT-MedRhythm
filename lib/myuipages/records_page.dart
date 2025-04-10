@@ -3,8 +3,10 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/services/record_service.dart';
 import 'package:medrhythms/constants/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
 
 class RecordsPage extends StatefulWidget {
@@ -18,9 +20,8 @@ class RecordsPage extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RecordsPage> {
-  Bottombar bb = Bottombar();
+  Bottombar bb = Bottombar(currentIndex: 1);
 
-  // Calendar related variables
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -28,7 +29,6 @@ class _RecordsPageState extends State<RecordsPage> {
 
   DateTime selectedDate = DateTime.now();
 
-  // 0 = Monday, 6 = Sunday
   int selectedDay = DateTime.now().weekday - 1;
 
   List<Map<String, dynamic>?> weekData = List.filled(7, null);
@@ -36,12 +36,29 @@ class _RecordsPageState extends State<RecordsPage> {
   bool isLoading = true;
 
   List<bool> activeCharts = ChartTypes.showAll;
+  
+  final CollectionReference sessionColl = FirebaseFirestore.instance.collection('sessions');
+
+  final RecordService _recordService = RecordService();
 
   @override
   void initState() {
     super.initState();
-    _selectedDay = selectedDate;
-    _fetchWeekData();
+    try {
+      _fetchWeekData();
+      _setupLiveSessionListener();
+    } catch (e) {
+      print('Error during initialization: $e');
+    }
+  }
+  
+  void _setupLiveSessionListener() {
+    sessionColl
+        .where('userId', isEqualTo: widget.uuid)
+        .snapshots()
+        .listen((snapshot) {
+      _fetchWeekData();
+    });
   }
 
   Future<void> _fetchWeekData() async {
@@ -54,11 +71,13 @@ class _RecordsPageState extends State<RecordsPage> {
       final int currentWeekday = now.weekday;
 
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
-      // Date - Workouts that happened that day?
+      
+      weekData = List.filled(7, null);
+      
       for (int i = 0; i < 7; i++) {
         final date = mondayDate.add(Duration(days: i));
         print('Fetching data for: $date, UserID: ${widget.uuid}');
-        // weekData[i] = await _recordService.getWorkoutRecord(widget.uuid, date);
+        weekData[i] = await _recordService.getWorkoutRecord(widget.uuid, date);
         print('Data for $date: ${weekData[i]}');
       }
 
@@ -272,12 +291,11 @@ class _RecordsPageState extends State<RecordsPage> {
             _focusedDay = focusedDay;
             selectedDate = selectedDay;
 
-            // Update the weekday selector too
             if (selectedDay.weekday >= 1 && selectedDay.weekday <= 7) {
               this.selectedDay = selectedDay.weekday - 1;
             }
 
-            // In a real implementation, you'd fetch data for the selected day here
+            // In a real implementation, will fetch data for the selected day here
           });
         },
         onFormatChanged: (format) {
@@ -394,28 +412,27 @@ class _RecordsPageState extends State<RecordsPage> {
   LineChartData _createLineChartData(String metricType, Color color) {
     List<FlSpot> spots = [];
 
-    // Define different ranges and units based on metric type
     double maxValue;
     String unit;
     bool useIntegers = false;
 
     switch (metricType.toLowerCase()) {
       case "steps":
-        maxValue = 10000; // Max steps around 10,000
+        maxValue = 10000;
         unit = "steps";
-        useIntegers = true; // Use integers for steps
+        useIntegers = true;
         break;
       case "calories":
-        maxValue = 1000; // Max calories around 1,000
+        maxValue = 1000;
         unit = "kcal";
         break;
       case "distance":
-        maxValue = 10.0; // Max distance around 10 miles
+        maxValue = 10.0;
         unit = "mi";
         break;
       case "avgspeed":
       case "average speed":
-        maxValue = 10.0; // Max speed around 10 mph
+        maxValue = 10.0;
         unit = "mph";
         break;
       default:
@@ -423,7 +440,6 @@ class _RecordsPageState extends State<RecordsPage> {
         unit = "";
     }
 
-    // Set appropriate y-axis intervals based on max value
     double interval;
     if (maxValue <= 10) {
       interval = 2.0;
@@ -435,13 +451,12 @@ class _RecordsPageState extends State<RecordsPage> {
       interval = 2000.0;
     }
 
-    // Generate data points for each hour with appropriate scaling
     for (int hour = 0; hour < 24; hour++) {
       // we will use actual data from backend later
       // For now, we'll simulate with a scaled sine wave
-      double baseValue = maxValue * 0.3; // Base value at 30% of max
-      double amplitude = maxValue * 0.2; // Amplitude is 20% of max
-      double phase = hour / 24.0 * 2 * math.pi; // Convert to radians
+      double baseValue = maxValue * 0.3;
+      double amplitude = maxValue * 0.2;
+      double phase = hour / 24.0 * 2 * math.pi;
 
       double value = baseValue + amplitude * (0.5 + 0.5 * math.sin(phase));
 
@@ -474,7 +489,7 @@ class _RecordsPageState extends State<RecordsPage> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 2, // Show every 2 hours
+            interval: 2,
             getTitlesWidget: (value, meta) {
               final int hour = value.toInt();
               return Padding(
@@ -490,15 +505,13 @@ class _RecordsPageState extends State<RecordsPage> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 35, // Increased for larger numbers
+            reservedSize: 35,
             interval: interval,
             getTitlesWidget: (value, meta) {
-              // Format integer values without decimal places
               String formattedValue =
                   useIntegers
                       ? value.toInt().toString()
                       : value.toStringAsFixed(1);
-
               return Text(
                 formattedValue,
                 style: TextStyle(fontSize: 9, color: Colors.grey),
@@ -520,7 +533,6 @@ class _RecordsPageState extends State<RecordsPage> {
               final int hour = touchedSpot.x.toInt();
               final int nextHour = (hour + 1) % 24;
 
-              // Format the value based on the metric type
               String formattedValue =
                   useIntegers
                       ? touchedSpot.y.toInt().toString()
@@ -547,7 +559,6 @@ class _RecordsPageState extends State<RecordsPage> {
           dotData: FlDotData(
             show: true,
             checkToShowDot: (spot, barData) {
-              // Always false by default - dots will only show when touched
               return false;
             },
             getDotPainter: (spot, percent, barData, index) {
@@ -572,7 +583,6 @@ class _RecordsPageState extends State<RecordsPage> {
     );
   }
 
-  // Helper function for calendar
   bool isSameDay(DateTime? a, DateTime? b) {
     if (a == null || b == null) {
       return false;
