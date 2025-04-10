@@ -7,9 +7,12 @@ plugins {
 
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
-    implementation(files("libs/spotify-app-remote-release-0.8.0.aar"))
-    implementation(("com.spotify.android:auth:2.1.0" ))
+    implementation("com.github.spotify.android-sdk:app-remote-lib:v0.8.0-appremote_v2.1.0-auth")
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
 }
+
+
 
 android {
     namespace = "com.example.medrhythms"
@@ -38,8 +41,13 @@ android {
     }
 
     buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("debug")
+        getByName("release") {
+            isMinifyEnabled = false
+            isShrinkResources = false   // Disable resource shrinking
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 

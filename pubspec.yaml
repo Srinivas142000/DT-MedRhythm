@@ -45,6 +45,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   geekyants_flutter_gauges: ^1.0.4
+  flutter_dotenv: ^5.2.1
+  geolocator: ^13.0.4
 
 dev_dependencies:
   flutter_test:
