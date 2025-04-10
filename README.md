@@ -47,7 +47,7 @@ The **MedRhythms Project** is a cross-platform mobile application designed to su
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/<your_username>/medrhythms-project.git
+git clone (https://github.com/Srinivas142000/DT-MedRhythm.git)
 cd medrhythms-project
 ```
 
