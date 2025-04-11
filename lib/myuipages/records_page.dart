@@ -9,67 +9,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
 import 'dart:math';
 
-// Add chart skeleton painter for loading placeholder
-class ChartSkeletonPainter extends CustomPainter {
-  final Color color;
-  
-  ChartSkeletonPainter(this.color);
-  
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 2.0
-      ..style = PaintingStyle.stroke;
-    
-    // Draw grid lines
-    for (int i = 1; i < 5; i++) {
-      double y = size.height * i / 5;
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        paint..color = color.withOpacity(0.3),
-      );
-    }
-    
-    // Draw baseline
-    canvas.drawLine(
-      Offset(0, size.height),
-      Offset(size.width, size.height),
-      paint..color = color.withOpacity(0.5),
-    );
-    
-    // Draw Y-axis
-    canvas.drawLine(
-      Offset(0, 0),
-      Offset(0, size.height),
-      paint..color = color.withOpacity(0.5),
-    );
-    
-    // Draw a dummy wavy line to simulate chart
-    final path = Path();
-    path.moveTo(0, size.height * 0.8);
-    
-    for (int i = 0; i < size.width.toInt(); i += 10) {
-      double x = i.toDouble();
-      double normalizedX = x / size.width;
-      double y = size.height * (0.8 - 0.2 * sin(normalizedX * 3 * pi));
-      path.lineTo(x, y);
-    }
-    
-    canvas.drawPath(
-      path,
-      paint
-        ..color = color.withOpacity(0.7)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-  }
-  
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
 class RecordsPage extends StatefulWidget {
   final String uuid;
   final Map<String, dynamic> userData;
@@ -333,284 +272,143 @@ class _RecordsPageState extends State<RecordsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Records'),
-        backgroundColor: Colors.green,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.calendar_today),
-            onPressed: () {
-              // TODO: Implement calendar view
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildWeekDaySelector(),
-            Expanded(
-              child: isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : _buildPageContent(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWeekDaySelector() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
-        vertical: 8.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(7, (index) {
-          return _buildDaySelector(index);
-        }),
-      ),
-    );
-  }
-
-  Widget _buildDaySelector(int index) {
-    bool isSelected = selectedDay == index;
-
-    return GestureDetector(
-      onTap: () => _selectDay(index),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? ChartColors.steps : Colors.transparent,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Text(
-          WeekDays.labels[index],
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPageContent() {
-    return Column(
-      children: [
-        if (showCalendar)
-          _buildCalendar()
-        else
-          _buildWeekDaySelector(),
-
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                if (activeCharts[0])
-                  _buildMetricChart(
-                    ChartTypes.all[0],
-                    (weekData[selectedDay]?['totalSteps'] ?? 0)
-                        .toString(),
-                    "steps",
-                    ChartColors.steps,
-                  ),
-
-                if (activeCharts[1])
-                  _buildMetricChart(
-                    ChartTypes.all[1],
-                    (weekData[selectedDay]?['totalCalories'] ?? 0)
-                        .toStringAsFixed(2),
-                    "kcal",
-                    ChartColors.calories,
-                  ),
-
-                if (activeCharts[2])
-                  _buildMetricChart(
-                    ChartTypes.all[2],
-                    (weekData[selectedDay]?['totalDistance'] ?? 0)
-                        .toStringAsFixed(2),
-                    "mi",
-                    ChartColors.distance,
-                  ),
-
-                if (activeCharts[3])
-                  _buildMetricChart(
-                    ChartTypes.all[3],
-                    (weekData[selectedDay]?['averageSpeed'] ?? 0)
-                        .toStringAsFixed(2),
-                    "mph",
-                    ChartColors.speed,
-                  ),
-              ],
-            ),
-          ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 16.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OutlinedButton(
-                onPressed: () => _toggleChartCombination(0),
-                child: Text(
-                  "Steps and\nDistance",
-                  textAlign: TextAlign.center,
-                ),
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  side: BorderSide(color: Colors.green),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
-              ),
-
-              OutlinedButton(
-                onPressed: () => _toggleChartCombination(1),
-                child: Text(
-                  "Calories and\nAvgSpeed",
-                  textAlign: TextAlign.center,
-                ),
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  side: BorderSide(color: Colors.green),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        bb,
-      ],
-    );
-  }
-
-  Widget _buildLoadingPlaceholder() {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildMetricPlaceholder("Steps", "0", "steps", Colors.green),
-          
-          _buildMetricPlaceholder("Distance", "0.00", "mi", Colors.amber),
-          
-          _buildMetricPlaceholder("Calories", "0.00", "kcal", Colors.purple),
-          
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+      appBar: MedRhythmsAppBar(),
+      body:
+          isLoading
+              ? Center(child: CircularProgressIndicator())
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildToggleButton("Steps and\nDistance", false),
-                  SizedBox(width: 16),
-                  _buildToggleButton("Calories and\nAvgSpeed", false),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Records",
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.calendar_month),
+                          onPressed: _toggleCalendarView,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  if (showCalendar)
+                    _buildCalendar()
+                  else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(7, (index) {
+                          return _buildDaySelector(index);
+                        }),
+                      ),
+                    ),
+
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          if (activeCharts[0])
+                            _buildMetricChart(
+                              ChartTypes.all[0],
+                              (weekData[selectedDay]?['totalSteps'] ?? 0)
+                                  .toString(),
+                              "steps",
+                              ChartColors.steps,
+                            ),
+
+                          if (activeCharts[1])
+                            _buildMetricChart(
+                              ChartTypes.all[1],
+                              (weekData[selectedDay]?['totalCalories'] ?? 0)
+                                  .toStringAsFixed(2),
+                              "kcal",
+                              ChartColors.calories,
+                            ),
+
+                          if (activeCharts[2])
+                            _buildMetricChart(
+                              ChartTypes.all[2],
+                              (weekData[selectedDay]?['totalDistance'] ?? 0)
+                                  .toStringAsFixed(2),
+                              "mi",
+                              ChartColors.distance,
+                            ),
+
+                          if (activeCharts[3])
+                            _buildMetricChart(
+                              ChartTypes.all[3],
+                              (weekData[selectedDay]?['averageSpeed'] ?? 0)
+                                  .toStringAsFixed(2),
+                              "mph",
+                              ChartColors.speed,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 16.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () => _toggleChartCombination(0),
+                          child: Text(
+                            "Steps and\nDistance",
+                            textAlign: TextAlign.center,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            side: BorderSide(color: Colors.green),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+
+                        OutlinedButton(
+                          onPressed: () => _toggleChartCombination(1),
+                          child: Text(
+                            "Calories and\nAvgSpeed",
+                            textAlign: TextAlign.center,
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            side: BorderSide(color: Colors.green),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  bb,
                 ],
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMetricPlaceholder(String title, String value, String unit, Color color) {
-    return Container(
-      margin: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(width: 8),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
-              ),
-              SizedBox(width: 4),
-              Text(
-                unit,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Container(
-            height: 180,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.withOpacity(0.2)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: CustomPaint(
-              painter: ChartSkeletonPainter(color.withOpacity(0.2)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildToggleButton(String text, bool isActive) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.green.withOpacity(0.5),
-          width: 1,
-        ),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.purple,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
     );
   }
 
@@ -674,6 +472,28 @@ class _RecordsPageState extends State<RecordsPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           formatButtonTextStyle: TextStyle(color: ChartColors.steps),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDaySelector(int index) {
+    bool isSelected = selectedDay == index;
+
+    return GestureDetector(
+      onTap: () => _selectDay(index),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? ChartColors.steps : Colors.transparent,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Text(
+          WeekDays.labels[index],
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
         ),
       ),
     );

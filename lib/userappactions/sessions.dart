@@ -8,7 +8,7 @@ import 'package:geolocator/geolocator.dart';
 
 class Sessions {
   bool _isTracking = false;
-  List<HealthDataPoint> _liveData = [];
+  final List<HealthDataPoint> _liveData = [];
   final StreamController<Map<String, double>> _liveDataController =
       StreamController<Map<String, double>>.broadcast();
   final UserSession us = UserSession();
@@ -55,7 +55,7 @@ class Sessions {
             DateTime.now().difference(startTime) < selectedDuration) {
           DateTime now = DateTime.now();
           List<HealthDataPoint> data = await h.getHealthDataFromTypes(
-            startTime: now.subtract(Duration(seconds: 10)),
+            startTime: now.subtract(const Duration(seconds: 10)),
             endTime: now,
             types: Constants.healthDataTypes,
           );
@@ -152,7 +152,7 @@ class Sessions {
           }
 
           await Future.delayed(
-            Duration(seconds: 2),
+            const Duration(seconds: 2),
           ); // Collect data every 2 seconds
         }
         
@@ -167,7 +167,7 @@ class Sessions {
 
   // Function to calculate distance between two locations
   Future<double> calculateDistance(Position start, Position end) async {
-    double distanceInMeters = await Geolocator.distanceBetween(
+    double distanceInMeters = Geolocator.distanceBetween(
       start.latitude,
       start.longitude,
       end.latitude,
@@ -199,7 +199,7 @@ class Sessions {
       // await Future.delayed(Duration(minutes: 2));
       List<HealthDataPoint> data = await h.getHealthDataFromTypes(
         startTime: now.subtract(
-          selectedDuration + Duration(seconds: 10),
+          selectedDuration + const Duration(seconds: 10),
         ),
         endTime: now,
         types: Constants.healthDataTypes,
@@ -453,8 +453,8 @@ class Sessions {
     }
 
     // Periodic timer to sync data every 45 minutes
-    _autoSaveTimer = Timer.periodic(Duration(minutes: 45), (timer) async {
-      await syncSession(Duration(minutes: 45));
+    _autoSaveTimer = Timer.periodic(const Duration(minutes: 45), (timer) async {
+      await syncSession(const Duration(minutes: 45));
     });
   }
 }
