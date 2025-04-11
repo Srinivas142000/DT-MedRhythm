@@ -1,10 +1,12 @@
 import 'package:health/health.dart';
+import 'package:medrhythms/helpers/datasyncmanager.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
 import 'dart:async';
 import 'package:medrhythms/constants/constants.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Sessions {
   bool _isTracking = false;
@@ -17,6 +19,7 @@ class Sessions {
 
   String? _userId;
   Duration? _totalSelectedDuration;
+  DataSyncManager dsm = DataSyncManager();
 
   // Function to set the userId
   void setUserId(String userId) {
@@ -276,16 +279,33 @@ class Sessions {
 
       double totalSpeed = (totalDistance) / (60000); // Estimate speed
 
-      await csd.createSessionData(
-        user.userId.toString(),
-        now.subtract(_totalSelectedDuration! + selectedDuration),
-        now.subtract(selectedDuration),
-        totalSteps,
-        totalDistance,
-        totalCalories,
-        totalSpeed,
-        "Phone",
-      );
+      final isConnected =
+          await Connectivity().checkConnectivity() != ConnectivityResult.none;
+
+      if (isConnected) {
+        await csd.createSessionData(
+          user.userId.toString(),
+          now.subtract(_totalSelectedDuration! + selectedDuration),
+          now.subtract(selectedDuration),
+          totalSteps,
+          totalDistance,
+          totalCalories,
+          totalSpeed,
+          "Phone",
+        );
+      } else {
+        await dsm.store(
+          userId: user.userId.toString(),
+          startTime: now.subtract(_totalSelectedDuration! + selectedDuration),
+          endTime: now.subtract(selectedDuration),
+          steps: totalSteps,
+          distance: totalDistance,
+          calories: totalCalories,
+          speed: totalSpeed,
+          source: "Phone - Offline",
+        );
+        print("Offline: Session data stored locally for later upload.");
+      }
 
       print("📊 Daily Summary:");
       print("✅ Steps: $totalSteps");
