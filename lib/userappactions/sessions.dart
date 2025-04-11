@@ -11,17 +11,14 @@ class Sessions {
   List<HealthDataPoint> _liveData = [];
   final StreamController<Map<String, double>> _liveDataController =
       StreamController<Map<String, double>>.broadcast();
-  final UserSession us = UserSession();
+  UserSession us = UserSession();
   final CreateDataService csd = CreateDataService();
   Stream<Map<String, double>> get liveDataStream => _liveDataController.stream;
 
   String? _userId;
   Duration? _totalSelectedDuration;
-  Timer? _autoSaveTimer;
 
-  // TODO: Remove this when we have a real user id,this is just for testing
-  final String hardcodedUserId = "5750926c-4388-4f55-b9de-f61ed7973a22";
-
+  // Function to set the userId
   void setUserId(String userId) {
     _userId = userId;
   }
@@ -37,7 +34,6 @@ class Sessions {
   ) async {
     // Request permissions
     setUserId(userId);
-    setSelectedDuration(selectedDuration);
     bool permissionsGranted = us.hasPermissions;
     if (permissionsGranted) {
       // Check if Google Health Connect is available
@@ -45,11 +41,9 @@ class Sessions {
       if (authorized && permissionsGranted) {
         _isTracking = true;
         _liveData.clear();
-        print("Live workout tracking started.");
-        
         // Initialize previous location
         Position? previousLocation;
-        
+
         DateTime startTime = DateTime.now();
         while (_isTracking &&
             DateTime.now().difference(startTime) < selectedDuration) {
@@ -62,101 +56,58 @@ class Sessions {
           _liveData.addAll(data);
 
           // Get current location
-          try {
-            Position currentLocation = await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high,
+          Position currentLocation = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high,
+          );
+
+          // Calculate distance if previous location exists
+          double distance = 0;
+          if (previousLocation != null) {
+            distance = await calculateDistance(
+              previousLocation,
+              currentLocation,
             );
-
-            // Calculate distance if previous location exists
-            double distance = 0;
-            if (previousLocation != null) {
-              distance = await calculateDistance(
-                previousLocation,
-                currentLocation,
-              );
-            }
-
-            // Convert distance to steps (approx. 1 step = 0.762 meters)
-            double stepsFromDistance = distance / 0.762;
-
-            // Add steps from GPS to total steps
-            double totalSteps = 0;
-            double totalCalories = 0;
-            double totalDistance = 0;
-            double totalHeartRate = 0;
-
-            // Process health data
-            for (var dataPoint in _liveData) {
-              if (dataPoint.type == HealthDataType.STEPS) {
-                totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
-              } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-                totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
-              } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
-                totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
-              } else if (dataPoint.type == HealthDataType.HEART_RATE) {
-                totalHeartRate += (dataPoint.value as NumericHealthValue).numericValue;
-              }
-            }
-            
-            // Add GPS-based steps if health data steps are zero or unavailable
-            if (totalSteps == 0) {
-              totalSteps += stepsFromDistance;
-              // Also generate some estimated calories based on steps
-              if (totalCalories == 0) {
-                // Rough estimate: 0.04 calories per step
-                totalCalories += stepsFromDistance * 0.04;
-              }
-            }
-
-            // Add distance from GPS if health data distance is zero
-            if (totalDistance == 0) {
-              totalDistance += distance / 1000; // Convert to kilometers
-            }
-
-            _liveDataController.add({
-              'steps': totalSteps,
-              'calories': totalCalories,
-              'distance': totalDistance,
-              'heartRate': totalHeartRate,
-            });
-
-            // Update previous location
-            previousLocation = currentLocation;
-          } catch (e) {
-            print("Error getting location: $e");
-            
-            // Process available health data anyway
-            double totalSteps = 0;
-            double totalCalories = 0;
-            double totalDistance = 0;
-            double totalHeartRate = 0;
-            
-            for (var dataPoint in _liveData) {
-              if (dataPoint.type == HealthDataType.STEPS) {
-                totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
-              } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-                totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
-              } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
-                totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
-              } else if (dataPoint.type == HealthDataType.HEART_RATE) {
-                totalHeartRate += (dataPoint.value as NumericHealthValue).numericValue;
-              }
-            }
-            
-            _liveDataController.add({
-              'steps': totalSteps,
-              'calories': totalCalories,
-              'distance': totalDistance,
-              'heartRate': totalHeartRate,
-            });
           }
+
+          // Convert distance to steps (approx. 1 step = 0.762 meters)
+          double stepsFromDistance = distance / 0.762;
+
+          print("Steps: $stepsFromDistance");
+
+          // Add steps from GPS to total steps
+          double totalSteps = 0;
+          for (var dataPoint in _liveData) {
+            if (dataPoint.type == HealthDataType.STEPS) {
+              totalSteps += dataPoint.value as double;
+            }
+          }
+          totalSteps += stepsFromDistance;
+
+          double totalCalories = 0;
+          double totalHeartRate = 0;
+          for (var dataPoint in _liveData) {
+            if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
+              totalCalories += dataPoint.value as double;
+            } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+              totalHeartRate += dataPoint.value as double;
+            }
+          }
+
+          _liveDataController.add({
+            'steps': totalSteps,
+            'calories': totalCalories,
+            'distance': distance,
+            'heartRate': totalHeartRate,
+          });
+
+          // Update previous location
+          previousLocation = currentLocation;
 
           await Future.delayed(
             Duration(seconds: 2),
           ); // Collect data every 2 seconds
         }
-        
-        await stopLiveWorkout(userId, selectedDuration);
+        await stopLiveWorkout(h, userId, selectedDuration);
       } else {
         print("Authorization not granted for live tracking.");
       }
@@ -177,93 +128,54 @@ class Sessions {
   }
 
   Future<void> stopLiveWorkout(
+    Health h,
     String userId,
     Duration selectedDuration,
   ) async {
     _isTracking = false;
     print("Live workout tracking stopped.");
     double totalSteps = 0;
+    // Ensure the singleton instance of UserSession is used
+    UserSession us = UserSession();
     double totalCalories = 0;
     double totalDistance = 0;
     double totalHeartRate = 0;
     DateTime now = DateTime.now();
-    
-    try {
-      Health h = Health();
-      bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
-      if (!authorized) {
-        print("Authorization not granted for health data access");
-        return;
+    // await Future.delayed(Duration(minutes: 2));
+    List<HealthDataPoint> data = await h.getHealthDataFromTypes(
+      startTime: now.subtract(
+        selectedDuration + Duration(seconds: 10) + Duration(minutes: 8),
+      ),
+      endTime: now,
+      types: Constants.healthDataTypes,
+    );
+    _liveData.addAll(data);
+    for (var dataPoint in _liveData) {
+      if (dataPoint.type == HealthDataType.STEPS) {
+        totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
+      } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
+        totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
+      } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
+        totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
+      } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+        totalHeartRate += (dataPoint.value as NumericHealthValue).numericValue;
       }
-      
-      // await Future.delayed(Duration(minutes: 2));
-      List<HealthDataPoint> data = await h.getHealthDataFromTypes(
-        startTime: now.subtract(
-          selectedDuration + Duration(seconds: 10),
-        ),
-        endTime: now,
-        types: Constants.healthDataTypes,
-      );
-      _liveData.addAll(data);
-      
-      bool hasRealData = false;
-      
-      for (var dataPoint in _liveData) {
-        if (dataPoint.type == HealthDataType.STEPS) {
-          totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
-          hasRealData = true;
-        } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-          totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
-          hasRealData = true;
-        } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
-          totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
-          hasRealData = true;
-        } else if (dataPoint.type == HealthDataType.HEART_RATE) {
-          totalHeartRate += (dataPoint.value as NumericHealthValue).numericValue;
-          hasRealData = true;
-        }
-      }
-      
-      if (!hasRealData || (totalSteps == 0 && totalCalories == 0 && totalDistance == 0)) {
-        print("No real health data detected, generating mock data for emulator");
-        
-        double minutes = selectedDuration.inMinutes.toDouble();
-        if (minutes <= 0) minutes = 10;
-        
-        totalSteps = minutes * 100;
-        totalCalories = minutes * 5;
-        totalDistance = minutes * 0.05;
-        
-        print('Generated mock data - Steps: $totalSteps, Calories: $totalCalories, Distance: $totalDistance');
-      } else {
-        print('Real data detected - Steps: $totalSteps, Calories: $totalCalories, Distance: $totalDistance');
-      }
-      
-      double speed = selectedDuration.inSeconds > 0 
-        ? totalDistance / (selectedDuration.inSeconds / 3600) 
-        : 0;
-      
-      await csd.createSessionData(
-        userId.toString(),
-        now.subtract(selectedDuration),
-        now,
-        totalSteps,
-        totalDistance,
-        totalCalories,
-        speed,
-        "Phone",
-      );
-      
-      print("📊 Session data saved to database:");
-      print("✅ Steps: $totalSteps");
-      print("🔥 Calories: $totalCalories Kcal");
-      print("📏 Distance: $totalDistance miles");
-      print("🚶‍♂️ Speed: $speed mph");
-      
-      _liveData.clear();
-    } catch(e) {
-      print("Error stopping workout: $e");
     }
+    print('Total Steps: $totalSteps');
+    print('Total Calories Burned: $totalCalories');
+    print('Total Distance: $totalDistance');
+    print('Total Heart Rate: $totalHeartRate');
+    await csd.createSessionData(
+      userId.toString(),
+      DateTime.now().subtract(selectedDuration), // Example start time
+      DateTime.now(), // End time
+      totalSteps,
+      totalDistance,
+      totalCalories,
+      (totalDistance / (10 * 60)), // Speed estimate
+      "Phone",
+    );
+    _liveData.clear();
   }
 
   Future<void> collectDailyHealthData(Health h, Uuid userId) async {
@@ -305,7 +217,7 @@ class Sessions {
         totalSteps,
         totalDistance,
         totalCalories,
-        (totalDistance / (24 * 60 * 60)),
+        (totalDistance / (24 * 60 * 60)), // Average speed per second
         "Phone",
       );
     } else {
@@ -322,7 +234,7 @@ class Sessions {
     if (_totalSelectedDuration != null) {
       _totalSelectedDuration = _totalSelectedDuration! + selectedDuration;
     } else {
-      _totalSelectedDuration = selectedDuration;
+      _totalSelectedDuration = Duration(minutes: 1);
     }
 
     // Check if _totalSelectedDuration and userId are not null
@@ -336,96 +248,50 @@ class Sessions {
       return;
     }
 
-    try {
-      bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
-      if (!authorized) {
-        print("Authorization not granted for health data access");
-        return;
+    List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
+      startTime: now.subtract(
+        Duration(minutes: selectedDuration.inMinutes + 10),
+      ),
+      endTime: now,
+      types: Constants.healthDataTypes,
+    );
+    double totalSteps = 0;
+    double totalCalories = 0;
+    double totalDistance = 0;
+    double totalHeartRate = 0;
+
+    if (healthData.isNotEmpty) {
+      for (var dataPoint in healthData) {
+        if (dataPoint.type == HealthDataType.STEPS) {
+          totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
+        } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
+          totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
+        } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
+          totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
+        } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+          totalHeartRate +=
+              (dataPoint.value as NumericHealthValue).numericValue;
+        }
       }
 
-      // Calculate time range for data collection
-      DateTime startTime = now.subtract(selectedDuration);
-      DateTime endTime = now;
+      double totalSpeed = (totalDistance) / (60000); // Estimate speed
 
-      List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
-        startTime: startTime,
-        endTime: endTime,
-        types: Constants.healthDataTypes,
+      await csd.createSessionData(
+        user.userId.toString(),
+        now.subtract(_totalSelectedDuration! + selectedDuration),
+        now.subtract(selectedDuration),
+        totalSteps,
+        totalDistance,
+        totalCalories,
+        totalSpeed,
+        "Phone",
       );
-      
-      double totalSteps = 0;
-      double totalCalories = 0;
-      double totalDistance = 0;
-      double totalHeartRate = 0;
 
-      if (healthData.isNotEmpty) {
-        for (var dataPoint in healthData) {
-          if (dataPoint.type == HealthDataType.STEPS) {
-            totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
-          } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-            totalCalories += (dataPoint.value as NumericHealthValue).numericValue;
-          } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
-            totalDistance += (dataPoint.value as NumericHealthValue).numericValue;
-          } else if (dataPoint.type == HealthDataType.HEART_RATE) {
-            totalHeartRate += (dataPoint.value as NumericHealthValue).numericValue;
-          }
-        }
-
-        // Add location-based data if health data is insufficient
-        try {
-          // Get a sample of current location (this is just to estimate, not precise tracking)
-          Position currentPosition = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.medium,
-          );
-          
-          // If no steps recorded, estimate based on time
-          if (totalSteps == 0) {
-            double minutes = selectedDuration.inMinutes.toDouble();
-            if (minutes > 0) {
-              // Assume average walking pace of 100 steps per minute
-              totalSteps = minutes * 100; 
-              
-              // If no calories recorded, estimate based on steps
-              if (totalCalories == 0) {
-                totalCalories = totalSteps * 0.04; // ~0.04 calories per step
-              }
-              
-              // If no distance recorded, estimate based on steps
-              if (totalDistance == 0) {
-                totalDistance = totalSteps * 0.762 / 1000; // ~0.762m per step, convert to km
-              }
-            }
-          }
-        } catch (e) {
-          print("Could not get location data: $e");
-        }
-        
-        // Calculate speed in a safer way
-        double totalSpeed = selectedDuration.inSeconds > 0 
-          ? totalDistance / (selectedDuration.inSeconds / 3600) 
-          : 0;
-
-        await csd.createSessionData(
-          user.userId.toString(),
-          startTime,
-          endTime,
-          totalSteps,
-          totalDistance,
-          totalCalories,
-          totalSpeed,
-          "Phone",
-        );
-
-        print("📊 Data Synced:");
-        print("✅ Steps: $totalSteps");
-        print("🔥 Calories: $totalCalories Kcal");
-        print("📏 Distance: $totalDistance meters");
-        print("🚶‍♂️ Speed: $totalSpeed Kmph");
-      } else {
-        print("No health data found for the specified time period");
-      }
-    } catch (e) {
-      print("Error syncing session: $e");
+      print("📊 Daily Summary:");
+      print("✅ Steps: $totalSteps");
+      print("🔥 Calories: $totalCalories Kcal");
+      print("📏 Distance: $totalDistance meters");
+      print("🚶‍♂️ Speed: $totalSpeed Kmph");
     }
   }
 
@@ -433,12 +299,13 @@ class Sessions {
     UserSession user = UserSession();
     final CreateDataService csd = CreateDataService();
     Health h = Health();
+    DateTime now = DateTime.now();
 
     // Ensure _totalSelectedDuration is initialized
     if (_totalSelectedDuration != null) {
       _totalSelectedDuration = _totalSelectedDuration! + selectedDuration;
     } else {
-      _totalSelectedDuration = selectedDuration;
+      _totalSelectedDuration = Duration(minutes: 1);
     }
 
     // Check if _totalSelectedDuration and userId are not null
@@ -453,8 +320,59 @@ class Sessions {
     }
 
     // Periodic timer to sync data every 45 minutes
-    _autoSaveTimer = Timer.periodic(Duration(minutes: 45), (timer) async {
-      await syncSession(Duration(minutes: 45));
+    Timer.periodic(Duration(minutes: 45), (timer) async {
+      DateTime now = DateTime.now();
+
+      List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
+        startTime: now.subtract(
+          Duration(minutes: selectedDuration.inMinutes + 10),
+        ),
+        endTime: now,
+        types: Constants.healthDataTypes,
+      );
+
+      double totalSteps = 0;
+      double totalCalories = 0;
+      double totalDistance = 0;
+      double totalHeartRate = 0;
+
+      if (healthData.isNotEmpty) {
+        for (var dataPoint in healthData) {
+          if (dataPoint.type == HealthDataType.STEPS) {
+            totalSteps += (dataPoint.value as NumericHealthValue).numericValue;
+          } else if (dataPoint.type == HealthDataType.TOTAL_CALORIES_BURNED) {
+            totalCalories +=
+                (dataPoint.value as NumericHealthValue).numericValue;
+          } else if (dataPoint.type == HealthDataType.DISTANCE_DELTA) {
+            totalDistance +=
+                (dataPoint.value as NumericHealthValue).numericValue;
+          } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+            totalHeartRate +=
+                (dataPoint.value as NumericHealthValue).numericValue;
+          }
+        }
+
+        double totalSpeed = (totalDistance) / (60000); // Estimate speed
+
+        await csd.createSessionData(
+          user.userId.toString(),
+          now.subtract(_totalSelectedDuration! + selectedDuration),
+          now.subtract(selectedDuration),
+          totalSteps,
+          totalDistance,
+          totalCalories,
+          totalSpeed,
+          "Phone",
+        );
+
+        print("📊 Automatic Sync Summary:");
+        print("✅ Steps: $totalSteps");
+        print("🔥 Calories: $totalCalories Kcal");
+        print("📏 Distance: $totalDistance meters");
+        print("🚶‍♂️ Speed: $totalSpeed Kmph");
+      } else {
+        print("No health data available for sync.");
+      }
     });
   }
 }

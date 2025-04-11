@@ -29,8 +29,7 @@
     <application
         android:label="medrhythms"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:enableOnBackInvokedCallback="true">
+        android:icon="@mipmap/ic_launcher">
 
         <!-- Main Activity -->
         <activity
@@ -57,6 +56,14 @@
             <intent-filter>
                 <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="${appAuthRedirectScheme}"
+                    android:host="${redirectSchemeName}" />
+                </intent-filter>
         </activity>
 
         <!-- Health Connect Permission Usage Activity -->
