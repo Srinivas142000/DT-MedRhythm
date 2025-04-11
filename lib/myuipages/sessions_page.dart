@@ -7,6 +7,7 @@ import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
 import 'package:medrhythms/myuipages/sync_button.dart';
+import 'package:medrhythms/spotify/spotify_service.dart';
 
 Health h = new Health();
 
