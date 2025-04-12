@@ -37,7 +37,7 @@ android {
 
 
         // manifestPlaceholders[appAuthRedirectSchemeName] = "spotify-sdk"
-        manifestPlaceholders["appAuthRedirectScheme"] = "com.redirectScheme.comm"
+        manifestPlaceholders["appAuthRedirectScheme"] = "com.medrhythms.spotifycallback"
         manifestPlaceholders["redirectHostName"] = "auth"
         manifestPlaceholders["redirectSchemeName"] = "medrhythms"
 
