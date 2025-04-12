@@ -39,6 +39,7 @@ class FirestoreServiceRead {
         "error": e.toString(),
       }; // Return a JSON object with an error message
     }
+    return null;
   }
 
   // Method to fetch session data and calculate sums and averages

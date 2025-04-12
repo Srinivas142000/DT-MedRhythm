@@ -1,5 +1,7 @@
+
 import 'package:health/health.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/spotify/spotify_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
 import 'dart:async';
@@ -30,6 +32,34 @@ class Sessions {
     _totalSelectedDuration = selectedDuration;
   }
 
+  /// Compute average BPM from a list of recent health data points.
+  double _computeRecentBpm(List<HealthDataPoint> recentData) {
+    double totalBpm = 0;
+    int count = 0;
+    for (var dp in recentData) {
+      if (dp.type == HealthDataType.HEART_RATE) {
+        double value = dp.value is double
+            ? dp.value as double
+            : (dp.value as num).toDouble();
+        totalBpm += value;
+        count++;
+      }
+    }
+    return count > 0 ? totalBpm / count : 0;
+  }
+
+  // Helper to map a BPM value into a range label.
+  String _getBpmRange(double bpm) {
+    if (bpm < 100) {
+      return "low";
+    } else if (bpm < 120) {
+      return "medium";
+    } else {
+      return "high";
+    }
+  }
+
+
   Future<void> startLiveWorkout(
     Health h,
     String userId,
@@ -51,6 +81,13 @@ class Sessions {
         Position? previousLocation;
         
         DateTime startTime = DateTime.now();
+
+        // Initialize Spotify Service and (optionally) authenticate
+        final spotifyService = SpotifyService();
+        await spotifyService.authenticateSpotify();
+        
+        // Define an initial BPM range – you could initialize this with a default or based on the first data sample.
+        String previousBpmRange = "medium"; // Default starting range
         while (_isTracking &&
             DateTime.now().difference(startTime) < selectedDuration) {
           DateTime now = DateTime.now();
@@ -120,6 +157,17 @@ class Sessions {
               'heartRate': totalHeartRate,
             });
 
+            // --- Begin Dynamic BPM Check ---
+            // Compute the average BPM from this recent data window.
+            double currentBpm = _computeRecentBpm(data);
+            String newBpmRange = _getBpmRange(currentBpm);
+            // If the user’s BPM range has shifted, skip to the next song.
+            if (newBpmRange != previousBpmRange && currentBpm > 0) {
+              print("BPM range changed from $previousBpmRange to $newBpmRange. Changing song...");
+              await spotifyService.skipNext();
+              previousBpmRange = newBpmRange;
+            }
+
             // Update previous location
             previousLocation = currentLocation;
           } catch (e) {
@@ -156,7 +204,7 @@ class Sessions {
           ); // Collect data every 2 seconds
         }
         
-        await stopLiveWorkout(userId, selectedDuration);
+        await stopLiveWorkout(h,userId, selectedDuration);
       } else {
         print("Authorization not granted for live tracking.");
       }
@@ -177,11 +225,17 @@ class Sessions {
   }
 
   Future<void> stopLiveWorkout(
+    Health h,
     String userId,
     Duration selectedDuration,
   ) async {
     _isTracking = false;
     print("Live workout tracking stopped.");
+
+    // Stop the music when the session ends.
+    final spotifyService = SpotifyService();
+    await spotifyService.pausePlayback();
+
     double totalSteps = 0;
     double totalCalories = 0;
     double totalDistance = 0;
