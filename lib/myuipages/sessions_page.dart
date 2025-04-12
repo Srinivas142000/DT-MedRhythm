@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
+import 'package:medrhythms/constants/constants.dart';
 import 'dart:async';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
 import 'package:medrhythms/myuipages/sync_button.dart';
-import 'package:medrhythms/spotify/spotify_service.dart';
 
 Health h = new Health();
 
@@ -25,6 +25,30 @@ class _SessionsPageState extends State<SessionsPage> {
   Duration selectedDuration = Duration.zero;
   Bottombar bb = Bottombar();
   Sessions s = new Sessions();
+
+
+  /// Gather a short sample of health data and compute an initial BPM.
+  Future<double> getInitialBpm(Health health) async {
+    DateTime now = DateTime.now();
+    List<HealthDataPoint> data = await health.getHealthDataFromTypes(
+      startTime: now.subtract(Duration(seconds: 10)),
+      endTime: now,
+      types: Constants.healthDataTypes,
+    );
+    double totalBpm = 0;
+    int count = 0;
+    for (var dp in data) {
+      if (dp.type == HealthDataType.HEART_RATE) {
+        double value = dp.value is double ? dp.value as double : (dp.value as num).toDouble();
+        totalBpm += value;
+        count++;
+      }
+    }
+    // Use a default value if no data is available.
+    double computedBpm = count > 0 ? totalBpm / count : 110.0;
+    print("Initial BPM computed: $computedBpm");
+    return computedBpm;
+  }
 
   Future<void> _selectTime(BuildContext context) async {
     showModalBottomSheet(
@@ -179,6 +203,11 @@ class _NextPageState extends State<NextPage> {
   }
 
   void _endSession(Sessions s, Duration selectedDuration) async {
+    final userId = UserSession().userId;
+    if (userId == null) {
+      print("User ID is null during session end.");
+      return;
+    }
     await s.stopLiveWorkout(h, UserSession().userId!, selectedDuration);
     if (mounted) {
       Navigator.pushReplacement(

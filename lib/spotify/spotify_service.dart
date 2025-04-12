@@ -7,7 +7,7 @@ class SpotifyService {
     try {
       await SpotifySdk.connectToSpotifyRemote(
         clientId: "efb55f4d1e874d6fb5fbfdafc57fbaab",
-        redirectUrl: "medrhythms://spotifycallback",
+        redirectUrl: "https//:medrhythms.com/spotifycallback",
       );
       isConnected = true;
       print("Connected to Spotify!");

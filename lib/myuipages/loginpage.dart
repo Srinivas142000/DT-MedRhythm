@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
-import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/spotify/spotify_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -52,6 +52,9 @@ class _LoginPageState extends State<LoginPage> {
       if (userData != null && userData.containsKey("userId")) {
         UserSession().userId = userData["userId"];
         UserSession().userData = userData;
+
+        SpotifyService spotifyService = SpotifyService();
+        await spotifyService.authenticateSpotify();
 
         Navigator.pushNamedAndRemoveUntil(
           context,
