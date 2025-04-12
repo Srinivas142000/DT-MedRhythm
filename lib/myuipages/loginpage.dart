@@ -50,17 +50,15 @@ class _LoginPageState extends State<LoginPage> {
       var userData = await firestoreService.checkUserSessionRegistry(imei);
 
       if (userData != null && userData.containsKey("userId")) {
+        // Store userId in Singleton
         UserSession().userId = userData["userId"];
-        UserSession().userData = userData;
 
-        Navigator.pushNamedAndRemoveUntil(
+        Navigator.pushReplacement(
           context,
-          '/sessions',
-          (route) => false,
-          arguments: {
-            'uuid': userData["userId"],
-            'userData': userData,
-          },
+          MaterialPageRoute(
+            builder: (context) =>
+                SessionsPage(userData: userData, uuid: UserSession().userId!),
+          ),
         );
       } else {
         setState(() {
