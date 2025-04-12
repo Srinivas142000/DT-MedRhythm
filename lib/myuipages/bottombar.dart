@@ -3,8 +3,10 @@ import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/records_page.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
+import 'package:medrhythms/myuipages/export_settings.dart';
 
 FirestoreServiceRead fsr = FirestoreServiceRead();
+ExportSettingsPage esp = ExportSettingsPage();
 
 class Bottombar extends StatelessWidget {
   @override
@@ -20,7 +22,7 @@ class Bottombar extends StatelessWidget {
               String? uuid = UserSession().userId;
               if (uuid != null && UserSession().userData != null) {
                 Navigator.pop(context);
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder:
@@ -61,6 +63,10 @@ class Bottombar extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ExportSettingsPage()),
+              );
               // Handle settings button press
             },
           ),

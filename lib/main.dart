@@ -40,6 +40,7 @@ Future<bool> _requestHealthPermissions() async {
         Permission.activityRecognition,
         Permission.sensors,
         Permission.location,
+        Permission.manageExternalStorage,
       ].request();
   bool systemPermissionsGranted = statuses.values.every(
     (status) => status.isGranted,
@@ -62,5 +63,10 @@ Future<bool> _requestHealthPermissions() async {
     Constants.healthDataTypes,
     permissions: permissions,
   );
+
+  if (await Permission.manageExternalStorage.isPermanentlyDenied) {
+    await openAppSettings();
+  }
+
   return systemPermissionsGranted && healthPermissionsGranted;
 }
