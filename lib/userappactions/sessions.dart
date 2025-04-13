@@ -1,10 +1,12 @@
 import 'package:health/health.dart';
+import 'package:medrhythms/helpers/datasyncmanager.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
 import 'dart:async';
 import 'package:medrhythms/constants/constants.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Sessions {
   bool _isTracking = false;
@@ -17,6 +19,7 @@ class Sessions {
 
   String? _userId;
   Duration? _totalSelectedDuration;
+  DataSyncManager dsm = DataSyncManager();
   Timer? _autoSaveTimer;
 
   void setUserId(String userId) {
@@ -340,6 +343,71 @@ class Sessions {
         return;
       }
 
+      double totalSpeed = (totalDistance) / (60000); // Estimate speed
+
+      final isConnected =
+          await Connectivity().checkConnectivity() != ConnectivityResult.none;
+
+      if (isConnected) {
+        await csd.createSessionData(
+          user.userId.toString(),
+          now.subtract(_totalSelectedDuration! + selectedDuration),
+          now.subtract(selectedDuration),
+          totalSteps,
+          totalDistance,
+          totalCalories,
+          totalSpeed,
+          "Phone",
+        );
+      } else {
+        await dsm.store(
+          userId: user.userId.toString(),
+          startTime: now.subtract(_totalSelectedDuration! + selectedDuration),
+          endTime: now.subtract(selectedDuration),
+          steps: totalSteps,
+          distance: totalDistance,
+          calories: totalCalories,
+          speed: totalSpeed,
+          source: "Phone - Offline",
+        );
+        print("Offline: Session data stored locally for later upload.");
+      }
+
+      print("📊 Daily Summary:");
+      print("✅ Steps: $totalSteps");
+      print("🔥 Calories: $totalCalories Kcal");
+      print("📏 Distance: $totalDistance meters");
+      print("🚶‍♂️ Speed: $totalSpeed Kmph");
+    }
+  }
+
+  Future<void> syncSessionInBackground(Duration selectedDuration) async {
+    UserSession user = UserSession();
+    final CreateDataService csd = CreateDataService();
+    Health h = Health();
+    DateTime now = DateTime.now();
+
+    // Ensure _totalSelectedDuration is initialized
+    if (_totalSelectedDuration != null) {
+      _totalSelectedDuration = _totalSelectedDuration! + selectedDuration;
+    } else {
+      _totalSelectedDuration = Duration(minutes: 1);
+    }
+
+    // Check if _totalSelectedDuration and userId are not null
+    if (_totalSelectedDuration == null) {
+      print("Error: _totalSelectedDuration is null.");
+      return;
+    }
+
+    if (user.userId == null) {
+      print("Error: userId is null.");
+      return;
+    }
+
+    // Periodic timer to sync data every 45 minutes
+    Timer.periodic(Duration(minutes: 45), (timer) async {
+      DateTime now = DateTime.now();
       // Calculate time range for data collection
       DateTime startTime = now.subtract(selectedDuration);
       DateTime endTime = now;

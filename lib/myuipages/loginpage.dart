@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medrhythms/helpers/datasyncmanager.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
 import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
@@ -14,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController imeiController = TextEditingController();
   final FirestoreServiceRead firestoreService = FirestoreServiceRead();
+  final DataSyncManager dsm = DataSyncManager();
 
   bool isLoading = false;
   String errorMessage = '';
@@ -28,18 +30,18 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     //IMEI number must be 15 digits
-    if (imei.length != 15){
+    if (imei.length != 15) {
       setState(() {
         errorMessage = "IMEI must be 15 digits";
       });
       return;
     }
     //IMEI can only be digits
-    if (!RegExp(r'^[0-9]{15}$').hasMatch(imei)){
-    setState(() {
-      errorMessage = "IMEI must contain only digits!";
-    });
-    return;
+    if (!RegExp(r'^[0-9]{15}$').hasMatch(imei)) {
+      setState(() {
+        errorMessage = "IMEI must contain only digits!";
+      });
+      return;
     }
     setState(() {
       isLoading = true;
@@ -48,7 +50,8 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       var userData = await firestoreService.checkUserSessionRegistry(imei);
-
+      // check if any past data is not uploaded
+      await dsm.upload();
       if (userData != null && userData.containsKey("userId")) {
         UserSession().userId = userData["userId"];
         UserSession().userData = userData;
@@ -81,31 +84,30 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MedRhythmsAppBar(),
-        body: Container(
-            height: double.infinity,
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  controller: imeiController,
-                  decoration: InputDecoration(
-                    labelText: "Enter IMEI",
-                    border: OutlineInputBorder(),
-                    errorText: errorMessage.isNotEmpty ? errorMessage : null,
-                  ),
-                ),
-                SizedBox(height: 20),
-                isLoading
-                    ? CircularProgressIndicator()
-                    : ElevatedButton(
-                        onPressed: login,
-                        child: Text("Login"),
-                      ),
-              ],
-            )));
+      appBar: MedRhythmsAppBar(),
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: imeiController,
+              decoration: InputDecoration(
+                labelText: "Enter IMEI",
+                border: OutlineInputBorder(),
+                errorText: errorMessage.isNotEmpty ? errorMessage : null,
+              ),
+            ),
+            SizedBox(height: 20),
+            isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(onPressed: login, child: Text("Login")),
+          ],
+        ),
+      ),
+    );
   }
 }
