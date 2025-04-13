@@ -3,9 +3,11 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
-// import 'package:medrhythms/services/record_service.dart';
 import 'package:medrhythms/constants/constants.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
+import 'dart:math';
 
 class RecordsPage extends StatefulWidget {
   final String uuid;
@@ -18,28 +20,69 @@ class RecordsPage extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RecordsPage> {
-  Bottombar bb = Bottombar();
+  Bottombar bb = Bottombar(currentIndex: 1);
+
+  CalendarFormat _calendarFormat = CalendarFormat.week;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  bool showCalendar = false;
 
   DateTime selectedDate = DateTime.now();
 
-  // 0 = Monday, 6 = Sunday
   int selectedDay = DateTime.now().weekday - 1;
-
-  // final RecordService _recordService = RecordService();
 
   List<Map<String, dynamic>?> weekData = List.filled(7, null);
 
   bool isLoading = true;
 
   List<bool> activeCharts = ChartTypes.showAll;
+  
+  final CollectionReference sessionColl = FirebaseFirestore.instance.collection('sessions');
+  
+  final UserSession userSession = UserSession();
+
+  final List<String> availableUserIds = [
+    "f504bb88-4a1e-4f08-b52b-c5c82b8bd6d7",
+    "b08b47d1-2d48-4e24-8efb-7750c211b387",
+    "b5316d59-f6e8-4e1e-8550-8276d1c49c9f",
+    "5b43683b-389a-4703-8d18-596181b5703e",
+    "2cb65468-dd00-4cad-848e-a5a557f70893",
+    "50233af8-2afe-41a9-9ac6-30dbd66ddbbb",
+    "967ca63b-08a9-4fd1-9977-55ed02ccb29c",
+    "5750926c-4388-4f55-b9de-f61ed7973a22",
+    "4d877156-1aee-484f-9354-72a268a2629b",
+    "dd206dc4-6d38-49c0-a877-d1c0cfc9f09d"
+  ];
 
   @override
   void initState() {
     super.initState();
-    _fetchWeekData();
+    try {
+      userSession.userId = widget.uuid;
+      _fetchWeekData();
+      _setupLiveSessionListener();
+    } catch (e) {
+      print('Error during initialization: $e');
+    }
   }
-
-  Future<void> _fetchWeekData() async {
+  
+  void _setupLiveSessionListener() {
+    print('Setting up listener for userId: ${widget.uuid}');
+    
+    for (var userId in availableUserIds) {
+      sessionColl
+          .where('userId', isEqualTo: userId)
+          .snapshots()
+          .listen((snapshot) {
+        print('Received snapshot with ${snapshot.docs.length} documents for userId: $userId');
+        if (snapshot.docs.isNotEmpty) {
+          _fetchWeekDataWithUserId(userId);
+        }
+      });
+    }
+  }
+  
+  Future<void> _fetchWeekDataWithUserId(String userId) async {
     setState(() {
       isLoading = true;
     });
@@ -49,12 +92,116 @@ class _RecordsPageState extends State<RecordsPage> {
       final int currentWeekday = now.weekday;
 
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
-      // Date - Workouts that happened that day?
+      
+      weekData = List.filled(7, null);
+      
+      print('Fetching data for userId: $userId');
+      print('Fetching data for the week starting: $mondayDate');
+      
       for (int i = 0; i < 7; i++) {
         final date = mondayDate.add(Duration(days: i));
-        print('Fetching data for: $date, UserID: ${widget.uuid}');
-        // weekData[i] = await _recordService.getWorkoutRecord(widget.uuid, date);
-        print('Data for $date: ${weekData[i]}');
+        
+        final startOfDay = DateTime(date.year, date.month, date.day, 0, 0, 0);
+        final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
+        
+        print('Querying day $i: $date with userId: $userId');
+        
+        final querySnapshot = await sessionColl
+            .where('userId', isEqualTo: userId)
+            .where('startTime', isGreaterThanOrEqualTo: startOfDay)
+            .where('endTime', isLessThanOrEqualTo: endOfDay)
+            .get();
+            
+        print('Query results for day $i: ${querySnapshot.docs.length} documents');
+            
+        if (querySnapshot.docs.isNotEmpty) {
+          double totalSteps = 0;
+          double totalCalories = 0;
+          double totalDistance = 0;
+          double totalDurationInHours = 0;
+          int sessionCount = 0;
+          
+          for (var doc in querySnapshot.docs) {
+            var sessionData = doc.data() as Map<String, dynamic>;
+            print('Found session data: ${sessionData}');
+            
+            if (sessionData.containsKey('totalSteps')) {
+              var steps = sessionData['totalSteps'];
+              totalSteps += (steps is int) ? steps.toDouble() : (steps ?? 0);
+            } else {
+              print('Warning: Session data missing totalSteps field');
+            }
+            
+            if (sessionData.containsKey('calories')) {
+              var calories = sessionData['calories'];
+              totalCalories += (calories is int) ? calories.toDouble() : (calories ?? 0);
+            } else {
+              print('Warning: Session data missing calories field');
+            }
+            
+            if (sessionData.containsKey('distance')) {
+              var distance = sessionData['distance'];
+              totalDistance += (distance is int) ? distance.toDouble() : (distance ?? 0);
+            } else {
+              print('Warning: Session data missing distance field');
+            }
+            
+            if (sessionData.containsKey('startTime') && sessionData.containsKey('endTime')) {
+              try {
+                DateTime startTime;
+                DateTime endTime;
+                
+                if (sessionData['startTime'] is Timestamp) {
+                  startTime = (sessionData['startTime'] as Timestamp).toDate();
+                } else {
+                  startTime = DateTime.parse(sessionData['startTime'].toString());
+                }
+                
+                if (sessionData['endTime'] is Timestamp) {
+                  endTime = (sessionData['endTime'] as Timestamp).toDate();
+                } else {
+                  endTime = DateTime.parse(sessionData['endTime'].toString());
+                }
+                
+                Duration duration = endTime.difference(startTime);
+                double durationInHours = duration.inSeconds / 3600;
+                totalDurationInHours += durationInHours;
+                
+                print('Session duration: ${durationInHours.toStringAsFixed(2)} hours');
+              } catch (e) {
+                print('Error calculating session duration: $e');
+              }
+            }
+            
+            sessionCount++;
+          }
+          
+          double averageSpeed = 0;
+          if (totalDistance > 0 && totalDurationInHours > 0) {
+            averageSpeed = totalDistance / totalDurationInHours;
+            print('Calculated average speed: ${averageSpeed.toStringAsFixed(2)} mph (distance: $totalDistance mi, duration: ${totalDurationInHours.toStringAsFixed(2)} hours)');
+          } else {
+            print('Could not calculate average speed: distance=$totalDistance, duration=$totalDurationInHours');
+          }
+          
+          weekData[i] = {
+            'totalSteps': totalSteps,
+            'totalCalories': totalCalories,
+            'totalDistance': totalDistance,
+            'averageSpeed': averageSpeed,
+            'date': date,
+          };
+        } else {
+          weekData[i] = {
+            'totalSteps': 0.0,
+            'totalCalories': 0.0,
+            'totalDistance': 0.0,
+            'averageSpeed': 0.0,
+            'date': date,
+          };
+        }
+        
+        print('Final data for $date: ${weekData[i]}');
       }
 
       selectedDay = currentWeekday - 1;
@@ -67,6 +214,32 @@ class _RecordsPageState extends State<RecordsPage> {
     }
   }
 
+  Future<void> _fetchWeekData() async {
+    print('Attempting to fetch week data with available user IDs: $availableUserIds');
+    for (var userId in availableUserIds) {
+      print('Trying userId: $userId');
+      await _fetchWeekDataWithUserId(userId);
+      
+      bool hasData = weekData.any((day) => 
+        (day?['totalSteps'] ?? 0) > 0 || 
+        (day?['totalCalories'] ?? 0) > 0 || 
+        (day?['totalDistance'] ?? 0) > 0);
+      
+      if (hasData) {
+        print('Found data with userId: $userId');
+        userSession.userId = userId;
+        break;
+      } else {
+        print('No data found for userId: $userId');
+      }
+    }
+    
+    print('Final week data for display:');
+    for (int i = 0; i < weekData.length; i++) {
+      print('Day $i: ${weekData[i]}');
+    }
+  }
+
   void _selectDay(int index) {
     setState(() {
       selectedDay = index;
@@ -75,6 +248,8 @@ class _RecordsPageState extends State<RecordsPage> {
       final int currentWeekday = now.weekday;
       final mondayDate = now.subtract(Duration(days: currentWeekday - 1));
       selectedDate = mondayDate.add(Duration(days: index));
+      _selectedDay = selectedDate;
+      _focusedDay = selectedDate;
     });
   }
 
@@ -85,6 +260,12 @@ class _RecordsPageState extends State<RecordsPage> {
       } else {
         activeCharts = ChartTypes.caloriesAndSpeed;
       }
+    });
+  }
+
+  void _toggleCalendarView() {
+    setState(() {
+      showCalendar = !showCalendar;
     });
   }
 
@@ -114,22 +295,25 @@ class _RecordsPageState extends State<RecordsPage> {
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.more_vert),
-                          onPressed: () {},
+                          icon: Icon(Icons.calendar_month),
+                          onPressed: _toggleCalendarView,
                         ),
                       ],
                     ),
                   ),
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(7, (index) {
-                        return _buildDaySelector(index);
-                      }),
+                  if (showCalendar)
+                    _buildCalendar()
+                  else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(7, (index) {
+                          return _buildDaySelector(index);
+                        }),
+                      ),
                     ),
-                  ),
 
                   Expanded(
                     child: SingleChildScrollView(
@@ -228,6 +412,71 @@ class _RecordsPageState extends State<RecordsPage> {
     );
   }
 
+  Widget _buildCalendar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 5,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      margin: EdgeInsets.all(8.0),
+      child: TableCalendar(
+        firstDay: DateTime.utc(2020, 1, 1),
+        lastDay: DateTime.utc(2030, 12, 31),
+        focusedDay: _focusedDay,
+        calendarFormat: _calendarFormat,
+        selectedDayPredicate: (day) {
+          return isSameDay(_selectedDay, day);
+        },
+        onDaySelected: (selectedDay, focusedDay) {
+          setState(() {
+            _selectedDay = selectedDay;
+            _focusedDay = focusedDay;
+            selectedDate = selectedDay;
+
+            if (selectedDay.weekday >= 1 && selectedDay.weekday <= 7) {
+              this.selectedDay = selectedDay.weekday - 1;
+            }
+
+          });
+        },
+        onFormatChanged: (format) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        },
+        onPageChanged: (focusedDay) {
+          _focusedDay = focusedDay;
+        },
+        calendarStyle: CalendarStyle(
+          selectedDecoration: BoxDecoration(
+            color: ChartColors.steps,
+            shape: BoxShape.circle,
+          ),
+          todayDecoration: BoxDecoration(
+            color: ChartColors.steps.withOpacity(0.5),
+            shape: BoxShape.circle,
+          ),
+        ),
+        headerStyle: HeaderStyle(
+          formatButtonVisible: true,
+          titleCentered: true,
+          formatButtonDecoration: BoxDecoration(
+            border: Border.all(color: ChartColors.steps),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          formatButtonTextStyle: TextStyle(color: ChartColors.steps),
+        ),
+      ),
+    );
+  }
+
   Widget _buildDaySelector(int index) {
     bool isSelected = selectedDay == index;
 
@@ -309,25 +558,159 @@ class _RecordsPageState extends State<RecordsPage> {
   }
 
   LineChartData _createLineChartData(String metricType, Color color) {
+    Map<String, dynamic>? dayData = weekData[selectedDay];
+    
+    if (dayData == null) {
+      return LineChartData();
+    }
+    
     List<FlSpot> spots = [];
+    double maxValue = 0;
+    String unit;
+    bool useIntegers = false;
 
-    for (int hour = 0; hour < 24; hour++) {
-      double baseValue = 50;
-      double amplitude = 30;
-      double phase = hour / 24.0 * 2 * 3.14159; // Convert to radians
-
-      double value = baseValue + amplitude * (0.5 + 0.5 * math.sin(phase));
-
-      spots.add(FlSpot(hour.toDouble(), value));
+    switch (metricType.toLowerCase()) {
+      case "steps":
+        maxValue = dayData['totalSteps'] != 0 ? (dayData['totalSteps'] * 1.2) : 10000;
+        unit = "steps";
+        useIntegers = true;
+        break;
+      case "calories":
+        maxValue = dayData['totalCalories'] != 0 ? (dayData['totalCalories'] * 1.2) : 1000;
+        unit = "kcal";
+        break;
+      case "distance":
+        maxValue = dayData['totalDistance'] != 0 ? (dayData['totalDistance'] * 1.2) : 10.0;
+        unit = "mi";
+        break;
+      case "avgspeed":
+      case "average speed":
+        unit = "mph";
+        
+        double speed = dayData['averageSpeed'] ?? 0;
+        
+        maxValue = 800.0;
+        
+        double baseSpeed = speed;
+        
+        print('AvgSpeed value: $speed mph (displayed with fixed maxY: $maxValue)');
+        
+        List<FlSpot> spots = [];
+        Random random = Random(speed.toInt() + 42);
+        
+        for (int hour = 0; hour < 24; hour++) {
+          double hourValue = baseSpeed;
+          
+          double variancePercent = 0.1;
+          double variance = math.max(0.5, baseSpeed * variancePercent);
+          
+          double timeOfDayFactor = 1.0;
+          
+          if (hour >= 6 && hour <= 9) {
+            timeOfDayFactor = 1.15;
+          } 
+          else if (hour >= 12 && hour <= 14) {
+            timeOfDayFactor = 0.9;
+          } 
+          else if (hour >= 17 && hour <= 20) {
+            timeOfDayFactor = 1.2;
+          }
+          else if (hour >= 22 || hour <= 5) {
+            timeOfDayFactor = 0.8;
+          }
+          
+          hourValue = hourValue * timeOfDayFactor + (random.nextDouble() - 0.5) * variance;
+          
+          hourValue = math.max(0, hourValue);
+          
+          spots.add(FlSpot(hour.toDouble(), hourValue));
+        }
+        
+        double interval = 100.0;
+        
+        return _buildChartData(spots, color, interval, maxValue, false, unit);
+      default:
+        maxValue = 125;
+        unit = "";
     }
 
-    double maxY = 125;
+    double interval;
+    if (maxValue <= 10) {
+      interval = 2.0;
+    } else if (maxValue <= 50) {
+      interval = 10.0;
+    } else if (maxValue <= 100) {
+      interval = 20.0;
+    } else if (maxValue <= 500) {
+      interval = 100.0;
+    } else if (maxValue <= 1000) {
+      interval = 200.0;
+    } else if (maxValue <= 5000) {
+      interval = 1000.0;
+    } else if (maxValue <= 10000) {
+      interval = 2000.0;
+    } else {
+      interval = 5000.0;
+    }
+    
+    int tickCount = (maxValue / interval).ceil();
+    if (tickCount < 3) {
+      interval = maxValue / 5;
+    } else if (tickCount > 10) {
+      interval = maxValue / 8;
+    }
 
+    double totalValue = 0;
+    switch (metricType.toLowerCase()) {
+      case "steps":
+        totalValue = dayData['totalSteps'] ?? 0;
+        break;
+      case "calories":
+        totalValue = dayData['totalCalories'] ?? 0;
+        break;
+      case "distance":
+        totalValue = dayData['totalDistance'] ?? 0;
+        break;
+    }
+
+    if (totalValue > 0) {
+      List<double> activityPattern = List.filled(24, 0.02);
+      
+      activityPattern[7] = 0.1;
+      activityPattern[8] = 0.12;
+      
+      activityPattern[12] = 0.08;
+      
+      activityPattern[17] = 0.15;
+      activityPattern[18] = 0.12;
+      
+      double sum = activityPattern.reduce((a, b) => a + b);
+      for (int i = 0; i < activityPattern.length; i++) {
+        activityPattern[i] = activityPattern[i] / sum;
+      }
+      
+      double cumulativeValue = 0;
+      for (int hour = 0; hour < 24; hour++) {
+        double hourValue = totalValue * activityPattern[hour];
+        cumulativeValue += hourValue;
+        spots.add(FlSpot(hour.toDouble(), cumulativeValue));
+      }
+    } else {
+      for (int hour = 0; hour < 24; hour++) {
+        spots.add(FlSpot(hour.toDouble(), 0));
+      }
+    }
+
+    return _buildChartData(spots, color, interval, maxValue, useIntegers, unit);
+  }
+
+  LineChartData _buildChartData(List<FlSpot> spots, Color color, double interval, 
+      double maxValue, bool useIntegers, String unit) {
     return LineChartData(
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
-        horizontalInterval: 25,
+        horizontalInterval: interval,
         getDrawingHorizontalLine: (value) {
           return FlLine(color: Colors.grey.withOpacity(0.1), strokeWidth: 1);
         },
@@ -340,7 +723,7 @@ class _RecordsPageState extends State<RecordsPage> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 6, // Display every 6 hours
+            interval: 6,
             getTitlesWidget: (value, meta) {
               if (value % 6 == 0) {
                 String time = "${value.toInt()}:00";
@@ -356,16 +739,34 @@ class _RecordsPageState extends State<RecordsPage> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
-            interval: 25,
+            reservedSize: 40,
+            interval: interval,
             getTitlesWidget: (value, meta) {
-              if (value % 25 == 0) {
-                return Text(
-                  value.toInt().toString(),
-                  style: TextStyle(fontSize: 10, color: Colors.grey),
-                );
+              String formattedValue;
+              if (value >= 1000 && useIntegers) {
+                formattedValue = "${(value / 1000).toStringAsFixed(1)}k";
+              } else if (useIntegers) {
+                formattedValue = value.toInt().toString();
+              } else {
+                if (value < 10) {
+                  formattedValue = value.toStringAsFixed(1);
+                } else {
+                  formattedValue = value.toStringAsFixed(0);
+                }
               }
-              return const SizedBox();
+              
+              return Padding(
+                padding: const EdgeInsets.only(right: 4),
+                child: Text(
+                  formattedValue,
+                  style: TextStyle(
+                    fontSize: 10, 
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w400
+                  ),
+                  textAlign: TextAlign.right,
+                ),
+              );
             },
           ),
         ),
@@ -374,10 +775,26 @@ class _RecordsPageState extends State<RecordsPage> {
       minX: 0,
       maxX: 24,
       minY: 0,
-      maxY: maxY,
+      maxY: maxValue,
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
           tooltipBgColor: Colors.white.withOpacity(0.8),
+          getTooltipItems: (List<LineBarSpot> touchedSpots) {
+            return touchedSpots.map((LineBarSpot touchedSpot) {
+              final int hour = touchedSpot.x.toInt();
+              final int nextHour = (hour + 1) % 24;
+
+              String formattedValue =
+                  useIntegers
+                      ? touchedSpot.y.toInt().toString()
+                      : touchedSpot.y.toStringAsFixed(1);
+
+              return LineTooltipItem(
+                '${hour}:00 - ${nextHour}:00\n$formattedValue $unit',
+                TextStyle(color: color, fontWeight: FontWeight.bold),
+              );
+            }).toList();
+          },
         ),
         touchCallback:
             (FlTouchEvent event, LineTouchResponse? touchResponse) {},
@@ -392,9 +809,6 @@ class _RecordsPageState extends State<RecordsPage> {
           isStrokeCapRound: true,
           dotData: FlDotData(
             show: false,
-            checkToShowDot: (spot, barData) {
-              return spot.x == 12; // Show marker at 12 noon
-            },
           ),
           belowBarData: BarAreaData(
             show: true,
@@ -407,5 +821,12 @@ class _RecordsPageState extends State<RecordsPage> {
         ),
       ],
     );
+  }
+
+  bool isSameDay(DateTime? a, DateTime? b) {
+    if (a == null || b == null) {
+      return false;
+    }
+    return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 }
