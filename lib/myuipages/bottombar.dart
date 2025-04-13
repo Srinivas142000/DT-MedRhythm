@@ -3,6 +3,7 @@ import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
 import 'package:medrhythms/myuipages/export_settings.dart';
 import 'package:medrhythms/myuipages/records_page.dart';
+import 'package:medrhythms/myuipages/sessions_page.dart';
 
 FirestoreServiceRead fsr = FirestoreServiceRead();
 ExportSettingsPage esp = ExportSettingsPage();
@@ -38,6 +39,7 @@ class Bottombar extends StatelessWidget {
                         ),
                   ),
                 );
+              }
               if (currentIndex != 0) {
                 String? uuid = UserSession().userId;
                 if (uuid != null && UserSession().userData != null) {

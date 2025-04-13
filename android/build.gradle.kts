@@ -11,12 +11,14 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
+   allprojects {
+       repositories {
+           google()
+           mavenCentral()
+           maven { url = uri("https://jitpack.io") }
+           maven { url = uri("https://github.com/spotify/android-sdk/raw/master/repository") }
+       }
+   }
 
 rootProject.buildDir = File("../build")
 
