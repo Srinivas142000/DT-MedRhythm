@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
+import 'package:medrhythms/myuipages/export_settings.dart';
 import 'package:medrhythms/myuipages/records_page.dart';
 
 FirestoreServiceRead fsr = FirestoreServiceRead();
+ExportSettingsPage esp = ExportSettingsPage();
 
 class Bottombar extends StatelessWidget {
   final int currentIndex;
@@ -23,6 +25,19 @@ class Bottombar extends StatelessWidget {
               color: currentIndex == 0 ? Colors.green : Colors.black,
             ),
             onPressed: () {
+              String? uuid = UserSession().userId;
+              if (uuid != null && UserSession().userData != null) {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => SessionsPage(
+                          uuid: uuid,
+                          userData: UserSession().userData!,
+                        ),
+                  ),
+                );
               if (currentIndex != 0) {
                 String? uuid = UserSession().userId;
                 if (uuid != null && UserSession().userData != null) {
@@ -85,6 +100,11 @@ class Bottombar extends StatelessWidget {
               color: currentIndex == 3 ? Colors.green : Colors.black,
             ),
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ExportSettingsPage()),
+              );
+              // Handle settings button press
               if (currentIndex != 3) {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   '/settings',
