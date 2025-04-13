@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("com.google.gms.google-services")
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 dependencies {
@@ -20,12 +20,16 @@ android {
     ndkVersion = "27.0.12077973"
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     defaultConfig {
@@ -40,7 +44,9 @@ android {
         manifestPlaceholders["appAuthRedirectScheme"] = "com.redirectScheme.comm"
         manifestPlaceholders["redirectHostName"] = "auth"
         manifestPlaceholders["redirectSchemeName"] = "medrhythms"
-
+        targetSdk = 35
+        versionCode = 1
+        versionName = "1.0"
     }
 
     buildTypes {

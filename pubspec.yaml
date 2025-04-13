@@ -38,6 +38,7 @@ dependencies:
   permission_handler: ^11.4.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  table_calendar: ^3.0.9
   cupertino_icons: ^1.0.8
   geekyants_flutter_gauges: ^1.0.4
   geolocator: ^13.0.3
