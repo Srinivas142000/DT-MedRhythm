@@ -53,18 +53,17 @@ class _LoginPageState extends State<LoginPage> {
       // check if any past data is not uploaded
       await dsm.upload();
       if (userData != null && userData.containsKey("userId")) {
-        // Store userId in Singleton
         UserSession().userId = userData["userId"];
+        UserSession().userData = userData;
 
-        Navigator.pushReplacement(
+        Navigator.pushNamedAndRemoveUntil(
           context,
-          MaterialPageRoute(
-            builder:
-                (context) => SessionsPage(
-                  userData: userData,
-                  uuid: UserSession().userId!,
-                ),
-          ),
+          '/sessions',
+          (route) => false,
+          arguments: {
+            'uuid': userData["userId"],
+            'userData': userData,
+          },
         );
       } else {
         setState(() {
