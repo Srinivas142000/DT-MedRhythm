@@ -1,5 +1,6 @@
 import 'package:health/health.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/userappactions/audios.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
 import 'dart:async';
@@ -17,6 +18,8 @@ class Sessions {
 
   String? _userId;
   Duration? _totalSelectedDuration;
+
+  final LocalAudioManager audioManager = LocalAudioManager(threshold: 10.0);
 
   // Function to set the userId
   void setUserId(String userId) {
@@ -41,6 +44,8 @@ class Sessions {
       if (authorized && permissionsGranted) {
         _isTracking = true;
         _liveData.clear();
+        double initialBpm = await _computeAverageBpm(h, DateTime.now().subtract(Duration(seconds: 10)), DateTime.now());
+        await audioManager.playSongForBpm(initialBpm);
         // Initialize previous location
         Position? previousLocation;
 
@@ -54,6 +59,10 @@ class Sessions {
             types: Constants.healthDataTypes,
           );
           _liveData.addAll(data);
+
+          double currentBpm = _calculateAverageBpm(_liveData);
+
+          await audioManager.playSongForBpm(currentBpm);
 
           // Get current location
           Position currentLocation = await Geolocator.getCurrentPosition(
@@ -108,6 +117,7 @@ class Sessions {
           ); // Collect data every 2 seconds
         }
         await stopLiveWorkout(h, userId, selectedDuration);
+        await audioManager.stop();
       } else {
         print("Authorization not granted for live tracking.");
       }
@@ -115,6 +125,31 @@ class Sessions {
       print("Permissions not granted.");
     }
   }
+
+  /// Computes the average BPM from a list of HealthDataPoints.
+  double _calculateAverageBpm(List<HealthDataPoint> dataPoints) {
+    double totalBpm = 0;
+    int count = 0;
+    for (var point in dataPoints) {
+      if (point.type == HealthDataType.HEART_RATE) {
+        double bpm = point.value is double ? point.value as double : (point.value as num).toDouble();
+        totalBpm += bpm;
+        count++;
+      }
+    }
+    return count > 0 ? totalBpm / count : 100.0;
+  }
+
+  /// Compute BPM over a specific time window.
+  Future<double> _computeAverageBpm(Health h, DateTime start, DateTime end) async {
+    List<HealthDataPoint> data = await h.getHealthDataFromTypes(
+      startTime: start,
+      endTime: end,
+      types: [HealthDataType.HEART_RATE],
+    );
+    return _calculateAverageBpm(data);
+  }
+
 
   // Function to calculate distance between two locations
   Future<double> calculateDistance(Position start, Position end) async {
