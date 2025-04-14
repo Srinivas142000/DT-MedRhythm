@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart'; 
-import 'package:medrhythms/myuipages/bottombar.dart';
-import 'package:medrhythms/userappactions/audios.dart';
+import 'package:medrhythms/myuipages/bottombar.dart'; 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:medrhythms/userappactions/audios.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   const MusicPlayerPage({Key? key}) : super(key: key);
@@ -13,49 +13,53 @@ class MusicPlayerPage extends StatefulWidget {
 
 class _MusicPlayerPageState extends State<MusicPlayerPage> {
   final LocalAudioManager _audioManager = LocalAudioManager(threshold: 10.0);
-
+  
   String? _selectedSong;
+  
   Duration _currentPosition = Duration.zero;
   Duration _totalDuration = Duration.zero;
 
   @override
   void initState() {
     super.initState();
-
-
+    
     _audioManager.audioPlayer.onPositionChanged.listen((pos) {
       setState(() {
         _currentPosition = pos;
       });
     });
+    
     _audioManager.audioPlayer.onDurationChanged.listen((dur) {
       setState(() {
         _totalDuration = dur;
       });
     });
-
+    
     if (_audioManager.songs.isNotEmpty) {
       _selectedSong = _audioManager.songs[0];
       _audioManager.playSong(_selectedSong!);
     }
   }
-
-
+  
   String _formatTitle(String path) {
-    final fileName = path.split('/').last.replaceAll('.mp3', '');
-    return fileName.replaceAll('-', ' ');
+    final fileName = path.split('/').last;
+    var title = fileName.replaceAll('.mp3', '');
+    title = title.replaceAll('-', ' ');
+    if (title.isNotEmpty) {
+      title = title[0].toUpperCase() + title.substring(1);
+    }
+    return title;
   }
-
-
+  
   String _formatDuration(Duration d) {
-    String twoDigits(int n) => n >= 10 ? "$n" : "0$n";
-    final minutes = twoDigits(d.inMinutes.remainder(60));
-    final seconds = twoDigits(d.inSeconds.remainder(60));
-    final hours = d.inHours;
+    String twoDigits(int n) => n >= 10 ? '$n' : '0$n';
+    int hours = d.inHours;
+    int minutes = d.inMinutes.remainder(60);
+    int seconds = d.inSeconds.remainder(60);
     if (hours > 0) {
-      return "${twoDigits(hours)}:$minutes:$seconds";
+      return '${twoDigits(hours)}:${twoDigits(minutes)}:${twoDigits(seconds)}';
     } else {
-      return "$minutes:$seconds";
+      return '${twoDigits(minutes)}:${twoDigits(seconds)}';
     }
   }
 
@@ -70,7 +74,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
       await _audioManager.playSong(_selectedSong!);
     }
   }
-
+  
   Future<void> _playPreviousSong() async {
     if (_selectedSong != null) {
       final songs = _audioManager.songs;
@@ -82,20 +86,19 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
       await _audioManager.playSong(_selectedSong!);
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MedRhythmsAppBar(),
       bottomNavigationBar: Bottombar(),
       body: SingleChildScrollView(
-
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Column(
-            children: [
-              Container(
-                margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Align(
                 alignment: Alignment.centerLeft,
                 child: const Text(
                   "MEDRhythms",
@@ -105,26 +108,27 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                   ),
                 ),
               ),
-
-              _buildNowPlayingSection(),
-
-              _buildPlaylistList(),
-
-              const SizedBox(height: 16),
-            ],
-          ),
+            ),
+            
+            _buildNowPlayingSection(),
+            
+            const Divider(),
+            _buildPlaylistList(),
+            
+            const SizedBox(height: 16),
+          ],
         ),
       ),
     );
   }
-
+  
   Widget _buildNowPlayingSection() {
-    final currentSongTitle =
-        _selectedSong != null ? _formatTitle(_selectedSong!) : "No song playing";
-
-    final posText = _formatDuration(_currentPosition);
-    final durText = _formatDuration(_totalDuration);
-
+    final currentSongTitle = _selectedSong != null
+        ? _formatTitle(_selectedSong!)
+        : "No song playing";
+    final currentPosText = _formatDuration(_currentPosition);
+    final totalDurText = _formatDuration(_totalDuration);
+    
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
@@ -134,7 +138,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
       ),
       child: Column(
         children: [
-          // Album cover
           Container(
             width: 200,
             height: 200,
@@ -147,8 +150,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
               ),
             ),
           ),
-
-          // Song Title
           Text(
             currentSongTitle,
             textAlign: TextAlign.center,
@@ -157,9 +158,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-
           const SizedBox(height: 8),
-
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
@@ -179,15 +178,13 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
               },
             ),
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(posText, style: const TextStyle(fontSize: 12)),
-              Text(durText, style: const TextStyle(fontSize: 12)),
+              Text(currentPosText, style: const TextStyle(fontSize: 12)),
+              Text(totalDurText, style: const TextStyle(fontSize: 12)),
             ],
           ),
-
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -200,7 +197,9 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
               IconButton(
                 icon: const Icon(Icons.pause),
                 iconSize: 30,
-                onPressed: () => _audioManager.pause(),
+                onPressed: () async {
+                  await _audioManager.pause();
+                },
               ),
               IconButton(
                 icon: const Icon(Icons.play_arrow),
@@ -228,15 +227,13 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
               ),
             ],
           ),
-
           const SizedBox(height: 8),
-
           _buildSongHistory(),
         ],
       ),
     );
   }
-
+  
   Widget _buildPlaylistList() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -254,7 +251,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
           const SizedBox(height: 8),
           Column(
             children: _audioManager.songs.map((songPath) {
-              final isSelected = songPath == _selectedSong;
+              final isSelected = (songPath == _selectedSong);
               final displayTitle = _formatTitle(songPath);
               return ListTile(
                 leading: Icon(
@@ -267,6 +264,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
+                tileColor: isSelected ? Colors.green.withOpacity(0.1) : null,
                 onTap: () async {
                   setState(() {
                     _selectedSong = songPath;
@@ -280,7 +278,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
       ),
     );
   }
-
   Widget _buildSongHistory() {
     return Container(
       margin: const EdgeInsets.only(top: 16),
@@ -298,15 +295,21 @@ class _MusicPlayerPageState extends State<MusicPlayerPage> {
           ),
           const SizedBox(height: 8),
           if (_audioManager.playedHistory.isEmpty)
-            const Text("No songs played yet.", style: TextStyle(fontSize: 14))
+            const Text(
+              "No songs played yet.",
+              style: TextStyle(fontSize: 14),
+            )
           else
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: _audioManager.playedHistory.reversed.map((songPath) {
                 final title = _formatTitle(songPath);
-                return Text(
-                  title,
-                  style: const TextStyle(fontSize: 14),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 );
               }).toList(),
             ),
