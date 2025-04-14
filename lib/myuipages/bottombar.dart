@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:medrhythms/myuipages/sessions_page.dart';
-import 'package:medrhythms/myuipages/records_page.dart';
-import 'package:medrhythms/myuipages/music_player_page.dart'; // Make sure this import is correct.
+import 'package:medrhythms/myuipages/music_player_page.dart'; 
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/mypages/readroutes.dart';
+import 'package:medrhythms/myuipages/export_settings.dart';
+import 'package:medrhythms/myuipages/records_page.dart';
+import 'package:medrhythms/myuipages/sessions_page.dart';
 
 FirestoreServiceRead fsr = FirestoreServiceRead();
+ExportSettingsPage esp = ExportSettingsPage();
 
 class Bottombar extends StatelessWidget {
+  final int currentIndex;
+
+  Bottombar({this.currentIndex = 0});
+
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -17,12 +23,15 @@ class Bottombar extends StatelessWidget {
         children: [
           // Sessions Page
           IconButton(
-            icon: Icon(Icons.nordic_walking),
+            icon: Icon(
+              Icons.nordic_walking,
+              color: currentIndex == 0 ? Colors.green : Colors.black,
+            ),
             onPressed: () {
               String? uuid = UserSession().userId;
               if (uuid != null && UserSession().userData != null) {
                 Navigator.pop(context);
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SessionsPage(
@@ -32,11 +41,27 @@ class Bottombar extends StatelessWidget {
                   ),
                 );
               }
+              if (currentIndex != 0) {
+                String? uuid = UserSession().userId;
+                if (uuid != null && UserSession().userData != null) {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/sessions',
+                    (Route<dynamic> route) => false,
+                    arguments: {
+                      'uuid': uuid,
+                      'userData': UserSession().userData!,
+                    },
+                  );
+                }
+              }
             },
           ),
           // Records Page
           IconButton(
-            icon: Icon(Icons.calendar_month_rounded),
+            icon: Icon(
+              Icons.calendar_month_rounded,
+              color: currentIndex == 1 ? Colors.green : Colors.black,
+            ),
             onPressed: () {
               String? uuid = UserSession().userId;
               print("Calendar icon pressed");
@@ -51,25 +76,46 @@ class Bottombar extends StatelessWidget {
                   ),
                 );
               });
+
             },
           ),
           // Music Player Page
           IconButton(
-            icon: Icon(Icons.music_note_rounded),
+            icon: Icon(
+              Icons.music_note_rounded,
+              color: currentIndex == 2 ? Colors.green : Colors.black,
+            ),
             onPressed: () {
-              print("Music button pressed");
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => MusicPlayerPage()),
               );
+              if (currentIndex != 2) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/music',
+                  (Route<dynamic> route) => false,
+                );
+              }
             },
           ),
           // Settings Page (if implemented)
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: Icon(
+              Icons.settings,
+              color: currentIndex == 3 ? Colors.green : Colors.black,
+            ),
             onPressed: () {
-              // Add your navigation to Settings here.
-              print("Settings button pressed");
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ExportSettingsPage()),
+              );
+              // Handle settings button press
+              if (currentIndex != 3) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/settings',
+                  (Route<dynamic> route) => false,
+                );
+              }
             },
           ),
         ],
@@ -110,7 +156,7 @@ Future<Map<String, dynamic>> fetchData(
   } catch (e) {
     print("Error fetching data: $e");
   }
-  return {}; // Fallback return.
+  return {};
 }
 
 // import 'package:flutter/material.dart';

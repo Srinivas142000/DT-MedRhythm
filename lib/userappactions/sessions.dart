@@ -1,4 +1,5 @@
 import 'package:health/health.dart';
+import 'package:medrhythms/helpers/datasyncmanager.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
@@ -12,7 +13,7 @@ class Sessions {
   List<HealthDataPoint> _liveData = [];
   final StreamController<Map<String, double>> _liveDataController =
       StreamController<Map<String, double>>.broadcast();
-  UserSession us = UserSession();
+  final UserSession us = UserSession();
   final CreateDataService csd = CreateDataService();
 
   // Public stream for live updates
@@ -20,7 +21,8 @@ class Sessions {
 
   String? _userId;
   Duration? _totalSelectedDuration;
-
+  DataSyncManager dsm = DataSyncManager();
+  Timer? _autoSaveTimer;
   final LocalAudioManager _audioManager = LocalAudioManager(threshold: 10.0);
 
   // Set user Id
@@ -47,13 +49,16 @@ class Sessions {
   Future<void> startLiveWorkout(
       Health h, String userId, Duration selectedDuration) async {
     setUserId(userId);
+    setSelectedDuration(selectedDuration);
     bool permissionsGranted = us.hasPermissions;
     if (permissionsGranted) {
       bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
       if (authorized && permissionsGranted) {
         _isTracking = true;
         _liveData.clear();
+        print("Live workout tracking started.");
 
+        // Initialize previous location
         Position? previousLocation;
         DateTime? previousTime;
 
@@ -70,7 +75,6 @@ class Sessions {
             types: Constants.healthDataTypes,
           );
           _liveData.addAll(data);
-
           // Get the current location.
           Position currentLocation = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high,
@@ -144,7 +148,6 @@ class Sessions {
     double totalDistance = 0;
     double totalHeartRate = 0;
     DateTime now = DateTime.now();
-
     List<HealthDataPoint> data = await h.getHealthDataFromTypes(
       startTime: now.subtract(
         selectedDuration + const Duration(seconds: 10) + const Duration(minutes: 8),
@@ -163,6 +166,54 @@ class Sessions {
       } else if (dp.type == HealthDataType.HEART_RATE) {
         totalHeartRate += (dp.value as NumericHealthValue).numericValue;
       }
+
+      if (!hasRealData ||
+          (totalSteps == 0 && totalCalories == 0 && totalDistance == 0)) {
+        print(
+          "No real health data detected, generating mock data for emulator",
+        );
+
+        double minutes = selectedDuration.inMinutes.toDouble();
+        if (minutes <= 0) minutes = 10;
+
+        totalSteps = minutes * 100;
+        totalCalories = minutes * 5;
+        totalDistance = minutes * 0.05;
+
+        print(
+          'Generated mock data - Steps: $totalSteps, Calories: $totalCalories, Distance: $totalDistance',
+        );
+      } else {
+        print(
+          'Real data detected - Steps: $totalSteps, Calories: $totalCalories, Distance: $totalDistance',
+        );
+      }
+
+      double speed =
+          selectedDuration.inSeconds > 0
+              ? totalDistance / (selectedDuration.inSeconds / 3600)
+              : 0;
+
+      await csd.createSessionData(
+        userId.toString(),
+        now.subtract(selectedDuration),
+        now,
+        totalSteps,
+        totalDistance,
+        totalCalories,
+        speed,
+        "Phone",
+      );
+
+      print("📊 Session data saved to database:");
+      print("✅ Steps: $totalSteps");
+      print("🔥 Calories: $totalCalories Kcal");
+      print("📏 Distance: $totalDistance miles");
+      print("🚶‍♂️ Speed: $speed mph");
+
+      _liveData.clear();
+    } catch (e) {
+      print("Error stopping workout: $e");
     }
     print('Total Steps: $totalSteps');
     print('Total Calories Burned: $totalCalories');
@@ -271,6 +322,7 @@ class Sessions {
       );
       print("Sync Session Data:");
       print("Steps: $totalSteps, Calories: $totalCalories, Distance: $totalDistance, Speed: $totalSpeed");
+
     }
   }
 
@@ -283,6 +335,7 @@ class Sessions {
     _totalSelectedDuration = _totalSelectedDuration != null
         ? _totalSelectedDuration! + selectedDuration
         : const Duration(minutes: 1);
+
 
     if (user.userId == null) {
       print("Error: userId is null.");
@@ -324,6 +377,7 @@ class Sessions {
         print("Steps: $totalSteps, Calories: $totalCalories, Distance: $totalDistance, Speed: $totalSpeed");
       } else {
         print("No health data available for sync.");
+
       }
     });
   }

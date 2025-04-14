@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medrhythms/mypages/createroutes.dart'; // Import necessary files
+import 'package:medrhythms/helpers/usersession.dart';
 
 class FirestoreServiceRead {
   // Reference to the 'users' collection in Firestore
@@ -42,10 +43,31 @@ class FirestoreServiceRead {
   }
 
   // Method to fetch session data and calculate sums and averages
-  Future<Map<String, dynamic>> fetchUserSessionData(String userId) async {
+  Future<Map<String, dynamic>> fetchUserSessionData(
+    String userId, {
+    DateTime? startTime,
+    DateTime? endTime,
+    String exportOption = "All",
+  }) async {
     try {
-      var queryForSessions =
-          await sessionColl.where('userId', isEqualTo: userId).get();
+      var queryForSessions;
+      if (exportOption == "All") {
+        queryForSessions =
+            await sessionColl.where('userId', isEqualTo: userId).get();
+      } else {
+        queryForSessions =
+            await sessionColl
+                .where('userId', isEqualTo: userId)
+                .where(
+                  'startTime',
+                  isGreaterThanOrEqualTo: startTime ?? DateTime(2000, 1, 1),
+                )
+                .where(
+                  'endTime',
+                  isLessThanOrEqualTo: endTime ?? DateTime.now(),
+                )
+                .get();
+      }
       if (queryForSessions.docs.isNotEmpty) {
         double totalCalories = 0;
         double totalDistance = 0;
@@ -53,21 +75,35 @@ class FirestoreServiceRead {
         double totalSpeed = 0;
         int sessionCount = queryForSessions.docs.length;
 
+        List<Map<String, dynamic>> sessionDetails = [];
+
         for (var doc in queryForSessions.docs) {
           var sessionData = doc.data() as Map<String, dynamic>;
-          totalCalories += sessionData['calories'] ?? 0;
-          totalDistance += sessionData['distance'] ?? 0;
-          totalSteps += (sessionData['totalSteps'] ?? 0) as int;
-          totalSpeed += sessionData['speed'] ?? 0;
+          totalCalories += sessionData['calories']?.toDouble() ?? 0.0;
+          totalDistance += sessionData['distance']?.toDouble() ?? 0.0;
+          totalSteps += (sessionData['totalSteps'] as num?)?.toInt() ?? 0;
+          totalSpeed += sessionData['speed']?.toDouble() ?? 0.0;
+
+          // Add session data to the sessionDetails list
+          sessionDetails.add(sessionData);
         }
 
         double averageSpeed = totalSpeed / sessionCount;
 
+        var userImeiQuery =
+            await usersColl.where('userId', isEqualTo: userId).get();
+        var userImei = userImeiQuery.docs.first.data();
+
         return {
+          "IMEI":
+              (userImei as Map<String, dynamic>?)?['imei'] ?? "Unknown IMEI",
+          "uuid": UserSession().userId,
           "totalCalories": totalCalories,
           "totalDistance": totalDistance,
           "totalSteps": totalSteps,
           "averageSpeed": averageSpeed,
+          "sessionDetails":
+              sessionDetails, // Include session details in the payload
         };
       } else {
         return {"error": "No session data found for this user."};
@@ -86,6 +122,7 @@ class FirestoreServiceRead {
       // Fetch sessions from Firestore
       var queryForSessions =
           await sessionColl
+              .where('userId', isEqualTo: UserSession().userId)
               .where('startTime', isGreaterThanOrEqualTo: fromDate)
               .where('endTime', isLessThanOrEqualTo: toDate)
               .get();

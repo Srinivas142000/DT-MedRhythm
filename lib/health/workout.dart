@@ -1,10 +1,13 @@
 import 'package:health/health.dart';
 import 'package:medrhythms/constants/constants.dart';
+import 'package:medrhythms/helpers/datasyncmanager.dart';
 import 'package:uuid/uuid.dart';
 import 'package:medrhythms/mypages/createroutes.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Workout {
   CreateDataService csd = CreateDataService();
+  DataSyncManager dsm = DataSyncManager();
 
   Future<void> recordWorkoutSession(
     Health h,
@@ -73,17 +76,35 @@ class Workout {
       print('Total distance: $totalDistance');
       print('Total Heartrate: $totalHeartRate');
 
-      // Save the data to the database
-      await csd.createSessionData(
-        userId.toString(),
-        startTime,
-        endTime,
-        totalSteps,
-        totalDistance,
-        totalCalories,
-        (totalDistance / (sessionTiming * 60)),
-        "Phone",
-      );
+      final isConnected =
+          await Connectivity().checkConnectivity() != ConnectivityResult.none;
+
+      double totalSpeed = (totalDistance) / (60000);
+
+      if (isConnected) {
+        // Save the data to the database
+        await csd.createSessionData(
+          userId.toString(),
+          startTime,
+          endTime,
+          totalSteps,
+          totalDistance,
+          totalCalories,
+          (totalDistance / (sessionTiming * 60)),
+          "Phone",
+        );
+      } else {
+        await dsm.store(
+          userId: userId,
+          startTime: startTime,
+          endTime: endTime,
+          steps: totalSteps,
+          distance: totalDistance,
+          calories: totalCalories,
+          speed: totalSpeed,
+          source: "Phone - Offline",
+        );
+      }
     } else {
       print('Authorization not granted');
     }

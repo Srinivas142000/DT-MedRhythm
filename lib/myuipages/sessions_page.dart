@@ -121,7 +121,7 @@ class _SessionsPageState extends State<SessionsPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                SyncButton(),
+                // SyncButton(),
               ],
             ),
           ),
@@ -178,7 +178,7 @@ class _NextPageState extends State<NextPage> {
   }
 
   void _endSession(Sessions s, Duration selectedDuration) async {
-    await s.stopLiveWorkout(h, UserSession().userId!, selectedDuration);
+    await s.stopLiveWorkout(UserSession().userId!, selectedDuration);
     if (mounted) {
       Navigator.pushReplacement(
         context,

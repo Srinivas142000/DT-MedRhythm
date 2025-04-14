@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Required Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.BODY_SENSORS" />
-    
+
     <!-- Health Connect Permissions -->
     <uses-permission android:name="android.permission.health.READ_STEPS" />
     <uses-permission android:name="android.permission.health.WRITE_STEPS" />
@@ -14,7 +16,16 @@
     <uses-permission android:name="android.permission.health.WRITE_DISTANCE" />
     <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED" />
     <uses-permission android:name="android.permission.health.WRITE_TOTAL_CALORIES_BURNED" />
-    
+    <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
+    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
+
+    <!-- Storage Permissions -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
     <!-- Legacy Google Fit permissions (as fallback) -->
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
@@ -27,8 +38,8 @@
     </queries>
 
     <application
-        android:label="medrhythms"
         android:name="${applicationName}"
+        android:label="medrhythms"
         android:icon="@mipmap/ic_launcher">
 
         <!-- Main Activity -->
@@ -43,18 +54,27 @@
 
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
-                android:resource="@style/NormalTheme"
-            />
+                android:resource="@style/NormalTheme" />
 
-            <!-- Main app intent filter -->
+            <!-- Main app launcher -->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Health Connect intent filter -->
+            <!-- Health Connect Permissions Rationale -->
             <intent-filter>
                 <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+
+            <!-- Spotify / Web Auth Redirect -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="${appAuthRedirectScheme}"
+                    android:host="${redirectSchemeName}" />
             </intent-filter>
         </activity>
 
@@ -70,14 +90,14 @@
             </intent-filter>
         </activity-alias>
 
-        <!-- Flutter embedding -->
+        <!-- Flutter embedding support -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
 
         <!-- Health Connect metadata -->
-        <meta-data 
-            android:name="health_permissions" 
+        <meta-data
+            android:name="health_permissions"
             android:resource="@array/health_permissions" />
     </application>
 </manifest>

@@ -5,6 +5,10 @@ import 'package:medrhythms/helpers/usersession.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:health/health.dart';
 import 'package:medrhythms/constants/constants.dart';
+import 'package:medrhythms/myuipages/sessions_page.dart';
+import 'package:medrhythms/myuipages/records_page.dart';
+import 'package:medrhythms/myuipages/bottombar.dart';
+import 'package:medrhythms/myuipages/export_settings.dart';
 
 Health health = Health();
 void main() async {
@@ -28,6 +32,28 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'MedRhythms',
       home: LoginPage(),
+      routes: {
+        '/sessions': (context) {
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>;
+          return SessionsPage(uuid: args['uuid'], userData: args['userData']);
+        },
+        '/records': (context) {
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>;
+          return RecordsPage(uuid: args['uuid'], userData: args['userData']);
+        },
+        '/music':
+            (context) => Scaffold(
+              appBar: AppBar(title: Text('Music')),
+              body: Center(child: Text('Music Page - Coming Soon')),
+              bottomNavigationBar: Bottombar(currentIndex: 2),
+            ),
+        '/settings':
+            (context) => Scaffold(body: Center(child: ExportSettingsPage())),
+      },
     );
   }
 }
@@ -40,6 +66,7 @@ Future<bool> _requestHealthPermissions() async {
         Permission.activityRecognition,
         Permission.sensors,
         Permission.location,
+        Permission.manageExternalStorage,
       ].request();
   bool systemPermissionsGranted = statuses.values.every(
     (status) => status.isGranted,
@@ -62,5 +89,10 @@ Future<bool> _requestHealthPermissions() async {
     Constants.healthDataTypes,
     permissions: permissions,
   );
+
+  if (await Permission.manageExternalStorage.isPermanentlyDenied) {
+    await openAppSettings();
+  }
+
   return systemPermissionsGranted && healthPermissionsGranted;
 }
