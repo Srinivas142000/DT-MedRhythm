@@ -4,17 +4,17 @@ class LocalAudioManager {
   final AudioPlayer _audioPlayer = AudioPlayer();
   AudioPlayer get audioPlayer => _audioPlayer;
   final List<String> songs = [
-    "assets/audio/Heavy.mp3",
-    "assets/audio/All_In_My_Head.mp3",
-    "assets/audio/spread-your-legs-97-bpm-instrumental-233227.mp3",
-    "assets/audio/crayon-sparklers-beat-89-bpm-186298.mp3",
-    "assets/audio/holidays-dancehall-instrumental-106-bpm-231232.mp3",
-    "assets/audio/late-flight-from-detroit-em-100-191484.mp3",
-    "assets/audio/metal-aggressive-90-bpm-loop-13539.mp3",
-    "assets/audio/metal-workout-90-bpm-medium1-13722.mp3",
-    "assets/audio/relax-yourself-110-bpm-dancehall-instrumental-233180.mp3",
-    "assets/audio/StockTune-Heartbeat Of The Celebration_1744573622.mp3",
-    "assets/audio/wet-dreams-101-bpm-instrumental-235130.mp3",
+    "audio/Heavy.mp3",
+    "audio/All_In_My_Head.mp3",
+    "audio/spread-your-legs-97-bpm-instrumental-233227.mp3",
+    "audio/crayon-sparklers-beat-89-bpm-186298.mp3",
+    "audio/holidays-dancehall-instrumental-106-bpm-231232.mp3",
+    "audio/late-flight-from-detroit-em-100-191484.mp3",
+    "audio/metal-aggressive-90-bpm-loop-13539.mp3",
+    "audio/metal-workout-90-bpm-medium1-13722.mp3",
+    "audio/relax-yourself-110-bpm-dancehall-instrumental-233180.mp3",
+    "audio/StockTune-Heartbeat Of The Celebration_1744573622.mp3",
+    "audio/wet-dreams-101-bpm-instrumental-235130.mp3",
   ];
 
   final List<String> playedHistory = [];
@@ -31,14 +31,29 @@ class LocalAudioManager {
       _currentSong = songPath;
       playedHistory.add(songPath);
       await _audioPlayer.stop();
-      await _audioPlayer.play(AssetSource(songPath));
+      try {
+        // Play the asset.
+        await _audioPlayer.play(AssetSource(songPath));
+        print("Playing song: $songPath");
+      } catch (e) {
+        print("Error playing song: $e");
+      }
     }
   }
 
   double idealBpmForSong(String song) {
-    if (song == songs[0]) return 97.0;
-    if (song == songs[1]) return 89.0;
-    if (song == songs[2]) return 106.0;
+    if (song.contains("Heavy")) return 95.0;
+    if (song.contains("All_In_My_Head")) return 100.0;
+    if (song.contains("spread-your-legs")) return 97.0;
+    if (song.contains("crayon-sparklers-beat")) return 89.0;
+    if (song.contains("holidays-dancehall")) return 106.0;
+    if (song.contains("late-flight")) return 100.0;
+    if (song.contains("metal-aggressive")) return 90.0;
+    if (song.contains("metal-workout")) return 90.0;
+    if (song.contains("relax-yourself")) return 110.0;
+    if (song.contains("StockTune")) return 100.0;
+    if (song.contains("wet-dreams")) return 101.0;
+
     return 100.0;
   }
 
@@ -54,8 +69,10 @@ class LocalAudioManager {
 
   /// Use BPM to select and play the appropriate song.
   Future<void> playSongForBpm(double bpm) async {
-    String song = selectSongForBpm(bpm);
-    await playSong(song);
+    String chosenSong = selectSongForBpm(bpm);
+    if (chosenSong != _currentSong) {
+      await playSong(chosenSong);
+    }
     _currentBpm = bpm;
   }
 
