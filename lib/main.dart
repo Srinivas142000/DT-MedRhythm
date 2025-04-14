@@ -8,6 +8,7 @@ import 'package:medrhythms/constants/constants.dart';
 import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/records_page.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
+import 'package:medrhythms/myuipages/export_settings.dart';
 
 Health health = Health();
 void main() async {
@@ -33,29 +34,25 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       routes: {
         '/sessions': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-          return SessionsPage(
-            uuid: args['uuid'],
-            userData: args['userData'],
-          );
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>;
+          return SessionsPage(uuid: args['uuid'], userData: args['userData']);
         },
         '/records': (context) {
-          final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-          return RecordsPage(
-            uuid: args['uuid'],
-            userData: args['userData'],
-          );
+          final args =
+              ModalRoute.of(context)!.settings.arguments
+                  as Map<String, dynamic>;
+          return RecordsPage(uuid: args['uuid'], userData: args['userData']);
         },
-        '/music': (context) => Scaffold(
-          appBar: AppBar(title: Text('Music')),
-          body: Center(child: Text('Music Page - Coming Soon')),
-          bottomNavigationBar: Bottombar(currentIndex: 2),
-        ),
-        '/settings': (context) => Scaffold(
-          appBar: AppBar(title: Text('Settings')),
-          body: Center(child: Text('Settings Page - Coming Soon')),
-          bottomNavigationBar: Bottombar(currentIndex: 3),
-        ),
+        '/music':
+            (context) => Scaffold(
+              appBar: AppBar(title: Text('Music')),
+              body: Center(child: Text('Music Page - Coming Soon')),
+              bottomNavigationBar: Bottombar(currentIndex: 2),
+            ),
+        '/settings':
+            (context) => Scaffold(body: Center(child: ExportSettingsPage())),
       },
     );
   }

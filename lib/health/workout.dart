@@ -101,7 +101,7 @@ class Workout {
           steps: totalSteps,
           distance: totalDistance,
           calories: totalCalories,
-          speed: speed,
+          speed: totalSpeed,
           source: "Phone - Offline",
         );
       }
