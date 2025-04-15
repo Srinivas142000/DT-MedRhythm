@@ -9,6 +9,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 FirestoreServiceRead fsr = FirestoreServiceRead();
 
+/**
+ * Recursively converts Firestore Timestamps in the data to ISO 8601 string format.
+ * 
+ * @param data [Map<String, dynamic>] The data map that may contain Firestore Timestamps.
+ * @returns [Map<String, dynamic>] The data map with Timestamps converted to ISO 8601 string format.
+ */
 Map<String, dynamic> _convertTimestampsToJsonCompatible(
   Map<String, dynamic> data,
 ) {
@@ -37,6 +43,16 @@ Map<String, dynamic> _convertTimestampsToJsonCompatible(
   return data;
 }
 
+/**
+ * Exports the user session data as a JSON file. The data can be for a specific time range or all available data.
+ * The data is fetched from Firestore, converted into JSON format, and saved both locally and in the user's Downloads folder.
+ * 
+ * @param startDate [DateTime?] The start date for the session data (optional).
+ * @param endDate [DateTime?] The end date for the session data (optional).
+ * @param exportType [String] The type of export ('All' for all data or a specific period).
+ * 
+ * @returns [Future<void>] A future that completes when the export process is finished.
+ */
 Future<void> exportUserSessionDataAsJson({
   DateTime? startDate,
   DateTime? endDate,
@@ -44,6 +60,7 @@ Future<void> exportUserSessionDataAsJson({
 }) async {
   try {
     var sessionData;
+    // Fetch session data based on the export type (All or specific date range)
     if (exportType == "All") {
       sessionData = await fsr.fetchUserSessionData(
         UserSession().userId!,
@@ -55,18 +72,10 @@ Future<void> exportUserSessionDataAsJson({
         startTime: startDate,
         endTime: endDate,
         exportOption: exportType,
-      ); // Adjust the method call to include start and end times
+      );
     }
-    // Fetch user session data
 
-    // Convert the data to JSON
-    // if (sessionData.containsKey("error") || sessionData["weeklyData"] == null) {
-    //   print(
-    //     "Error fetching session data: ${sessionData["error"] ?? "Unknown error"}",
-    //   );
-    //   throw Exception("No Data of User Found!!!");
-    // }
-
+    // Convert Firestore timestamps to JSON compatible format
     sessionData = _convertTimestampsToJsonCompatible(sessionData);
 
     final jsonData = jsonEncode(sessionData);
@@ -83,9 +92,11 @@ Future<void> exportUserSessionDataAsJson({
       filePath = '${directory.path}/$fileName';
     }
 
-    // Write the JSON data to a file
+    // Write the JSON data to a local file
     final file = File(filePath);
     await file.writeAsString(jsonData);
+
+    // Request storage permission to move the file to Downloads
     var status = await Permission.manageExternalStorage.request();
     if (status.isGranted) {
       final downloadsDir = Directory('/storage/emulated/0/Download');
@@ -93,6 +104,7 @@ Future<void> exportUserSessionDataAsJson({
 
       final newFile = await file.copy(newPath);
 
+      // Attempt to open the file
       final result = await OpenFile.open(newFile.path);
       if (result.type != ResultType.done) {
         print('Failed to open file: ${result.message}');
