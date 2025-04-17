@@ -115,11 +115,9 @@ class FirestoreServiceRead {
           "sessionDetails": sessionDetails,
         };
       } else {
-        // Return an error if no session data is found
         return {"error": "No session data found for this user."};
       }
     } catch (err) {
-      // Handle errors and return an error map
       print("Error occurred: $err");
       return {"error": err.toString()};
     }
@@ -131,9 +129,7 @@ class FirestoreServiceRead {
     DateTime toDate,
   ) async {
     try {
-      // Reference to the 'sessions' collection in Firestore
       var sessionColl = firestore.collection('sessions');
-      // Query sessions within the specified date range
       var querySnapshot =
           await sessionColl
               .where('userId', isEqualTo: UserSession().userId)
@@ -143,10 +139,8 @@ class FirestoreServiceRead {
 
       if (querySnapshot.docs.isEmpty) return {"sessionDetails": {}};
 
-      // Initialize hourly data buckets
       Map<String, Map<String, dynamic>> hourlyData = _initializeHourlyData();
 
-      // Distribute session data into hourly buckets
       for (var doc in querySnapshot.docs) {
         var sessionData = doc.data() as Map<String, dynamic>;
         DateTime startTime = (sessionData['startTime'] as Timestamp).toDate();
@@ -154,33 +148,34 @@ class FirestoreServiceRead {
         _distributeSessionData(sessionData, startTime, endTime, hourlyData);
       }
 
-      // Return the hourly session data
       return {
         DateTime(fromDate.year, fromDate.month, fromDate.day).toIso8601String():
             hourlyData,
       };
     } catch (e, stack) {
-      // Handle errors and return an error map
       print("Error fetching sessions: $e\nStackTrace: $stack");
       return {"error": e.toString()};
     }
   }
 
-  /// Initializes a map for hourly data buckets with default values.
   Map<String, Map<String, dynamic>> _initializeHourlyData() {
-    return Map.fromIterable(
-      List.generate(24, (i) => i),
-      key:
-          (i) =>
-              '${i.toString().padLeft(2, '0')}:00 - ${(i + 1).toString().padLeft(2, '0')}:00',
-      value:
-          (_) => {
-            "calories": 0.0,
-            "speed": 0.0,
-            "heartRate": 0.0,
-            "distance": 0.0,
-          },
-    );
+    Map<String, Map<String, dynamic>> hourlyData = {};
+
+    for (int i = 0; i < 24; i++) {
+      String startTime = "${i.toString().padLeft(2, '0')}:00";
+      String endTime = "${(i + 1).toString().padLeft(2, '0')}:00";
+      String key = "$startTime - $endTime";
+
+      hourlyData[key] = {
+        "calories": 0.0,
+        "speed": 0.0,
+        "heartRate": 0.0,
+        "distance": 0.0,
+        "totalSteps": 0.0,
+      };
+    }
+
+    return hourlyData;
   }
 
   /// Distributes session data into hourly buckets based on overlap duration.
@@ -253,5 +248,26 @@ class FirestoreServiceRead {
     bucket["speed"] += (sessionData['speed'] ?? 0) * weight;
     bucket["heartRate"] += (sessionData['heartRate'] ?? 0) * weight;
     bucket["distance"] += (sessionData['distance'] ?? 0) * weight;
+  }
+
+  // --- Helper Method: Remove Empty Buckets ---
+  void _removeEmptyBuckets(Map<String, Map<String, dynamic>> hourlyData) {
+    // Collect keys to be removed in a separate list
+    List<String> emptyKeys = [];
+
+    // Identify keys where all values are zero
+    hourlyData.forEach((key, value) {
+      if (value["calories"] == 0.0 &&
+          value["speed"] == 0.0 &&
+          value["heartRate"] == 0.0 &&
+          value["distance"] == 0.0) {
+        emptyKeys.add(key);
+      }
+    });
+
+    // Remove keys AFTER iteration to avoid concurrent modification
+    for (var key in emptyKeys) {
+      hourlyData.remove(key);
+    }
   }
 }
