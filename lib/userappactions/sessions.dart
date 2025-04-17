@@ -14,11 +14,9 @@ class Sessions {
   List<HealthDataPoint> _liveData = [];
   final StreamController<Map<String, double>> _liveDataController =
       StreamController<Map<String, double>>.broadcast();
-
-  final UserSession us = UserSession();
+  UserSession us = UserSession();
   final CreateDataService csd = CreateDataService();
-  final LocalAudioManager _audioManager = LocalAudioManager(threshold: 10.0);
-  final DataSyncManager dsm = DataSyncManager();
+
 
   Stream<Map<String, double>> get liveDataStream => _liveDataController.stream;
 
@@ -27,6 +25,25 @@ class Sessions {
 
   final LocalAudioManager _audioManager = LocalAudioManager(threshold: 10.0);
   LocalAudioManager get audioManager => _audioManager;
+
+  // Set the user id.
+  void setUserId(String userId) {
+    _userId = userId;
+  }
+
+  // Set the session duration.
+  void setSelectedDuration(Duration selectedDuration) {
+    _totalSelectedDuration = selectedDuration;
+  }
+
+  Future<double> calculateDistance(Position start, Position end) async {
+    return Geolocator.distanceBetween(
+      start.latitude,
+      start.longitude,
+      end.latitude,
+      end.longitude,
+    );
+  }
 
   /**
    * Starts a live workout session:
@@ -39,21 +56,6 @@ class Sessions {
    * @param {Duration} selectedDuration - Desired session duration.
    * @returns {Future<void>}
    */
-  Timer? _autoSaveTimer;
-
-  void setUserId(String userId) => _userId = userId;
-
-  void setSelectedDuration(Duration selectedDuration) =>
-      _totalSelectedDuration = selectedDuration;
-
-  Future<double> calculateDistance(Position start, Position end) async =>
-      Geolocator.distanceBetween(
-        start.latitude,
-        start.longitude,
-        end.latitude,
-        end.longitude,
-      );
-
   Future<void> startLiveWorkout(
     Health h,
     String userId,
@@ -74,18 +76,13 @@ class Sessions {
     }
 
     _isTracking = true;
-
-    _liveData.clear();
-    print("Live workout tracking started.");
-
+    _liveData.clear();  
 
     Position? previousLocation;
     DateTime? previousTime;
     DateTime startTime = DateTime.now();
-    
     DateTime lastSwitchTime = DateTime.now();
     const Duration switchCooldown = Duration(seconds: 10);
-
 
     while (_isTracking &&
         DateTime.now().difference(startTime) < selectedDuration) {
@@ -99,7 +96,7 @@ class Sessions {
       );
       _liveData.addAll(data);
 
-
+      // Obtain current GPS location
       Position currentLocation = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -154,12 +151,23 @@ class Sessions {
         'bpm': currentBpm,
       });
 
-
       await Future.delayed(const Duration(seconds: 2));
     }
 
     await stopLiveWorkout(h, userId, selectedDuration);
   }
+
+  /**
+   * Stops a live workout session:
+   * - Stops tracking and music.
+   * - Aggregates collected health data.
+   * - Persists session summary via CreateDataService.
+   * @param {Health} h - Health API instance.
+   * @param {string} userId - Unique user identifier.
+   * @param {Duration} selectedDuration - Session duration.
+   * @returns {Future<void>}
+   */
+
 
   Future<void> stopLiveWorkout(
     Health h,
@@ -278,51 +286,6 @@ class Sessions {
       "Phone",
     );
     _liveData.clear();
-  }
-
-
-  
-  Future<void> collectDailyHealthData(Health h, Uuid userId) async {
-    bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
-    if (authorized) {
-      DateTime now = DateTime.now();
-      DateTime startOfDay = DateTime(now.year, now.month, now.day);
-      DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
-      List<HealthDataPoint> healthData = await h.getHealthDataFromTypes(
-        startTime: startOfDay,
-        endTime: endOfDay,
-        types: Constants.healthDataTypes,
-      );
-      double totalSteps = 0;
-      double totalCalories = 0;
-      double totalDistance = 0;
-      double totalHeartRate = 0;
-      for (var dp in _liveData) {
-        if (dp.type == HealthDataType.STEPS) {
-          totalSteps += (dp.value as NumericHealthValue).numericValue;
-        } else if (dp.type == HealthDataType.TOTAL_CALORIES_BURNED) {
-          totalCalories += (dp.value as NumericHealthValue).numericValue;
-        } else if (dp.type == HealthDataType.DISTANCE_DELTA) {
-          totalDistance += (dp.value as NumericHealthValue).numericValue;
-        } else if (dp.type == HealthDataType.HEART_RATE) {
-          totalHeartRate += (dp.value as NumericHealthValue).numericValue;
-        }
-      }
-      print("Daily Summary:");
-      print("Steps: $totalSteps, Calories: $totalCalories, Distance: $totalDistance km");
-      await csd.createSessionData(
-        userId.toString(),
-        startOfDay,
-        endOfDay,
-        totalSteps,
-        totalDistance,
-        totalCalories,
-        totalDistance / (24 * 60 * 60),
-        "Phone",
-      );
-    } else {
-      print("Authorization not granted for daily tracking.");
-    }
   }
 
   Future<void> syncSession(Duration selectedDuration) async {

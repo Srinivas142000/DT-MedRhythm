@@ -6,6 +6,7 @@ import 'package:health/health.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/myuipages/sync_button.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
 
 Health h = Health();
@@ -246,29 +247,6 @@ Future<void> _togglePause() async {
     super.dispose();
   }
 
-  /**
-   * Toggles the pause state of the timer.
-   * Resumes or pauses the countdown timer based on the current state.
-   */
-  void _togglePause() {
-    setState(() {
-      isPaused = !isPaused;
-    });
-
-    if (isPaused) {
-      timer?.cancel();
-    } else {
-      _startTimer(s, remainingTime);
-    }
-  }
-
-  /**
-   * Cancels the current session and stops the timer.
-   */
-  void _cancelSession(Duration selectedDuration) {
-    timer?.cancel();
-    _endSession(s, selectedDuration);
-  }
 
   @override
   Widget build(BuildContext context) {

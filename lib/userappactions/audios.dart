@@ -2,8 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 
 /**
  * Manages local audio playback based on user BPM.
- * A class that manages audio playback for local songs, including playing, pausing, resuming, and stopping songs.
- * It also provides functionality for selecting songs based on BPM and maintaining a history of played songs.
  */
 class LocalAudioManager {
   /**
@@ -21,7 +19,6 @@ class LocalAudioManager {
    * List of songs.
    * @type {string[]}
    */
-  // A list of available songs for playback
   final List<String> songs = [
     "audio/Rose.mp3",
     "audio/Grenade.mp3",
@@ -60,9 +57,6 @@ class LocalAudioManager {
    * Constructor with an adjustable  BPM threshold.
    * @param {object} [options]
    * @param {number} [options.threshold=10.0] BPM difference threshold.
-   * Creates a LocalAudioManager with an optional BPM threshold for song selection.
-   * 
-   * @param threshold [double] The threshold for selecting songs based on BPM (default is 10.0).
    */
   LocalAudioManager({this.threshold = 10.0});
 
@@ -122,10 +116,6 @@ class LocalAudioManager {
    *
    * @param {string} songPath - Asset path to play.
    * @returns {Promise<void>}
-   * Plays a song from the given song path.
-   * If the song is different from the current song, it stops the current song, adds it to the history, and plays the new song.
-   * 
-   * @param songPath [String] The path of the song to play.
    */
   Future<void> playSong(String songPath) async {
     if (songPath != _currentSong) {
@@ -146,51 +136,6 @@ class LocalAudioManager {
    *
    * @param {number} bpm - The current BPM.
    * @returns {Promise<void>}
-   * Determines the ideal BPM for a given song.
-   * The BPM is based on the song's title.
-   * 
-   * @param song [String] The song's path or title.
-   * @returns [double] The ideal BPM for the given song.
-   */
-  double idealBpmForSong(String song) {
-    if (song.contains("Heavy")) return 95.0;
-    if (song.contains("All_In_My_Head")) return 100.0;
-    if (song.contains("spread-your-legs")) return 97.0;
-    if (song.contains("crayon-sparklers-beat")) return 89.0;
-    if (song.contains("holidays-dancehall")) return 106.0;
-    if (song.contains("late-flight")) return 100.0;
-    if (song.contains("metal-aggressive")) return 90.0;
-    if (song.contains("metal-workout")) return 90.0;
-    if (song.contains("relax-yourself")) return 110.0;
-    if (song.contains("StockTune")) return 100.0;
-    if (song.contains("wet-dreams")) return 101.0;
-
-    return 100.0; // Default BPM if no specific match
-  }
-
-  /**
-   * Selects a song based on the BPM.
-   * If the current song's BPM is close enough to the given BPM, the current song is selected.
-   * Otherwise, a different song from the list is selected based on the BPM threshold.
-   * 
-   * @param bpm [double] The BPM to base the song selection on.
-   * @returns [String] The path of the selected song.
-   */
-  String selectSongForBpm(double bpm) {
-    if (_currentSong != null && _currentBpm != null) {
-      double currentIdeal = idealBpmForSong(_currentSong!);
-      if ((bpm - currentIdeal).abs() < threshold) {
-        return _currentSong!;
-      }
-    }
-    return bpm < 100 ? songs[0] : songs[1]; // Default song selection
-  }
-
-  /**
-   * Selects and plays the appropriate song based on the given BPM.
-   * If the selected song is different from the current one, it will be played.
-   * 
-   * @param bpm [double] The BPM to base the song selection on.
    */
   Future<void> playSongForBpm(double bpm) async {
     String chosenSong = selectSongForBpm(bpm);
@@ -211,7 +156,6 @@ class LocalAudioManager {
   /**
    * Resumes playback of the current song.
    * @returns {Promise<void>}
-   * Resumes the currently paused song.
    */
   Future<void> resume() async {
     if (_currentSong != null) {
@@ -222,7 +166,6 @@ class LocalAudioManager {
   /**
    * Stops playback entirely and resets state.
    * @returns {Promise<void>}
-   * Stops the currently playing song, clearing the current song and BPM information.
    */
   Future<void> stop() async {
     await _audioPlayer.stop();
