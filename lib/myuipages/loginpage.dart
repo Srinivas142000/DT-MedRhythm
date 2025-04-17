@@ -9,6 +9,9 @@ import 'package:medrhythms/helpers/usersession.dart';
  * Login page for MEDRhythms app.
  * Handles IMEI input, validation, and user session setup.
  * @extends {StatefulWidget}
+ * A StatefulWidget that represents the login page of the app.
+ * It allows the user to input their IMEI number and attempts to log them in.
+ * If the IMEI is valid, it navigates to the Sessions page.
  */
 class LoginPage extends StatefulWidget {
   /**
@@ -51,6 +54,11 @@ class _LoginPageState extends State<LoginPage> {
    *
    * @returns {Future<void>} Completes when login process finishes.
    * @private
+   * Attempts to log the user in based on their IMEI number.
+   * It validates the IMEI input and checks the user session registry.
+   * If successful, it navigates to the Sessions page and uploads any pending data.
+   * 
+   * If there is any error (invalid IMEI or user not found), it displays an error message.
    */
   void login() async {
     String imei = imeiController.text.trim();
@@ -86,6 +94,8 @@ class _LoginPageState extends State<LoginPage> {
       // Fetch or create user session in Firestore
       var userData = await firestoreService.checkUserSessionRegistry(imei);
       // Upload any pending local data first
+
+      // Check if any past data is not uploaded
       await dsm.upload();
 
       if (userData != null && userData.containsKey("userId")) {
@@ -96,10 +106,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           '/sessions',
           (route) => false,
-          arguments: {
-            'uuid': userData["userId"],
-            'userData': userData,
-          },
+          arguments: {'uuid': userData["userId"], 'userData': userData},
         );
       } else {
         setState(() {
@@ -132,6 +139,8 @@ class _LoginPageState extends State<LoginPage> {
             /**
              * IMEI input field.
              * Displays [errorMessage] when non-empty.
+             * IMEI input field where the user enters their IMEI number.
+             * Displays an error message if the input is invalid.
              */
             TextField(
               controller: imeiController,
@@ -145,6 +154,8 @@ class _LoginPageState extends State<LoginPage> {
             /**
              * Login button or loading indicator.
              * Calls [login] when pressed.
+             * Displays either a loading indicator or the login button,
+             * depending on the value of isLoading.
              */
             isLoading
                 ? CircularProgressIndicator()

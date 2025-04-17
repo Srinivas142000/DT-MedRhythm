@@ -7,10 +7,14 @@ import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
-import 'package:medrhythms/myuipages/sync_button.dart';
 
 Health h = Health();
 
+/**
+ * A StatefulWidget that represents the page where users can start a walking session.
+ * It allows the user to select a duration and start the session, 
+ * and will navigate to the NextPage upon session start.
+ */
 class SessionsPage extends StatefulWidget {
   final String uuid;
   final Map<String, dynamic> userData;
@@ -27,6 +31,10 @@ class _SessionsPageState extends State<SessionsPage> {
   Bottombar bb = Bottombar();
   Sessions s = Sessions();
 
+  /**
+   * Shows a modal bottom sheet to select the session duration.
+   * The user can select the duration and start the session once selected.
+   */
   Future<void> _selectTime(BuildContext context) async {
     showModalBottomSheet(
       context: context,
@@ -63,6 +71,10 @@ class _SessionsPageState extends State<SessionsPage> {
     );
   }
 
+  /**
+   * Starts the walking session with the selected duration.
+   * Navigates to the next page immediately after starting the session.
+   */
   void _startSession() async {
     final userId = UserSession().userId;
     if (userId != null) {
@@ -130,6 +142,10 @@ class _SessionsPageState extends State<SessionsPage> {
     );
   }
 }
+/**
+ * A StatefulWidget that represents the next page during the walking session.
+ * It handles the countdown timer for the session, and allows the user to pause, resume or cancel the session.
+ */
 class NextPage extends StatefulWidget {
   final Duration duration;
   final String uuid;
@@ -156,6 +172,11 @@ class _NextPageState extends State<NextPage> {
   }
 
   void _startTimer(Sessions s, Duration selectedDuration) {
+  /**
+   * Starts a countdown timer for the session.
+   * Decreases the remaining time by one second until the session ends.
+   */
+
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!isPaused && remainingTime.inSeconds > 0) {
         setState(() {
@@ -201,6 +222,9 @@ Future<void> _togglePause() async {
     _endSession(s, selectedDuration);
   }
 
+  /**
+   * Ends the current session and saves the session data.
+   */
   void _endSession(Sessions s, Duration selectedDuration) async {
     await s.stopLiveWorkout(h, UserSession().userId!, selectedDuration);
     if (mounted) {
@@ -220,6 +244,30 @@ Future<void> _togglePause() async {
   void dispose() {
     timer?.cancel();
     super.dispose();
+  }
+
+  /**
+   * Toggles the pause state of the timer.
+   * Resumes or pauses the countdown timer based on the current state.
+   */
+  void _togglePause() {
+    setState(() {
+      isPaused = !isPaused;
+    });
+
+    if (isPaused) {
+      timer?.cancel();
+    } else {
+      _startTimer(s, remainingTime);
+    }
+  }
+
+  /**
+   * Cancels the current session and stops the timer.
+   */
+  void _cancelSession(Duration selectedDuration) {
+    timer?.cancel();
+    _endSession(s, selectedDuration);
   }
 
   @override
