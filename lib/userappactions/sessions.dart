@@ -10,26 +10,33 @@ import 'package:medrhythms/userappactions/audios.dart';
 import 'package:uuid/uuid.dart';
 
 class Sessions {
-  bool _isTracking = false;
-  List<HealthDataPoint> _liveData = [];
-  final StreamController<Map<String, double>> _liveDataController =
+  bool isTracking = false;
+  List<HealthDataPoint> liveData = [];
+  final StreamController<Map<String, double>> liveDataController =
       StreamController<Map<String, double>>.broadcast();
 
-  final UserSession us = UserSession();
-  final CreateDataService csd = CreateDataService();
-  final LocalAudioManager _audioManager = LocalAudioManager(threshold: 10.0);
-  final DataSyncManager dsm = DataSyncManager();
+  final UserSession us;
+  final CreateDataService csd;
+  final LocalAudioManager _audioManager;
+  final DataSyncManager dsm;
 
-  Stream<Map<String, double>> get liveDataStream => _liveDataController.stream;
+  Sessions({
+    required this.us,
+    required this.csd,
+    required LocalAudioManager audioManager,
+    required this.dsm,
+  }) : _audioManager = audioManager;
 
-  String? _userId;
-  Duration? _totalSelectedDuration;
+  Stream<Map<String, double>> get liveDataStream => liveDataController.stream;
+
+  String? userId;
+  Duration? totalSelectedDuration;
   Timer? _autoSaveTimer;
 
-  void setUserId(String userId) => _userId = userId;
+  void setUserId(String userId) => this.userId = userId;
 
   void setSelectedDuration(Duration selectedDuration) =>
-      _totalSelectedDuration = selectedDuration;
+      totalSelectedDuration = selectedDuration;
 
   Future<double> calculateDistance(Position start, Position end) async =>
       Geolocator.distanceBetween(
@@ -58,15 +65,15 @@ class Sessions {
       return;
     }
 
-    _isTracking = true;
-    _liveData.clear();
+    isTracking = true;
+    liveData.clear();
     print("Live workout tracking started.");
 
     Position? previousLocation;
     DateTime? previousTime;
     DateTime startTime = DateTime.now();
 
-    while (_isTracking &&
+    while (isTracking &&
         DateTime.now().difference(startTime) < selectedDuration) {
       DateTime currentTime = DateTime.now();
       List<HealthDataPoint> data = await h.getHealthDataFromTypes(
@@ -74,7 +81,7 @@ class Sessions {
         endTime: currentTime,
         types: Constants.healthDataTypes,
       );
-      _liveData.addAll(data);
+      liveData.addAll(data);
 
       Position currentLocation = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -91,7 +98,7 @@ class Sessions {
         if (timeDiff > 0) {
           double estimatedSteps = distance / 0.762;
           locationBpm = (estimatedSteps / timeDiff) * 60;
-          print("Location BPM: $locationBpm");
+          print("Location BPM: \$locationBpm");
         }
       }
       previousLocation = currentLocation;
@@ -106,21 +113,21 @@ class Sessions {
         }
       }
       double heartRateBpm = count > 0 ? totalBpm / count : 110.0;
-      print("Heart Rate BPM: $heartRateBpm");
+      print("Heart Rate BPM: \$heartRateBpm");
 
       double currentBpm = (locationBpm > 0) ? locationBpm : heartRateBpm;
-      print("Using BPM: $currentBpm");
+      print("Using BPM: \$currentBpm");
 
       await _audioManager.playSongForBpm(currentBpm);
 
       double totalSteps = 0;
-      for (var dp in _liveData) {
+      for (var dp in liveData) {
         if (dp.type == HealthDataType.STEPS) {
           totalSteps += (dp.value as num).toDouble();
         }
       }
 
-      _liveDataController.add({'steps': totalSteps, 'bpm': currentBpm});
+      liveDataController.add({'steps': totalSteps, 'bpm': currentBpm});
 
       await Future.delayed(const Duration(seconds: 2));
     }
@@ -134,7 +141,7 @@ class Sessions {
     Duration selectedDuration,
   ) async {
     try {
-      _isTracking = false;
+      isTracking = false;
       print("Live workout tracking stopped.");
 
       await _audioManager.stop();
@@ -145,10 +152,10 @@ class Sessions {
         endTime: now,
         types: Constants.healthDataTypes,
       );
-      _liveData.addAll(data);
+      liveData.addAll(data);
 
       double totalSteps = 0, totalCalories = 0, totalDistance = 0;
-      for (var dp in _liveData) {
+      for (var dp in liveData) {
         if (dp.value is! NumericHealthValue) continue;
         final value = (dp.value as NumericHealthValue).numericValue;
         switch (dp.type) {
@@ -186,9 +193,9 @@ class Sessions {
         speed,
         "Phone",
       );
-      _liveData.clear();
+      liveData.clear();
     } catch (e) {
-      print("Error stopping workout: $e");
+      print("Error stopping workout: \$e");
     }
   }
 
@@ -247,16 +254,15 @@ class Sessions {
   }
 
   Future<void> syncSession(Duration selectedDuration) async {
-    UserSession user = UserSession();
     Health h = Health();
     DateTime now = DateTime.now();
 
-    _totalSelectedDuration =
-        _totalSelectedDuration != null
-            ? _totalSelectedDuration! + selectedDuration
+    totalSelectedDuration =
+        totalSelectedDuration != null
+            ? totalSelectedDuration! + selectedDuration
             : const Duration(minutes: 1);
 
-    if (user.userId == null) {
+    if (us.userId == null) {
       print("Error: userId is null.");
       return;
     }
@@ -290,8 +296,8 @@ class Sessions {
     double totalSpeed = totalDistance / 60000;
 
     await csd.createSessionData(
-      user.userId.toString(),
-      now.subtract(_totalSelectedDuration! + selectedDuration),
+      us.userId.toString(),
+      now.subtract(totalSelectedDuration! + selectedDuration),
       now.subtract(selectedDuration),
       totalSteps,
       totalDistance,
@@ -302,15 +308,14 @@ class Sessions {
   }
 
   Future<void> syncSessionInBackground(Duration selectedDuration) async {
-    UserSession user = UserSession();
     Health h = Health();
 
-    _totalSelectedDuration =
-        _totalSelectedDuration != null
-            ? _totalSelectedDuration! + selectedDuration
+    totalSelectedDuration =
+        totalSelectedDuration != null
+            ? totalSelectedDuration! + selectedDuration
             : const Duration(minutes: 1);
 
-    if (user.userId == null) {
+    if (us.userId == null) {
       print("Error: userId is null.");
       return;
     }
@@ -346,8 +351,8 @@ class Sessions {
       double totalSpeed = totalDistance / 60000;
 
       await csd.createSessionData(
-        user.userId.toString(),
-        now.subtract(_totalSelectedDuration! + selectedDuration),
+        us.userId.toString(),
+        now.subtract(totalSelectedDuration! + selectedDuration),
         now.subtract(selectedDuration),
         totalSteps,
         totalDistance,

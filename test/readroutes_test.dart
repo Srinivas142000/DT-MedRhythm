@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:dt_medrhythm/mypages/createroutes.dart';
-import 'package:dt_medrhythm/mypages/readroutes.dart';
+import 'package:medrhythms/mypages/createroutes.dart';
+import 'package:medrhythms/mypages/readroutes.dart';
 
 // Mock classes
 class MockFirestoreInstance extends Mock implements FirebaseFirestore {}
 
-class MockCollectionReference extends Mock implements CollectionReference {}
+class MockCollectionReference extends Mock
+    implements CollectionReference<Map<String, dynamic>> {}
 
-class MockQuerySnapshot extends Mock implements QuerySnapshot {}
+class MockQuerySnapshot extends Mock
+    implements QuerySnapshot<Map<String, dynamic>> {}
 
-class MockQueryDocumentSnapshot extends Mock implements QueryDocumentSnapshot {}
+class MockQueryDocumentSnapshot extends Mock
+    implements QueryDocumentSnapshot<Map<String, dynamic>> {}
 
 class MockCreateDataService extends Mock implements CreateDataService {}
 
@@ -29,37 +32,34 @@ void main() {
     mockSessionsCollection = MockCollectionReference();
     mockCreateDataService = MockCreateDataService();
 
-    firestoreService = FirestoreServiceRead();
+    // Mock Firestore collections
+    when(mockFirestore.collection('users')).thenReturn(mockUsersCollection);
+    when(
+      mockFirestore.collection('sessions'),
+    ).thenReturn(mockSessionsCollection);
 
-    // Mock the Firestore instance to return mock collections
-    when(mockFirestore.collection('users')).thenReturn(
-      mockUsersCollection.parameters
-          as CollectionReference<Map<String, dynamic>>,
+    // Inject mocks into the FirestoreServiceRead instance
+    firestoreService = FirestoreServiceRead(
+      firestore: mockFirestore,
+      createService: mockCreateDataService,
     );
-
-    when(mockFirestore.collection('sessions')).thenReturn(
-      mockSessionsCollection.parameters
-          as CollectionReference<Map<String, dynamic>>,
-    );
-
-    firestoreService = FirestoreServiceRead();
   });
 
   group('FirestoreServiceRead tests', () {
     test(
       'checkUserSessionRegistry should return user details if user exists',
       () async {
-        // Mock the query for user document
-        var mockDoc = MockQueryDocumentSnapshot();
-        when(
-          mockUsersCollection.where('imei', isEqualTo: '123456').get(),
-        ).thenAnswer((_) async {
-          var querySnapshot = MockQuerySnapshot();
-          when(querySnapshot.docs).thenReturn([mockDoc]);
-          return querySnapshot;
-        });
+        final mockDoc = MockQueryDocumentSnapshot();
+        final mockQuerySnapshot = MockQuerySnapshot();
 
-        // Mock the document data
+        // Setup user document to return
+        when(
+          mockUsersCollection.where('imei', isEqualTo: '123456'),
+        ).thenReturn(mockUsersCollection);
+        when(
+          mockUsersCollection.get(),
+        ).thenAnswer((_) async => mockQuerySnapshot);
+        when(mockQuerySnapshot.docs).thenReturn([mockDoc]);
         when(
           mockDoc.data(),
         ).thenReturn({'imei': '123456', 'userId': 'user123'});
@@ -76,16 +76,18 @@ void main() {
     test(
       'checkUserSessionRegistry should create user if user does not exist',
       () async {
-        // Mock query when no user found
-        when(
-          mockUsersCollection.where('imei', isEqualTo: '123456').get(),
-        ).thenAnswer((_) async {
-          var querySnapshot = MockQuerySnapshot();
-          when(querySnapshot.docs).thenReturn([]);
-          return querySnapshot;
-        });
+        final mockQuerySnapshot = MockQuerySnapshot();
 
-        // Mock the call to create a new user reference
+        // Simulate no user found
+        when(
+          mockUsersCollection.where('imei', isEqualTo: '123456'),
+        ).thenReturn(mockUsersCollection);
+        when(
+          mockUsersCollection.get(),
+        ).thenAnswer((_) async => mockQuerySnapshot);
+        when(mockQuerySnapshot.docs).thenReturn([]);
+
+        // Expect user creation to be called
         when(
           mockCreateDataService.createUserReference('123456'),
         ).thenAnswer((_) async => null);
@@ -95,7 +97,6 @@ void main() {
           '123456',
         );
 
-        // Make sure the user is created and then fetched again
         verify(mockCreateDataService.createUserReference('123456')).called(1);
         expect(result, isNotNull);
       },
@@ -104,22 +105,35 @@ void main() {
     test(
       'fetchUserSessionData should return session data if sessions exist',
       () async {
-        // Mock session query
-        var mockSessionDoc = MockQueryDocumentSnapshot();
+        final mockSessionDoc = MockQueryDocumentSnapshot();
+        final mockQuerySnapshot = MockQuerySnapshot();
+        final mockUserQuerySnapshot = MockQuerySnapshot();
+        final mockUserDoc = MockQueryDocumentSnapshot();
+
+        // Mock session documents
         when(
-          mockSessionsCollection.where('userId', isEqualTo: 'user123').get(),
-        ).thenAnswer((_) async {
-          var querySnapshot = MockQuerySnapshot();
-          when(querySnapshot.docs).thenReturn([mockSessionDoc]);
-          return querySnapshot;
-        });
-        // Mock session data
+          mockSessionsCollection.where('userId', isEqualTo: 'user123'),
+        ).thenReturn(mockSessionsCollection);
+        when(
+          mockSessionsCollection.get(),
+        ).thenAnswer((_) async => mockQuerySnapshot);
+        when(mockQuerySnapshot.docs).thenReturn([mockSessionDoc]);
         when(mockSessionDoc.data()).thenReturn({
           'calories': 100,
           'distance': 5.0,
           'totalSteps': 1000,
           'speed': 3.5,
         });
+
+        // Mock user document with IMEI
+        when(
+          mockUsersCollection.where('userId', isEqualTo: 'user123'),
+        ).thenReturn(mockUsersCollection);
+        when(
+          mockUsersCollection.get(),
+        ).thenAnswer((_) async => mockUserQuerySnapshot);
+        when(mockUserQuerySnapshot.docs).thenReturn([mockUserDoc]);
+        when(mockUserDoc.data()).thenReturn({'imei': '111222'});
 
         final result = await firestoreService.fetchUserSessionData('user123');
 
@@ -128,20 +142,23 @@ void main() {
         expect(result['totalDistance'], 5.0);
         expect(result['totalSteps'], 1000);
         expect(result['averageSpeed'], 3.5);
+        expect(result['IMEI'], '111222');
       },
     );
 
     test(
       'fetchUserSessionData should return error message if no sessions',
       () async {
-        // Mock query for no sessions
+        final mockQuerySnapshot = MockQuerySnapshot();
+
+        // Simulate no sessions found
         when(
-          mockSessionsCollection.where('userId', isEqualTo: 'user123').get(),
-        ).thenAnswer((_) async {
-          var querySnapshot = MockQuerySnapshot();
-          when(querySnapshot.docs).thenReturn([]);
-          return querySnapshot;
-        });
+          mockSessionsCollection.where('userId', isEqualTo: 'user123'),
+        ).thenReturn(mockSessionsCollection);
+        when(
+          mockSessionsCollection.get(),
+        ).thenAnswer((_) async => mockQuerySnapshot);
+        when(mockQuerySnapshot.docs).thenReturn([]);
 
         final result = await firestoreService.fetchUserSessionData('user123');
 
