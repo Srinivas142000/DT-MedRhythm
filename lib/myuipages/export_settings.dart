@@ -5,6 +5,10 @@ import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/userappactions/jsonexport.dart';
 import 'package:medrhythms/myuipages/bottombar.dart';
 
+/**
+ * A page where users can select export options for their data, including the time period for exporting the session data.
+ * It allows the user to choose between exporting all data or selecting a custom date range for export.
+ */
 class ExportSettingsPage extends StatefulWidget {
   @override
   _ExportSettingsPageState createState() => _ExportSettingsPageState();
@@ -16,6 +20,12 @@ class _ExportSettingsPageState extends State<ExportSettingsPage> {
   String _selectedOption = 'All'; // Default option
   Bottombar bb = Bottombar();
 
+  /**
+   * Opens a Cupertino date picker modal to allow the user to select a date.
+   * 
+   * @param context [BuildContext] The context in which the date picker is displayed.
+   * @param isFromDate [bool] A flag to determine if the selected date is the "from" date or the "to" date.
+   */
   void _selectDate(BuildContext context, bool isFromDate) async {
     DateTime initialDate = DateTime.now();
     DateTime firstDate = DateTime(2000);
@@ -46,6 +56,10 @@ class _ExportSettingsPageState extends State<ExportSettingsPage> {
     );
   }
 
+  /**
+   * Exports the user session data based on the selected option (either "All" or a specific date range).
+   * Displays appropriate feedback via SnackBars based on success or error.
+   */
   void _exportData() async {
     if (_selectedOption == 'Select Time Periods') {
       if (_fromDate != null && _toDate != null) {
@@ -105,6 +119,7 @@ class _ExportSettingsPageState extends State<ExportSettingsPage> {
             SizedBox(height: 16),
             Row(
               children: [
+                // "All" option radio button
                 Radio<String>(
                   value: 'All',
                   groupValue: _selectedOption,
@@ -116,6 +131,7 @@ class _ExportSettingsPageState extends State<ExportSettingsPage> {
                 ),
                 Text('All'),
                 SizedBox(width: 16),
+                // "Select Time Periods" option radio button
                 Radio<String>(
                   value: 'Select Time Periods',
                   groupValue: _selectedOption,
@@ -170,7 +186,6 @@ class _ExportSettingsPageState extends State<ExportSettingsPage> {
           ],
         ),
       ),
-
       bottomNavigationBar: bb,
     );
   }

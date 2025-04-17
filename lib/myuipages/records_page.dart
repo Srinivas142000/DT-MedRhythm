@@ -11,8 +11,6 @@ import 'dart:math' as math;
 
 class RecordsPage extends StatefulWidget {
   final String uuid;
-  final Map<String, dynamic> userData;
-
   const RecordsPage({super.key, required this.uuid, required this.userData});
 
   @override
@@ -32,7 +30,6 @@ class _RecordsPageState extends State<RecordsPage> {
   List<double> activityPattern = List.filled(24, 0.02);
 
   bool useCumulativeMode = true;
-
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -41,6 +38,7 @@ class _RecordsPageState extends State<RecordsPage> {
   @override
   void initState() {
     super.initState();
+
     UserSession().userId = widget.uuid;
     _setSelectedDateToToday();
     // Initialize user session and load weekly data on startup.
