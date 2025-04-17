@@ -176,6 +176,7 @@ class FirestoreServiceRead {
         "speed": 0.0,
         "heartRate": 0.0,
         "distance": 0.0,
+        "totalSteps": 0.0,
       };
     }
 
@@ -251,6 +252,7 @@ class FirestoreServiceRead {
     bucket["speed"] += (sessionData['speed'] ?? 0) * weight;
     bucket["heartRate"] += (sessionData['heartRate'] ?? 0) * weight;
     bucket["distance"] += (sessionData['distance'] ?? 0) * weight;
+    bucket["totalSteps"] += (sessionData['totalSteps'] ?? 0) * weight;
   }
 
   // --- Helper Method: Remove Empty Buckets ---
