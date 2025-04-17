@@ -11,6 +11,7 @@ import 'dart:math' as math;
 
 class RecordsPage extends StatefulWidget {
   final String uuid;
+  final Map<String, dynamic> userData;
   const RecordsPage({super.key, required this.uuid, required this.userData});
 
   @override

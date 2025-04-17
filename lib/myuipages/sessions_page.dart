@@ -127,7 +127,7 @@ class _SessionsPageState extends State<SessionsPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                SyncButton(),
+                // SyncButton(),
               ],
             ),
           ),
