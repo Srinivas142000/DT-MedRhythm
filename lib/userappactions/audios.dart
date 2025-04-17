@@ -1,9 +1,24 @@
 import 'package:audioplayers/audioplayers.dart';
 
+/**
+ * Manages local audio playback based on user BPM.
+ */
 class LocalAudioManager {
+  /**
+   * The AudioPlayer instance from the audioplayers package.
+   * @type {AudioPlayer}
+   */
   final AudioPlayer _audioPlayer = AudioPlayer();
-  
+
+  /**
+   * @returns {AudioPlayer}
+   */
   AudioPlayer get audioPlayer => _audioPlayer;
+
+  /**
+   * List of songs.
+   * @type {string[]}
+   */
   final List<String> songs = [
     "audio/Rose.mp3",
     "audio/Grenade.mp3",
@@ -20,14 +35,36 @@ class LocalAudioManager {
     "audio/Switch.mp3",
   ];
 
+  /**
+   * History of songs played during the session.
+   * @type {string[]}
+   */
   final List<String> playedHistory = [];
 
+  /** @type {string?} Currently playing song path. */
   String? _currentSong;
+
+  /** @type {number?} Last BPM used to choose the song. */
   double? _currentBpm;
+
+  /**
+   * BPM difference threshold before switching the songs.
+   * @type {number}
+   */
   final double threshold;
 
+  /**
+   * Constructor with an adjustable  BPM threshold.
+   * @param {object} [options]
+   * @param {number} [options.threshold=10.0] BPM difference threshold.
+   */
   LocalAudioManager({this.threshold = 10.0});
 
+  /**
+   * Returns the ideal BPM for a given song based on the name of the song.
+   * @param {string} song - The song name.
+   * @returns {number} Ideal BPM.
+   */
   double idealBpmForSong(String song) {
     if (song.contains("GONE")) return 190.0;
     if (song.contains("Mine")) return 170.0;
@@ -41,9 +78,18 @@ class LocalAudioManager {
     if (song.contains("Halo")) return 80.0;
     if (song.contains("Grenade")) return 110.0;
     if (song.contains("Rose")) return 120.0;
+    // Fallback BPM if the song isn't recognized.
     return 100.0;
   }
 
+  /**
+   * Chooses the best song for a given BPM.
+   * - If the current song's ideal BPM is within the threshold, keep playing it.
+   * - otherwise it  picks the song whose ideal BPM is closest to `bpm`.
+   *
+   * @param {number} bpm - The current BPM.
+   * @returns {string} Path of the chosen song.
+   */
   String selectSongForBpm(double bpm) {
     if (_currentSong != null && _currentBpm != null) {
       double currentIdeal = idealBpmForSong(_currentSong!);
@@ -51,6 +97,7 @@ class LocalAudioManager {
         return _currentSong!;
       }
     }
+
     String bestSong = songs[0];
     double minDifference = double.infinity;
     for (String song in songs) {
@@ -64,6 +111,12 @@ class LocalAudioManager {
     return bestSong;
   }
 
+  /**
+   * Stops any current song playback and plays `songPath` if not already playing.
+   *
+   * @param {string} songPath - Asset path to play.
+   * @returns {Promise<void>}
+   */
   Future<void> playSong(String songPath) async {
     if (songPath != _currentSong) {
       _currentSong = songPath;
@@ -78,6 +131,12 @@ class LocalAudioManager {
     }
   }
 
+  /**
+   * Selects and plays the best song for the given BPM.
+   *
+   * @param {number} bpm - The current BPM.
+   * @returns {Promise<void>}
+   */
   Future<void> playSongForBpm(double bpm) async {
     String chosenSong = selectSongForBpm(bpm);
     if (chosenSong != _currentSong) {
@@ -86,16 +145,28 @@ class LocalAudioManager {
     _currentBpm = bpm;
   }
 
+  /**
+   * Pauses the currently playing song.
+   * @returns {Promise<void>}
+   */
   Future<void> pause() async {
     await _audioPlayer.pause();
   }
 
+  /**
+   * Resumes playback of the current song.
+   * @returns {Promise<void>}
+   */
   Future<void> resume() async {
     if (_currentSong != null) {
       await _audioPlayer.play(AssetSource(_currentSong!));
     }
   }
 
+  /**
+   * Stops playback entirely and resets state.
+   * @returns {Promise<void>}
+   */
   Future<void> stop() async {
     await _audioPlayer.stop();
     _currentSong = null;

@@ -43,80 +43,128 @@ class Sessions {
     );
   }
 
-  Future<void> startLiveWorkout(Health h, String userId, Duration selectedDuration) async {
+  /**
+   * Starts a live workout session:
+   * - Requests health authorization if needed.
+   * - Tracks steps and estimates BPM from GPS.
+   * - Plays music matched to the current BPM.
+   * - Streams live data updates.
+   * @param {Health} h - Health API instance.
+   * @param {string} userId - Unique user identifier.
+   * @param {Duration} selectedDuration - Desired session duration.
+   * @returns {Future<void>}
+   */
+  Future<void> startLiveWorkout(
+    Health h,
+    String userId,
+    Duration selectedDuration,
+  ) async {
     setUserId(userId);
+
     bool permissionsGranted = us.hasPermissions;
-    if (permissionsGranted) {
-      bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
-      if (authorized && permissionsGranted) {
-        _isTracking = true;
-        _liveData.clear();
-
-    
-        Position? previousLocation;
-        DateTime? previousTime;
-        DateTime startTime = DateTime.now();
-        // Enforce a cooldown to prevent rapid switching.
-        DateTime lastSwitchTime = DateTime.now();
-        const Duration switchCooldown = Duration(seconds: 10);
-
-        while (_isTracking && DateTime.now().difference(startTime) < selectedDuration) {
-          DateTime currentTime = DateTime.now();
-
-          
-          List<HealthDataPoint> data = await h.getHealthDataFromTypes(
-            startTime: currentTime.subtract(const Duration(seconds: 10)),
-            endTime: currentTime,
-            types: Constants.healthDataTypes,
-          );
-          _liveData.addAll(data);
-
-          // Get current location.
-          Position currentLocation = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high,
-          );
-          
-          double locationBpm = 0.0;
-          if (previousLocation != null && previousTime != null) {
-            double distance = await calculateDistance(previousLocation, currentLocation);
-            double timeDiff = currentTime.difference(previousTime!).inSeconds.toDouble();
-            if (timeDiff > 0) {
-              double estimatedSteps = distance / 0.762; // average step length in meters.
-              locationBpm = (estimatedSteps / timeDiff) * 60;
-              print("Calculated Location BPM: $locationBpm");
-            }
-          }
-          previousLocation = currentLocation;
-          previousTime = currentTime;
-          double currentBpm = locationBpm;
-          print("Using BPM (location-based only): $currentBpm");
-          if (currentBpm < 20.0) {
-            print("Low movement detected (BPM: $currentBpm). Skipping song update.");
-          } else {
-            if (currentTime.difference(lastSwitchTime) > switchCooldown) {
-              await _audioManager.playSongForBpm(currentBpm);
-              lastSwitchTime = currentTime;
-            }
-          }        
-          double totalSteps = 0;
-          for (var dp in _liveData) {
-            if (dp.type == HealthDataType.STEPS) {
-              totalSteps += dp.value as double;
-            }
-          }
-          _liveDataController.add({'steps': totalSteps, 'bpm': currentBpm});
-
-          await Future.delayed(const Duration(seconds: 2));
-        }
-        // When the session ends, stop live tracking and stop music.
-        await stopLiveWorkout(h, UserSession().userId!, selectedDuration);
-      } else {
-        print("Authorization not granted for live tracking.");
-      }
-    } else {
+    if (!permissionsGranted) {
       print("Permissions not granted.");
+      return;
     }
+
+    bool authorized = await h.requestAuthorization(Constants.healthDataTypes);
+    if (!authorized) {
+      print("Authorization not granted for live tracking.");
+      return;
+    }
+
+    _isTracking = true;
+    _liveData.clear();  
+
+    Position? previousLocation;
+    DateTime? previousTime;
+    DateTime startTime = DateTime.now();
+    DateTime lastSwitchTime = DateTime.now();
+    const Duration switchCooldown = Duration(seconds: 10);
+
+    while (_isTracking &&
+        DateTime.now().difference(startTime) < selectedDuration) {
+      DateTime currentTime = DateTime.now();
+
+      // Fetch recent health data points
+      List<HealthDataPoint> data = await h.getHealthDataFromTypes(
+        startTime: currentTime.subtract(const Duration(seconds: 10)),
+        endTime: currentTime,
+        types: Constants.healthDataTypes,
+      );
+      _liveData.addAll(data);
+
+      // Obtain current GPS location
+      Position currentLocation = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      double locationBpm = 0.0;
+        // If we have a previous location, estimate BPM from movement
+        if (previousLocation != null && previousTime != null) {
+          // Compute distance traveled since last sample
+          double distance = await calculateDistance(
+            previousLocation,
+            currentLocation,
+          );
+          // Compute time difference in seconds
+          double timeDiff =
+              currentTime.difference(previousTime).inSeconds.toDouble();
+          if (timeDiff > 0) {
+            // Estimate number of steps and convert to steps per minute
+            double estimatedSteps = distance / 0.762; 
+            locationBpm = (estimatedSteps / timeDiff) * 60;
+            print("Calculated Location BPM: $locationBpm");
+          }
+        }
+        // Update previous location/time for next iteration
+        previousLocation = currentLocation;
+        previousTime = currentTime;
+
+        double currentBpm = locationBpm;
+        print("Using BPM (location-based only): $currentBpm");
+
+        // If BPM is very low assume user isn't walking and skip song change
+        if (currentBpm < 20.0) {
+          print("Low movement detected (BPM: $currentBpm). Skipping song update.");
+        } else {
+          // Only switch songs if the cooldown has elapsed
+          if (currentTime.difference(lastSwitchTime) > switchCooldown) {
+            await _audioManager.playSongForBpm(currentBpm);
+            lastSwitchTime = currentTime;
+          }
+        }
+
+      // Sum total steps
+      double totalSteps = 0;
+      for (var dp in _liveData) {
+        if (dp.type == HealthDataType.STEPS) {
+          totalSteps += dp.value as double;
+        }
+      }
+
+      // Emit live data
+      _liveDataController.add({
+        'steps': totalSteps,
+        'bpm': currentBpm,
+      });
+
+      await Future.delayed(const Duration(seconds: 2));
+    }
+
+    await stopLiveWorkout(h, userId, selectedDuration);
   }
+
+  /**
+   * Stops a live workout session:
+   * - Stops tracking and music.
+   * - Aggregates collected health data.
+   * - Persists session summary via CreateDataService.
+   * @param {Health} h - Health API instance.
+   * @param {string} userId - Unique user identifier.
+   * @param {Duration} selectedDuration - Session duration.
+   * @returns {Future<void>}
+   */
 
   Future<void> stopLiveWorkout(Health h, String userId, Duration selectedDuration) async {
     _isTracking = false;
@@ -160,7 +208,7 @@ class Sessions {
       totalSteps,
       totalDistance,
       totalCalories,
-      totalDistance / (10 * 60), // Estimated speed in km/h.
+      totalDistance / (10 * 60), 
       "Phone",
     );
     _liveData.clear();

@@ -5,57 +5,93 @@ import 'package:medrhythms/myuipages/sessions_page.dart';
 import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 
+/**
+ * Login page for MEDRhythms app.
+ * Handles IMEI input, validation, and user session setup.
+ * @extends {StatefulWidget}
+ */
 class LoginPage extends StatefulWidget {
+  /**
+   * Constructs a [LoginPage].
+   * @param {Key?} [key] Optional widget key.
+   */
   const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+/**
+ * State for [LoginPage].
+ * Manages IMEI input, loading state, and navigation on successful login.
+ * @extends {State<LoginPage>}
+ */
 class _LoginPageState extends State<LoginPage> {
+  /** Controller for the IMEI text field. @type {TextEditingController} */
   final TextEditingController imeiController = TextEditingController();
+
+  /** Firestore service for reading user session registry. @type {FirestoreServiceRead} */
   final FirestoreServiceRead firestoreService = FirestoreServiceRead();
+
+  /** Manager for syncing local data to backend. @type {DataSyncManager} */
   final DataSyncManager dsm = DataSyncManager();
 
+  /** Indicates whether a login request is in progress. @type {boolean} */
   bool isLoading = false;
+
+  /** Error message to display under the IMEI field. @type {string} */
   String errorMessage = '';
 
+  /**
+   * Validates the IMEI and attempts to log in the user.
+   * - Checks for non-empty, 15-digit numeric IMEI.
+   * - Queries Firestore for existing user session.
+   * - Uploads any pending local data.
+   * - Navigates to the sessions page on success.
+   *
+   * @returns {Future<void>} Completes when login process finishes.
+   * @private
+   */
   void login() async {
     String imei = imeiController.text.trim();
 
+    // Validate IMEI presence
     if (imei.isEmpty) {
       setState(() {
         errorMessage = "IMEI cannot be empty";
       });
       return;
     }
-    //IMEI number must be 15 digits
+    // Validate IMEI length
     if (imei.length != 15) {
       setState(() {
         errorMessage = "IMEI must be 15 digits";
       });
       return;
     }
-    //IMEI can only be digits
+    // Validate IMEI numeric format
     if (!RegExp(r'^[0-9]{15}$').hasMatch(imei)) {
       setState(() {
         errorMessage = "IMEI must contain only digits!";
       });
       return;
     }
+
     setState(() {
       isLoading = true;
       errorMessage = '';
     });
 
     try {
+      // Fetch or create user session in Firestore
       var userData = await firestoreService.checkUserSessionRegistry(imei);
-      // check if any past data is not uploaded
+      // Upload any pending local data first
       await dsm.upload();
+
       if (userData != null && userData.containsKey("userId")) {
+        // Save session info and navigate
         UserSession().userId = userData["userId"];
         UserSession().userData = userData;
-
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/sessions',
@@ -93,6 +129,10 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            /**
+             * IMEI input field.
+             * Displays [errorMessage] when non-empty.
+             */
             TextField(
               controller: imeiController,
               decoration: InputDecoration(
@@ -102,9 +142,16 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(height: 20),
+            /**
+             * Login button or loading indicator.
+             * Calls [login] when pressed.
+             */
             isLoading
                 ? CircularProgressIndicator()
-                : ElevatedButton(onPressed: login, child: Text("Login")),
+                : ElevatedButton(
+                    onPressed: login,
+                    child: Text("Login"),
+                  ),
           ],
         ),
       ),

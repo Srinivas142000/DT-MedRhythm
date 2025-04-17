@@ -168,20 +168,33 @@ class _NextPageState extends State<NextPage> {
     });
   }
 
-  void _togglePause() async {
-    setState(() {
-      isPaused = !isPaused;
-    });
-    if (isPaused) {
-      timer?.cancel();
-      await s.audioManager.pause();
-      print("Session paused and music paused.");
-    } else {
-      await s.audioManager.resume();
-      _startTimer(s, remainingTime);
-      print("Session resumed and music resumed.");
-    }
+ /**
+ * Toggles the paused state of the session.
+ *
+ * When paused:
+ *  - Cancels the session timer
+ *  - Pauses audio playback
+ * When resumed:
+ *  - Resumes audio playback
+ *  - Restarts the session timer
+ *
+ * @returns {Future<void>} Completes when pause or resume actions are done.
+ * @private
+ */
+Future<void> _togglePause() async {
+  setState(() {
+    isPaused = !isPaused;
+  });
+  if (isPaused) {
+    timer?.cancel();
+    await s.audioManager.pause();
+    print("Session paused and music paused.");
+  } else {
+    await s.audioManager.resume();
+    _startTimer(s, remainingTime);
+    print("Session resumed and music resumed.");
   }
+}
 
   void _cancelSession(Duration selectedDuration) {
     timer?.cancel();
