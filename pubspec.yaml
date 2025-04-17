@@ -39,7 +39,6 @@ dependencies:
   permission_handler: ^11.4.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  table_calendar: ^3.0.9
   cupertino_icons: ^1.0.8
   geekyants_flutter_gauges: ^1.0.4
   geolocator: ^13.0.3
@@ -73,17 +72,19 @@ flutter:
   assets:
     - images/logo.jpg
     - images/walking.gif
-    - assets/audio/Heavy.mp3
-    - assets/audio/All_In_My_Head.mp3
-    - assets/audio/spread-your-legs-97-bpm-instrumental-233227.mp3
-    - assets/audio/crayon-sparklers-beat-89-bpm-186298.mp3
-    - assets/audio/holidays-dancehall-instrumental-106-bpm-231232.mp3
-    - assets/audio/late-flight-from-detroit-em-100-191484.mp3
-    - assets/audio/metal-aggressive-90-bpm-loop-13539.mp3
-    - assets/audio/metal-workout-90-bpm-medium1-13722.mp3
-    - assets/audio/relax-yourself-110-bpm-dancehall-instrumental-233180.mp3
-    - assets/audio/StockTune-Heartbeat Of The Celebration_1744573622.mp3
-    - assets/audio/wet-dreams-101-bpm-instrumental-235130.mp3
+    - assets/audio/Rose.mp3
+    - assets/audio/Grenade.mp3
+    - assets/audio/Halo.mp3
+    - assets/audio/Roar.mp3
+    - assets/audio/High.mp3
+    - assets/audio/Winter.mp3
+    - assets/audio/Sao_Paulo.mp3
+    - assets/audio/Sao_Paulo.mp3
+    - assets/audio/Man_Down.mp3
+    - assets/audio/Miss_independent.mp3
+    - assets/audio/GONE.mp3
+    - assets/audio/Sorry.mp3
+    - assets/audio/Mine.mp3
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
