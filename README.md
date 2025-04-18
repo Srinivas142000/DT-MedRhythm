@@ -50,7 +50,7 @@ The **MedRhythms Project** is a cross-platform mobile application designed to su
 git clone (https://github.com/Srinivas142000/DT-MedRhythm.git)
 cd medrhythms-project
 ```
-
+Final Code + Documentation: MASTER
 Development Code Branch: DEV
 QA Tests Branch : QA
 Documentation : main
