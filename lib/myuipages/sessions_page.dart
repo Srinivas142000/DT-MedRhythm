@@ -8,6 +8,7 @@ import 'package:medrhythms/myuipages/bottombar.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 import 'package:medrhythms/myuipages/sync_button.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
+import 'package:medrhythms/myuipages/records_page.dart';
 
 Health h = Health();
 
@@ -21,7 +22,7 @@ class SessionsPage extends StatefulWidget {
   final Map<String, dynamic> userData;
 
   const SessionsPage({Key? key, required this.uuid, required this.userData})
-      : super(key: key);
+    : super(key: key);
 
   @override
   _SessionsPageState createState() => _SessionsPageState();
@@ -83,7 +84,9 @@ class _SessionsPageState extends State<SessionsPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => NextPage(duration: selectedDuration, uuid: widget.uuid),
+          builder:
+              (context) =>
+                  NextPage(duration: selectedDuration, uuid: widget.uuid),
         ),
       );
     } else {
@@ -114,7 +117,10 @@ class _SessionsPageState extends State<SessionsPage> {
             child: Column(
               children: [
                 const SizedBox(height: 20),
-                const Text("Start walking session?", style: TextStyle(fontSize: 25)),
+                const Text(
+                  "Start walking session?",
+                  style: TextStyle(fontSize: 25),
+                ),
                 const SizedBox(height: 200),
                 Container(
                   width: 300,
@@ -143,6 +149,7 @@ class _SessionsPageState extends State<SessionsPage> {
     );
   }
 }
+
 /**
  * A StatefulWidget that represents the next page during the walking session.
  * It handles the countdown timer for the session, and allows the user to pause, resume or cancel the session.
@@ -152,7 +159,7 @@ class NextPage extends StatefulWidget {
   final String uuid;
 
   const NextPage({Key? key, required this.duration, required this.uuid})
-      : super(key: key);
+    : super(key: key);
 
   @override
   _NextPageState createState() => _NextPageState();
@@ -173,7 +180,7 @@ class _NextPageState extends State<NextPage> {
   }
 
   void _startTimer(Sessions s, Duration selectedDuration) {
-  /**
+    /**
    * Starts a countdown timer for the session.
    * Decreases the remaining time by one second until the session ends.
    */
@@ -190,7 +197,7 @@ class _NextPageState extends State<NextPage> {
     });
   }
 
- /**
+  /**
  * Toggles the paused state of the session.
  *
  * When paused:
@@ -203,20 +210,20 @@ class _NextPageState extends State<NextPage> {
  * @returns {Future<void>} Completes when pause or resume actions are done.
  * @private
  */
-Future<void> _togglePause() async {
-  setState(() {
-    isPaused = !isPaused;
-  });
-  if (isPaused) {
-    timer?.cancel();
-    await s.audioManager.pause();
-    print("Session paused and music paused.");
-  } else {
-    await s.audioManager.resume();
-    _startTimer(s, remainingTime);
-    print("Session resumed and music resumed.");
+  Future<void> _togglePause() async {
+    setState(() {
+      isPaused = !isPaused;
+    });
+    if (isPaused) {
+      timer?.cancel();
+      await s.audioManager.pause();
+      print("Session paused and music paused.");
+    } else {
+      await s.audioManager.resume();
+      _startTimer(s, remainingTime);
+      print("Session resumed and music resumed.");
+    }
   }
-}
 
   void _cancelSession(Duration selectedDuration) {
     timer?.cancel();
@@ -229,15 +236,33 @@ Future<void> _togglePause() async {
   void _endSession(Sessions s, Duration selectedDuration) async {
     await s.stopLiveWorkout(h, UserSession().userId!, selectedDuration);
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SessionsPage(
-            uuid: widget.uuid,
-            userData: UserSession().userData ?? {},
-          ),
+      // Show workout completion message and automatically navigate to the records page
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Workout completed! Your records will be displayed soon..."),
+          duration: Duration(seconds: 2),
         ),
       );
+
+      // Delay a bit to allow time for data to be written to the database
+      await Future.delayed(Duration(seconds: 2));
+
+      // Navigate to RecordsPage
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              // Create a RecordsPage with a key to force it to rebuild and load new data
+              return RecordsPage(
+                key: UniqueKey(),
+                uuid: widget.uuid,
+                userData: UserSession().userData ?? {},
+              );
+            },
+          ),
+        );
+      }
     }
   }
 
@@ -247,13 +272,13 @@ Future<void> _togglePause() async {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    double progress = widget.duration.inSeconds > 0
-        ? (widget.duration.inSeconds - remainingTime.inSeconds) /
-            widget.duration.inSeconds
-        : 0;
+    double progress =
+        widget.duration.inSeconds > 0
+            ? (widget.duration.inSeconds - remainingTime.inSeconds) /
+                widget.duration.inSeconds
+            : 0;
     return Scaffold(
       appBar: MedRhythmsAppBar(),
       body: Column(
@@ -273,11 +298,19 @@ Future<void> _togglePause() async {
                     children: [
                       const Text(
                         "Walking",
-                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         "${remainingTime.inMinutes}:${(remainingTime.inSeconds % 60).toString().padLeft(2, '0')}",
-                        style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Image(
@@ -303,13 +336,17 @@ Future<void> _togglePause() async {
                     children: [
                       ElevatedButton(
                         onPressed: _togglePause,
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                        ),
                         child: Text(isPaused ? "Resume" : "Pause"),
                       ),
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () => _cancelSession(remainingTime),
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                        ),
                         child: const Text("Cancel"),
                       ),
                     ],

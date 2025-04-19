@@ -44,7 +44,7 @@ class _RecordsPageState extends State<RecordsPage> {
     _setSelectedDateToToday();
     // Initialize user session and load weekly data on startup.
 
-    _fetchFormattedWeekData();
+    _loadTodayData();
   }
 
   void _setSelectedDateToToday() {
@@ -136,6 +136,36 @@ class _RecordsPageState extends State<RecordsPage> {
     }
   }
 
+  Future<void> _loadTodayData() async {
+    setState(() => isLoading = true);
+
+    try {
+      final today = DateTime.now();
+      final todayDateKey = _dateToKey(today);
+
+      final todayData = await fsr.fetchSessionDetails(
+        DateTime(today.year, today.month, today.day),
+        DateTime(today.year, today.month, today.day, 23, 59, 59),
+      );
+
+      await _processSessionData(todayData);
+
+      setState(() {
+        selectedDate = today;
+        selectedDateKey = todayDateKey;
+        _selectedDay = today;
+        _focusedDay = today;
+      });
+
+      _fetchFormattedWeekData();
+    } catch (e) {
+      print('Error loading today data: $e');
+      _fetchFormattedWeekData();
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
   Future<void> _fetchFormattedWeekData() async {
     setState(() => isLoading = true);
 
@@ -158,10 +188,15 @@ class _RecordsPageState extends State<RecordsPage> {
           await _processSessionData({dateKey: dailyData[dateKey]});
         }
 
+        // Ensure the selected date key is valid
         selectedDateKey = _dateToKey(selectedDate);
 
-        if (weekData[selectedDateKey] == null) {
-          _setSelectedDateToToday();
+        // Ensure the date in the week picker matches the data correctly
+        if (weekData[selectedDateKey] == null &&
+            selectedDate.isAtSameMomentAs(DateTime.now())) {
+          // If today's data is missing but user is viewing today's date,
+          // try to fetch today's data again from the server
+          await fetchSpecificDateData(selectedDate);
         }
       }
     } catch (e) {
@@ -266,36 +301,8 @@ class _RecordsPageState extends State<RecordsPage> {
             _focusedDay = focusedDay;
           });
 
-          final dateKey = _dateToKey(selectedDay);
-
-          if (weekData.containsKey(dateKey)) {
-            setState(() {
-              selectedDate = selectedDay;
-              selectedDateKey = dateKey;
-            });
-            return;
-          }
-
-          final result = await fsr.fetchSessionDetails(
-            DateTime(selectedDay.year, selectedDay.month, selectedDay.day),
-            DateTime(
-              selectedDay.year,
-              selectedDay.month,
-              selectedDay.day,
-              23,
-              59,
-              59,
-            ),
-          );
-
-          print("Fetched data from calendar selection: $result");
-
-          await _processSessionData(result);
-
-          setState(() {
-            selectedDate = selectedDay;
-            selectedDateKey = dateKey;
-          });
+          // 获取所选日期的数据
+          await fetchSpecificDateData(selectedDay);
         },
         onFormatChanged: (format) => setState(() => _calendarFormat = format),
         onPageChanged: (focusedDay) => _focusedDay = focusedDay,
@@ -351,6 +358,10 @@ class _RecordsPageState extends State<RecordsPage> {
         );
       }),
     );
+  }
+
+  Future<void> refreshData() async {
+    await _loadTodayData();
   }
 
   @override
