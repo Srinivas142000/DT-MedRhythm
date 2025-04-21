@@ -1,10 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:dt_medrhythm/mypages/modifyroutes.dart';
+import 'package:medrhythms/mypages/modifyroutes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dt_medrhythm/mypages/createroutes.dart';
+import 'package:medrhythms/mypages/createroutes.dart';
 import 'createroutes_test.mocks.dart';
 
 @GenerateMocks([
@@ -13,7 +12,7 @@ import 'createroutes_test.mocks.dart';
   DocumentReference,
   FirebaseModifyStore,
 ])
-void main() async {
+void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late CreateDataService createDataService;
@@ -28,10 +27,12 @@ void main() async {
     mockModifyStore = MockFirebaseModifyStore();
     mockDocRef = MockDocumentReference();
 
-    createDataService = CreateDataService();
-    createDataService.usersColl = mockUsersColl;
-    createDataService.sessionColl = mockSessionColl;
-    createDataService.mu = mockModifyStore;
+    // Inject mocks via constructor
+    createDataService = CreateDataService(
+      usersColl: mockUsersColl,
+      sessionColl: mockSessionColl,
+      mu: mockModifyStore,
+    );
   });
 
   test('createUserReference should add user to collection', () async {
@@ -42,14 +43,14 @@ void main() async {
     await createDataService.createUserReference('test-imei');
 
     // Assert
-    verify(mockUsersColl.add(any)).called(1);
+    verify(mockUsersColl.add(argThat(isA<Map<String, dynamic>>()))).called(1);
   });
 
   test('createSessionData should add session and update user', () async {
     // Arrange
     when(mockSessionColl.add(any)).thenAnswer((_) async => mockDocRef);
     when(
-      mockModifyStore.amendSessionsToUser('', ''),
+      mockModifyStore.amendSessionsToUser(any, any),
     ).thenAnswer((_) async => {});
 
     // Act
@@ -65,7 +66,7 @@ void main() async {
     );
 
     // Assert
-    verify(mockSessionColl.add(any)).called(1);
-    verify(mockModifyStore.amendSessionsToUser('', '')).called(1);
+    verify(mockSessionColl.add(argThat(isA<Map<String, dynamic>>()))).called(1);
+    verify(mockModifyStore.amendSessionsToUser(any, 'user-id')).called(1);
   });
 }

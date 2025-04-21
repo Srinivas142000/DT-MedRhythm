@@ -11,7 +11,7 @@ import 'dart:math' as math;
 
 class RecordsPage extends StatefulWidget {
   final String uuid;
-  final Map<String, dynamic> userData;
+  final Map<String, dynamic> userData; // Define the missing field
   const RecordsPage({super.key, required this.uuid, required this.userData});
 
   @override

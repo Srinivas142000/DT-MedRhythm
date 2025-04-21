@@ -1,26 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// A class responsible for deleting session entries from Firestore.
 class FirebaseDeleteStore {
-  // Reference to the 'users' collection in Firestore
-  // This collection stores user documents, each identified by a unique user ID
-  final CollectionReference usersColl =
-      FirebaseFirestore.instance.collection('users');
+  /// Firestore instance to allow dependency injection for testability.
+  final FirebaseFirestore firestore;
 
-  final CollectionReference sessionColl =
-      FirebaseFirestore.instance.collection('sessions');
+  /// Constructor with optional dependency injection.
+  /// Defaults to FirebaseFirestore.instance when no mock is provided.
+  FirebaseDeleteStore({FirebaseFirestore? firestore})
+    : firestore = firestore ?? FirebaseFirestore.instance;
 
-  // Method to Delete a session ID to a user's document in Firestore
-  // Parameters:
-  // - sessionId: The ID of the session to be added to the user's document
+  /// Removes the user's session document from the 'users' collection in Firestore.
+  ///
+  /// Parameters:
+  /// - [sessionId]: The document ID to delete.
+  ///
+  /// This simulates removing a user session by deleting their corresponding document.
   Future<void> removeSessionFromUser(String sessionId) async {
     try {
-      // Delete the user's document by removing the session from DB
-      // Remove the DB entry for the session
+      final usersColl = firestore.collection('users');
       await usersColl.doc(sessionId).delete();
     } catch (err) {
-      // Print any errors that occur during the update
-      // This helps in debugging issues related to Firestore operations
+      // Log Firestore errors to help with debugging.
       print(err);
+      rethrow;
     }
   }
 }

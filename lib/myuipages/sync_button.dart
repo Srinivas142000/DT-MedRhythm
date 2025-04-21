@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
+import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/helpers/datasyncmanager.dart';
+import 'package:medrhythms/mypages/createroutes.dart';
+import 'package:medrhythms/userappactions/audios.dart';
 
 class SyncButton extends StatefulWidget {
   @override
@@ -22,7 +26,12 @@ class _SyncButtonState extends State<SyncButton> {
     });
 
     try {
-      final sessions = Sessions();
+      final sessions = Sessions(
+        us: UserSession(),
+        csd: CreateDataService(),
+        audioManager: LocalAudioManager(),
+        dsm: DataSyncManager(),
+      );
       await sessions.syncSession(Duration(minutes: selectedMinutes));
       ScaffoldMessenger.of(
         context,

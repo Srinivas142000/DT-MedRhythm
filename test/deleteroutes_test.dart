@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dt_medrhythm/mypages/deleteroutes.dart';
+import 'package:medrhythms/mypages/deleteroutes.dart';
 
-// Mock Firestore classes
+/// Mock Firestore classes to simulate Firestore behavior in unit tests.
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 class MockCollectionReference extends Mock
@@ -19,33 +19,43 @@ void main() {
     late MockCollectionReference mockUsersCollection;
     late MockDocumentReference mockDocumentRef;
 
+    /// Setup mock objects before each test.
     setUp(() {
       mockFirestore = MockFirebaseFirestore();
       mockUsersCollection = MockCollectionReference();
       mockDocumentRef = MockDocumentReference();
 
-      // Mock Firestore instance
+      // Mock Firestore interactions
       when(mockFirestore.collection('users')).thenReturn(mockUsersCollection);
       when(mockUsersCollection.doc(any)).thenReturn(mockDocumentRef);
-      deleteStore = FirebaseDeleteStore();
+
+      // Inject mocked Firestore into the class under test
+      deleteStore = FirebaseDeleteStore(firestore: mockFirestore);
     });
 
+    /// Test that verifies the document is deleted as expected.
     test('removeSessionFromUser should delete user document', () async {
-      // Stub delete method
+      // Stub the delete call
       when(mockDocumentRef.delete()).thenAnswer((_) async {});
 
       await deleteStore.removeSessionFromUser('session123');
 
-      // Verify that delete was called
+      // Ensure delete() was called once
       verify(mockDocumentRef.delete()).called(1);
     });
 
+    /// Test that checks whether Firestore errors are handled correctly.
     test('removeSessionFromUser should handle Firestore errors', () async {
+      // Simulate a delete failure
       when(mockDocumentRef.delete()).thenThrow(Exception('Firestore error'));
 
-      await deleteStore.removeSessionFromUser('session123');
+      // Call the method and expect it to throw
+      expect(
+        () async => await deleteStore.removeSessionFromUser('session123'),
+        throwsException,
+      );
 
-      // Verify delete was attempted
+      // Ensure delete() was still attempted
       verify(mockDocumentRef.delete()).called(1);
     });
   });

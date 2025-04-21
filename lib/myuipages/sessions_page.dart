@@ -3,12 +3,18 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
-import 'package:medrhythms/myuipages/medrhythmslogo.dart';
-import 'package:medrhythms/myuipages/bottombar.dart';
+import 'dart:async';
+
+import 'package:medrhythms/helpers/datasyncmanager.dart';
 import 'package:medrhythms/helpers/usersession.dart';
-import 'package:medrhythms/myuipages/sync_button.dart';
-import 'package:medrhythms/userappactions/sessions.dart';
+import 'package:medrhythms/mypages/createroutes.dart';
+import 'package:medrhythms/myuipages/bottombar.dart';
+import 'package:medrhythms/myuipages/medrhythmslogo.dart';
 import 'package:medrhythms/myuipages/records_page.dart';
+import 'package:medrhythms/myuipages/sync_button.dart';
+import 'package:medrhythms/userappactions/audios.dart';
+import 'package:medrhythms/userappactions/sessions.dart';
+
 
 Health h = Health();
 
@@ -31,7 +37,12 @@ class SessionsPage extends StatefulWidget {
 class _SessionsPageState extends State<SessionsPage> {
   Duration selectedDuration = Duration.zero;
   Bottombar bb = Bottombar();
-  Sessions s = Sessions();
+  Sessions s = new Sessions(
+    us: UserSession(),
+    csd: CreateDataService(),
+    audioManager: LocalAudioManager(),
+    dsm: DataSyncManager(),
+  );
 
   /**
    * Shows a modal bottom sheet to select the session duration.
@@ -170,7 +181,12 @@ class _NextPageState extends State<NextPage> {
   Timer? timer;
   bool isPaused = false;
   Bottombar bb = Bottombar();
-  Sessions s = Sessions();
+  Sessions s = new Sessions(
+    us: UserSession(),
+    csd: CreateDataService(),
+    audioManager: LocalAudioManager(),
+    dsm: DataSyncManager(),
+  );
 
   @override
   void initState() {

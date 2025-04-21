@@ -1,48 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:medrhythms/mypages/createroutes.dart'; // Import necessary files
+import 'package:medrhythms/mypages/createroutes.dart';
 import 'package:medrhythms/helpers/usersession.dart';
 
+/// A service class for reading user and session data from Firestore.
 class FirestoreServiceRead {
-  // Reference to the 'users' collection in Firestore
-  final CollectionReference usersColl = FirebaseFirestore.instance.collection(
-    'users',
-  );
+  final FirebaseFirestore firestore;
+  final CreateDataService csd;
 
-  // Reference to the 'sessions' collection in Firestore
-  final CollectionReference sessionColl = FirebaseFirestore.instance.collection(
-    'sessions',
-  );
+  /// Constructor allows dependency injection of Firestore and CreateDataService.
+  /// If not provided, defaults to production instances.
+  FirestoreServiceRead({
+    FirebaseFirestore? firestore,
+    CreateDataService? createService,
+  }) : firestore = firestore ?? FirebaseFirestore.instance,
+       csd = createService ?? CreateDataService();
 
-  // Instance of CreateDataService to create user references
-  final CreateDataService csd = CreateDataService();
-
-  // Method to check if a user exists based on IMEI and create user reference if not
+  /// Checks if a user exists in Firestore based on IMEI.
+  /// If not, creates a new user document.
   Future<Map<String, dynamic>?> checkUserSessionRegistry(String imei) async {
     try {
-      // Query the 'users' collection for documents where 'imei' matches the provided IMEI
+      // Reference to the 'users' collection in Firestore
+      var usersColl = firestore.collection('users');
+      // Query Firestore for a user document with the given IMEI
       var querySnapshot = await usersColl.where('imei', isEqualTo: imei).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // If the query returns any documents, user exists
+        // If a user document exists, return its data
         var userDetails =
             querySnapshot.docs.first.data() as Map<String, dynamic>;
         if (userDetails.containsKey('userId')) {
-          return userDetails; // Return the user details
+          return userDetails;
         }
       } else {
-        // If no user is found, create the user reference
+        // If no user document exists, create one and retry
         await csd.createUserReference(imei);
-        return checkUserSessionRegistry(imei); // Return newly created details
+        return checkUserSessionRegistry(imei);
       }
     } catch (e) {
+      // Handle errors and return an error map
       print("Error occurred: $e");
-      return {
-        "error": e.toString(),
-      }; // Return a JSON object with an error message
+      return {"error": e.toString()};
     }
   }
 
-  // Method to fetch session data and calculate sums and averages
+  /// Fetches session data for a user and returns aggregated results.
   Future<Map<String, dynamic>> fetchUserSessionData(
     String userId, {
     DateTime? startTime,
@@ -50,7 +51,11 @@ class FirestoreServiceRead {
     String exportOption = "All",
   }) async {
     try {
-      var queryForSessions;
+      // Reference to the 'sessions' collection in Firestore
+      var sessionColl = firestore.collection('sessions');
+      QuerySnapshot queryForSessions;
+
+      // Query sessions based on the export option and date range
       if (exportOption == "All") {
         queryForSessions =
             await sessionColl.where('userId', isEqualTo: userId).get();
@@ -68,42 +73,46 @@ class FirestoreServiceRead {
                 )
                 .get();
       }
+
       if (queryForSessions.docs.isNotEmpty) {
+        // Initialize variables for aggregating session data
         double totalCalories = 0;
         double totalDistance = 0;
         int totalSteps = 0;
         double totalSpeed = 0;
         int sessionCount = queryForSessions.docs.length;
-
         List<Map<String, dynamic>> sessionDetails = [];
 
+        // Iterate through session documents and aggregate data
         for (var doc in queryForSessions.docs) {
           var sessionData = doc.data() as Map<String, dynamic>;
           totalCalories += sessionData['calories']?.toDouble() ?? 0.0;
           totalDistance += sessionData['distance']?.toDouble() ?? 0.0;
           totalSteps += (sessionData['totalSteps'] as num?)?.toInt() ?? 0;
           totalSpeed += sessionData['speed']?.toDouble() ?? 0.0;
-
-          // Add session data to the sessionDetails list
           sessionDetails.add(sessionData);
         }
 
+        // Calculate average speed
         double averageSpeed = totalSpeed / sessionCount;
 
-        var userImeiQuery =
-            await usersColl.where('userId', isEqualTo: userId).get();
-        var userImei = userImeiQuery.docs.first.data();
+        // Fetch user document to retrieve IMEI
+        var userDoc =
+            await firestore
+                .collection('users')
+                .where('userId', isEqualTo: userId)
+                .get();
+        var imei = (userDoc.docs.first.data() as Map<String, dynamic>)['imei'];
 
+        // Return aggregated session data
         return {
-          "IMEI":
-              (userImei as Map<String, dynamic>?)?['imei'] ?? "Unknown IMEI",
+          "IMEI": imei ?? "Unknown IMEI",
           "uuid": UserSession().userId,
           "totalCalories": totalCalories,
           "totalDistance": totalDistance,
           "totalSteps": totalSteps,
           "averageSpeed": averageSpeed,
-          "sessionDetails":
-              sessionDetails, // Include session details in the payload
+          "sessionDetails": sessionDetails,
         };
       } else {
         return {"error": "No session data found for this user."};
@@ -114,55 +123,41 @@ class FirestoreServiceRead {
     }
   }
 
+  /// Fetches sessions in a date range and buckets them into hourly intervals.
   Future<Map<String, dynamic>> fetchSessionDetails(
     DateTime fromDate,
     DateTime toDate,
   ) async {
     try {
-      // Fetch sessions from Firestore
-      var queryForSessions =
+      var sessionColl = firestore.collection('sessions');
+      var querySnapshot =
           await sessionColl
               .where('userId', isEqualTo: UserSession().userId)
               .where('startTime', isGreaterThanOrEqualTo: fromDate)
               .where('endTime', isLessThanOrEqualTo: toDate)
               .get();
 
-      // Return empty map if no sessions found
-      if (queryForSessions.docs.isEmpty) {
-        return {"sessionDetails": {}};
-      }
+      if (querySnapshot.docs.isEmpty) return {"sessionDetails": {}};
 
-      // Create hourly data map with default values
       Map<String, Map<String, dynamic>> hourlyData = _initializeHourlyData();
 
-      // Process each session and distribute data into hourly buckets
-      for (var doc in queryForSessions.docs) {
+      for (var doc in querySnapshot.docs) {
         var sessionData = doc.data() as Map<String, dynamic>;
-
         DateTime startTime = (sessionData['startTime'] as Timestamp).toDate();
         DateTime endTime = (sessionData['endTime'] as Timestamp).toDate();
-
         _distributeSessionData(sessionData, startTime, endTime, hourlyData);
       }
 
-      // Remove empty entries before returning
-      // _removeEmptyBuckets(hourlyData);
-
-      // Return processed session details with the desired map format
-      DateTime currentDate = DateTime(
-        fromDate.year,
-        fromDate.month,
-        fromDate.day,
-      );
-
-      return {currentDate.toIso8601String(): hourlyData};
-    } catch (e, stackTrace) {
-      print("Error fetching sessions: $e\nStackTrace: $stackTrace");
+      return {
+        DateTime(fromDate.year, fromDate.month, fromDate.day).toIso8601String():
+            hourlyData,
+      };
+    } catch (e, stack) {
+      print("Error fetching sessions: $e\nStackTrace: $stack");
       return {"error": e.toString()};
     }
   }
 
-  // --- Helper Method: Initialize Hourly Buckets ---
   Map<String, Map<String, dynamic>> _initializeHourlyData() {
     Map<String, Map<String, dynamic>> hourlyData = {};
 
@@ -183,7 +178,7 @@ class FirestoreServiceRead {
     return hourlyData;
   }
 
-  // --- Helper Method: Distribute Session Data into Buckets ---
+  /// Distributes session data into hourly buckets based on overlap duration.
   void _distributeSessionData(
     Map<String, dynamic> sessionData,
     DateTime startTime,
@@ -191,58 +186,59 @@ class FirestoreServiceRead {
     Map<String, Map<String, dynamic>> hourlyData,
   ) {
     for (int i = 0; i < 24; i++) {
+      // Define the start and end of the current hour bucket
       DateTime bucketStart = DateTime(
         startTime.year,
         startTime.month,
         startTime.day,
         i,
-      );
-      DateTime bucketEnd = bucketStart.add(Duration(hours: 1));
+      ); // Start of hour
+      DateTime bucketEnd = bucketStart.add(Duration(hours: 1)); // End of hour
 
+      // Check if the session overlaps with the current hour bucket
       if (startTime.isBefore(bucketEnd) && endTime.isAfter(bucketStart)) {
-        double overlapDuration = _calculateOverlapDuration(
+        // Calculate the overlap duration between the session and the bucket
+        double overlap = _calculateOverlapDuration(
           startTime,
           endTime,
           bucketStart,
           bucketEnd,
         );
-        double sessionDuration =
+        double duration =
             (endTime.millisecondsSinceEpoch - startTime.millisecondsSinceEpoch)
                 .toDouble();
 
-        if (sessionDuration > 0 && overlapDuration > 0) {
-          double weight = overlapDuration / sessionDuration;
-
+        if (duration > 0 && overlap > 0) {
+          // Calculate the weight of the session data for the current bucket
+          double weight = overlap / duration;
           String key =
               "${i.toString().padLeft(2, '0')}:00 - ${(i + 1).toString().padLeft(2, '0')}:00";
-
+          // Update the hourly data bucket with weighted session data
           _updateHourlyData(hourlyData[key]!, sessionData, weight);
         }
       }
     }
   }
 
-  // --- Helper Method: Calculate Overlap Duration ---
+  /// Calculates the overlap duration between two time intervals.
   double _calculateOverlapDuration(
-    DateTime startTime,
-    DateTime endTime,
-    DateTime bucketStart,
-    DateTime bucketEnd,
+    DateTime s,
+    DateTime e,
+    DateTime bs,
+    DateTime be,
   ) {
     double overlapStart =
-        startTime.isAfter(bucketStart)
-            ? startTime.millisecondsSinceEpoch.toDouble()
-            : bucketStart.millisecondsSinceEpoch.toDouble();
-
+        s.isAfter(bs)
+            ? s.millisecondsSinceEpoch.toDouble()
+            : bs.millisecondsSinceEpoch.toDouble();
     double overlapEnd =
-        endTime.isBefore(bucketEnd)
-            ? endTime.millisecondsSinceEpoch.toDouble()
-            : bucketEnd.millisecondsSinceEpoch.toDouble();
-
+        e.isBefore(be)
+            ? e.millisecondsSinceEpoch.toDouble()
+            : be.millisecondsSinceEpoch.toDouble();
     return (overlapEnd - overlapStart).clamp(0, double.infinity);
   }
 
-  // --- Helper Method: Update Hourly Data ---
+  /// Updates an hourly data bucket with weighted session data.
   void _updateHourlyData(
     Map<String, dynamic> bucket,
     Map<String, dynamic> sessionData,
@@ -252,7 +248,6 @@ class FirestoreServiceRead {
     bucket["speed"] += (sessionData['speed'] ?? 0) * weight;
     bucket["heartRate"] += (sessionData['heartRate'] ?? 0) * weight;
     bucket["distance"] += (sessionData['distance'] ?? 0) * weight;
-    bucket["totalSteps"] += (sessionData['totalSteps'] ?? 0) * weight;
   }
 
   // --- Helper Method: Remove Empty Buckets ---
