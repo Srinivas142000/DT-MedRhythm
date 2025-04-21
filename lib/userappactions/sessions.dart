@@ -20,6 +20,7 @@ class Sessions {
   final LocalAudioManager _audioManager;
   final DataSyncManager dsm;
 
+
   Sessions({
     required this.us,
     required this.csd,
@@ -27,34 +28,56 @@ class Sessions {
     required this.dsm,
   }) : _audioManager = audioManager;
 
+  // Stream for live data updates
   Stream<Map<String, double>> get liveDataStream => liveDataController.stream;
 
-  String? userId;
-  Duration? totalSelectedDuration;
+  // Session tracking
+  String? _userId;
+  Duration? _totalSelectedDuration;
   Timer? _autoSaveTimer;
 
-  void setUserId(String userId) => this.userId = userId;
+  final LocalAudioManager _audioManager = LocalAudioManager(threshold: 10.0);
+  LocalAudioManager get audioManager => _audioManager;
 
-  void setSelectedDuration(Duration selectedDuration) =>
-      totalSelectedDuration = selectedDuration;
+  // Set the user ID
+  void setUserId(String userId) {
+    _userId = userId;
+  }
 
-  Future<double> calculateDistance(Position start, Position end) async =>
-      Geolocator.distanceBetween(
-        start.latitude,
-        start.longitude,
-        end.latitude,
-        end.longitude,
-      );
+  // Set the selected session duration
+  void setSelectedDuration(Duration selectedDuration) {
+    _totalSelectedDuration = selectedDuration;
+  }
 
+  Future<double> calculateDistance(Position start, Position end) async {
+    return Geolocator.distanceBetween(
+      start.latitude,
+      start.longitude,
+      end.latitude,
+      end.longitude,
+    );
+  }
+
+  /**
+   * Starts a live workout session:
+   * - Requests health authorization if needed.
+   * - Tracks steps and estimates BPM from GPS.
+   * - Plays music matched to the current BPM.
+   * - Streams live data updates.
+   * @param {Health} h - Health API instance.
+   * @param {string} userId - Unique user identifier.
+   * @param {Duration} selectedDuration - Desired session duration.
+   * @returns {Future<void>}
+   */
   Future<void> startLiveWorkout(
     Health h,
     String userId,
     Duration selectedDuration,
   ) async {
     setUserId(userId);
-    setSelectedDuration(selectedDuration);
 
-    if (!us.hasPermissions) {
+    bool permissionsGranted = us.hasPermissions;
+    if (!permissionsGranted) {
       print("Permissions not granted.");
       return;
     }
@@ -72,10 +95,14 @@ class Sessions {
     Position? previousLocation;
     DateTime? previousTime;
     DateTime startTime = DateTime.now();
+    DateTime lastSwitchTime = DateTime.now();
+    const Duration switchCooldown = Duration(seconds: 10);
 
     while (isTracking &&
         DateTime.now().difference(startTime) < selectedDuration) {
       DateTime currentTime = DateTime.now();
+
+      // Fetch recent health data points
       List<HealthDataPoint> data = await h.getHealthDataFromTypes(
         startTime: currentTime.subtract(const Duration(seconds: 10)),
         endTime: currentTime,
@@ -83,33 +110,48 @@ class Sessions {
       );
       liveData.addAll(data);
 
+      // Obtain current GPS location
       Position currentLocation = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
 
       double locationBpm = 0.0;
-      if (previousLocation != null && previousTime != null) {
-        double distance = await calculateDistance(
-          previousLocation,
-          currentLocation,
-        );
-        double timeDiff =
-            currentTime.difference(previousTime).inSeconds.toDouble();
-        if (timeDiff > 0) {
-          double estimatedSteps = distance / 0.762;
-          locationBpm = (estimatedSteps / timeDiff) * 60;
-          print("Location BPM: \$locationBpm");
-        }
-      }
-      previousLocation = currentLocation;
-      previousTime = currentTime;
+        // If we have a previous location, estimate BPM from movement
+        if (previousLocation != null && previousTime != null) {
+          // Compute distance traveled since last sample
+          double distance = await calculateDistance(
+            previousLocation,
+            currentLocation,
+          );
 
-      double totalBpm = 0;
-      int count = 0;
-      for (var dp in data) {
-        if (dp.type == HealthDataType.HEART_RATE) {
-          totalBpm += (dp.value as num).toDouble();
-          count++;
+          // Compute time difference in seconds
+          double timeDiff = currentTime.difference(previousTime).inSeconds.toDouble();
+
+          if (timeDiff > 0) {
+            // Estimate number of steps and convert to steps per minute
+            double estimatedSteps = distance / 0.762;
+            locationBpm = (estimatedSteps / timeDiff) * 60;
+            print("Calculated Location BPM: $locationBpm");
+          }
+        }
+
+        }
+        // Update previous location/time for next iteration
+        previousLocation = currentLocation;
+        previousTime = currentTime;
+
+        double currentBpm = locationBpm;
+        print("Using BPM (location-based only): $currentBpm");
+
+        // If BPM is very low assume user isn't walking and skip song change
+        if (currentBpm < 20.0) {
+          print("Low movement detected (BPM: $currentBpm). Skipping song update.");
+        } else {
+          // Only switch songs if the cooldown has elapsed
+          if (currentTime.difference(lastSwitchTime) > switchCooldown) {
+            await _audioManager.playSongForBpm(currentBpm);
+            lastSwitchTime = currentTime;
+          }
         }
       }
       double heartRateBpm = count > 0 ? totalBpm / count : 110.0;
@@ -120,10 +162,12 @@ class Sessions {
 
       await _audioManager.playSongForBpm(currentBpm);
 
+
+      // Sum total steps
       double totalSteps = 0;
       for (var dp in liveData) {
         if (dp.type == HealthDataType.STEPS) {
-          totalSteps += (dp.value as num).toDouble();
+          totalSteps += dp.value as double;
         }
       }
 
@@ -134,6 +178,18 @@ class Sessions {
 
     await stopLiveWorkout(h, userId, selectedDuration);
   }
+
+  /**
+   * Stops a live workout session:
+   * - Stops tracking and music.
+   * - Aggregates collected health data.
+   * - Persists session summary via CreateDataService.
+   * @param {Health} h - Health API instance.
+   * @param {string} userId - Unique user identifier.
+   * @param {Duration} selectedDuration - Session duration.
+   * @returns {Future<void>}
+   */
+
 
   Future<void> stopLiveWorkout(
     Health h,
@@ -251,6 +307,7 @@ class Sessions {
       totalDistance / (24 * 60 * 60),
       "Phone",
     );
+    _liveData.clear();
   }
 
   Future<void> syncSession(Duration selectedDuration) async {
@@ -329,6 +386,7 @@ class Sessions {
         endTime: now,
         types: Constants.healthDataTypes,
       );
+
 
       double totalSteps = 0, totalCalories = 0, totalDistance = 0;
       for (var dp in healthData) {

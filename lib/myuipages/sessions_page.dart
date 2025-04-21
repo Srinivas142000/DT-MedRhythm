@@ -1,16 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health/health.dart';
-import 'package:medrhythms/mypages/createroutes.dart';
 import 'dart:async';
-import 'package:medrhythms/myuipages/medrhythmslogo.dart';
-import 'package:medrhythms/myuipages/bottombar.dart';
+
+import 'package:medrhythms/helpers/datasyncmanager.dart';
 import 'package:medrhythms/helpers/usersession.dart';
+import 'package:medrhythms/mypages/createroutes.dart';
+import 'package:medrhythms/myuipages/bottombar.dart';
+import 'package:medrhythms/myuipages/medrhythmslogo.dart';
+import 'package:medrhythms/myuipages/records_page.dart';
+import 'package:medrhythms/myuipages/sync_button.dart';
 import 'package:medrhythms/userappactions/audios.dart';
 import 'package:medrhythms/userappactions/sessions.dart';
-import 'package:medrhythms/helpers/datasyncmanager.dart';
 
-Health h = new Health();
+
+Health h = Health();
 
 /**
  * A StatefulWidget that represents the page where users can start a walking session.
@@ -21,7 +27,8 @@ class SessionsPage extends StatefulWidget {
   final String uuid;
   final Map<String, dynamic> userData;
 
-  const SessionsPage({super.key, required this.uuid, required this.userData});
+  const SessionsPage({Key? key, required this.uuid, required this.userData})
+    : super(key: key);
 
   @override
   _SessionsPageState createState() => _SessionsPageState();
@@ -84,10 +91,7 @@ class _SessionsPageState extends State<SessionsPage> {
   void _startSession() async {
     final userId = UserSession().userId;
     if (userId != null) {
-      // Start the live workout asynchronously
       s.startLiveWorkout(h, userId, selectedDuration);
-
-      // Navigate to the NextPage immediately
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -97,7 +101,6 @@ class _SessionsPageState extends State<SessionsPage> {
         ),
       );
     } else {
-      // Handle the case where userId is null
       print("User ID is null");
     }
   }
@@ -134,7 +137,7 @@ class _SessionsPageState extends State<SessionsPage> {
                   width: 300,
                   height: 40,
                   color: Colors.white,
-                  alignment: Alignment.topCenter,
+                  alignment: Alignment.center,
                   child: TextButton(
                     onPressed: () => _selectTime(context),
                     child: const Text("Yes"),
@@ -192,11 +195,12 @@ class _NextPageState extends State<NextPage> {
     _startTimer(s, remainingTime);
   }
 
-  /**
+  void _startTimer(Sessions s, Duration selectedDuration) {
+    /**
    * Starts a countdown timer for the session.
    * Decreases the remaining time by one second until the session ends.
    */
-  void _startTimer(Sessions s, Duration selectedDuration) async {
+
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!isPaused && remainingTime.inSeconds > 0) {
         setState(() {
@@ -210,21 +214,71 @@ class _NextPageState extends State<NextPage> {
   }
 
   /**
+ * Toggles the paused state of the session.
+ *
+ * When paused:
+ *  - Cancels the session timer
+ *  - Pauses audio playback
+ * When resumed:
+ *  - Resumes audio playback
+ *  - Restarts the session timer
+ *
+ * @returns {Future<void>} Completes when pause or resume actions are done.
+ * @private
+ */
+  Future<void> _togglePause() async {
+    setState(() {
+      isPaused = !isPaused;
+    });
+    if (isPaused) {
+      timer?.cancel();
+      await s.audioManager.pause();
+      print("Session paused and music paused.");
+    } else {
+      await s.audioManager.resume();
+      _startTimer(s, remainingTime);
+      print("Session resumed and music resumed.");
+    }
+  }
+
+  void _cancelSession(Duration selectedDuration) {
+    timer?.cancel();
+    _endSession(s, selectedDuration);
+  }
+
+  /**
    * Ends the current session and saves the session data.
    */
   void _endSession(Sessions s, Duration selectedDuration) async {
     await s.stopLiveWorkout(h, UserSession().userId!, selectedDuration);
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder:
-              (context) => SessionsPage(
-                uuid: widget.uuid,
-                userData: UserSession().userData ?? {}, // Null check added here
-              ),
+      // Show workout completion message and automatically navigate to the records page
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Workout completed! Your records will be displayed soon..."),
+          duration: Duration(seconds: 2),
         ),
       );
+
+      // Delay a bit to allow time for data to be written to the database
+      await Future.delayed(Duration(seconds: 2));
+
+      // Navigate to RecordsPage
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              // Create a RecordsPage with a key to force it to rebuild and load new data
+              return RecordsPage(
+                key: UniqueKey(),
+                uuid: widget.uuid,
+                userData: UserSession().userData ?? {},
+              );
+            },
+          ),
+        );
+      }
     }
   }
 
@@ -234,30 +288,6 @@ class _NextPageState extends State<NextPage> {
     super.dispose();
   }
 
-  /**
-   * Toggles the pause state of the timer.
-   * Resumes or pauses the countdown timer based on the current state.
-   */
-  void _togglePause() {
-    setState(() {
-      isPaused = !isPaused;
-    });
-
-    if (isPaused) {
-      timer?.cancel();
-    } else {
-      _startTimer(s, remainingTime);
-    }
-  }
-
-  /**
-   * Cancels the current session and stops the timer.
-   */
-  void _cancelSession(Duration selectedDuration) {
-    timer?.cancel();
-    _endSession(s, selectedDuration);
-  }
-
   @override
   Widget build(BuildContext context) {
     double progress =
@@ -265,7 +295,6 @@ class _NextPageState extends State<NextPage> {
             ? (widget.duration.inSeconds - remainingTime.inSeconds) /
                 widget.duration.inSeconds
             : 0;
-
     return Scaffold(
       appBar: MedRhythmsAppBar(),
       body: Column(
@@ -300,27 +329,20 @@ class _NextPageState extends State<NextPage> {
                         ),
                       ),
                       const SizedBox(height: 10),
-
-                      // GIF Below Walking Text
                       Image(
                         image: AssetImage('images/walking.gif'),
-                        width:
-                            MediaQuery.of(
-                              context,
-                            ).size.width, // Full width of the screen
+                        width: MediaQuery.of(context).size.width,
                         height: 100,
                       ),
                       const SizedBox(height: 10),
                     ],
                   ),
                 ),
-                Container(
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    backgroundColor: Colors.white,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                    minHeight: 8,
-                  ),
+                LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                  minHeight: 8,
                 ),
                 Container(
                   width: double.infinity,
