@@ -301,7 +301,7 @@ class _RecordsPageState extends State<RecordsPage> {
             _focusedDay = focusedDay;
           });
 
-          // 获取所选日期的数据
+          // Get data for the selected date
           await fetchSpecificDateData(selectedDay);
         },
         onFormatChanged: (format) => setState(() => _calendarFormat = format),
